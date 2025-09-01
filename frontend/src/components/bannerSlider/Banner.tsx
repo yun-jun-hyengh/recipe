@@ -13,7 +13,7 @@ const Banner = () => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % images.length);
     }, 3000);
-    return () => clearInterval(timer); //
+    return () => clearInterval(timer); // 타이머 잰다 
   }, []);
 
   return (
