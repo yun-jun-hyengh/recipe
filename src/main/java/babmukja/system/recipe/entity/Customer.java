@@ -49,7 +49,6 @@ public class Customer {
     private Long private_recipe_limit;
 
     @Column(name = "unlimit", columnDefinition = "INT DEFAULT 0")
-    private Long unlimit; // 0 : 제한   1 : 제한없음
-
+    private Long unlimit; // 0 : 제한 1 : 제한없음
     
 }
