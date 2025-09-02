@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RestController;
 import babmukja.system.recipe.constants.CustomerParameterName;
 import babmukja.system.recipe.dto.CustomerDTO;
 import babmukja.system.recipe.service.CustomerService;
+import babmukja.system.recipe.utils.ResponseJsonUtils;
 
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,17 +23,17 @@ public class CustomerController {
     }
     
     @PostMapping(value = CustomerParameterName.JOIN, consumes = "application/json")
-    public ResponseEntity<String> createCust(@RequestBody CustomerDTO dto) {
+    public ResponseEntity<Map<String, Object>> createCust(@RequestBody CustomerDTO dto) {
         try {
             boolean success = customerService.join(dto);
             if(success) {
-                return ResponseEntity.ok("회원가입 완료");
+                return ResponseEntity.ok(ResponseJsonUtils.mapResponse("success", "회원가입 완료", null));
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원가입 실패");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseJsonUtils.mapResponse("fail", "회원가입 실패", null));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("회원가입 중 오류 발생: " + e.getMessage());
+                    .body(ResponseJsonUtils.mapResponse("error", "회원가입 중 오류 발생", e.getMessage()));
         }
     }
 }
