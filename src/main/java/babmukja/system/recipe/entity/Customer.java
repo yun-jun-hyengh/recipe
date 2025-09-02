@@ -45,10 +45,10 @@ public class Customer {
     @Column(name = "regdate")
     private String regdate;
 
-    @Column(name = "private_recipe_limit", columnDefinition = "INT DEFAULT 50")
-    private Long private_recipe_limit;
+    @Column(name = "private_recipe_limit")
+    private Long private_recipe_limit = 50L;
 
-    @Column(name = "unlimit", columnDefinition = "INT DEFAULT 0")
-    private Long unlimit; // 0 : 제한 1 : 제한없음
+    @Column(name = "unlimit")
+    private Long unlimit = 0L; // 0 : 제한 1 : 제한없음
     
 }
