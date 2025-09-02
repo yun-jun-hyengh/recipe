@@ -1,5 +1,6 @@
 package babmukja.system.recipe.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import babmukja.system.recipe.dto.CustomerDTO;
@@ -11,17 +12,19 @@ import babmukja.system.recipe.utils.DateUtils;
 public class CustomerService {
     
     private final CustomerRepository customerRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public boolean join(CustomerDTO dto) {
-
         try {
             Customer customer = new Customer();
             customer.setUser_id(dto.getUser_id());
-            customer.setUser_pw(dto.getUser_pw());
+            String encodedPassword = passwordEncoder.encode(dto.getUser_pw());
+            customer.setUser_pw(encodedPassword);
             customer.setUser_name(dto.getUser_name());
             customer.setNickname(dto.getNickname());
             customer.setUser_email(dto.getUser_email());
