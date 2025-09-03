@@ -29,4 +29,24 @@ public class ResponseJsonUtils {
         list.add(map);
         return list;
     }
+
+    public static Map<String, Object> mapWithList(String status, String message, List<?> data) {
+        Map<String, Object> res = new HashMap<>();
+        res.put("status", status);
+        res.put("message", message);
+        res.put("data", data);  // List<?> 그대로 넣으면 Map 안에 리스트 구조
+        return res;
+    }
+
+    public static List<List<?>> listOfListResponse(List<List<?>> data) {
+        return data;
+    }
+
+    public static Map<String, Object> nestedMapResponse(String status, String message, Map<String, Object> data) {
+        Map<String, Object> res = new HashMap<>();
+        res.put("status", status);
+        res.put("message", message);
+        res.put("data", data);
+        return res;
+    }
 }
