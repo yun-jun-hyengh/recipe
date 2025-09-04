@@ -39,5 +39,9 @@ public class CustomerService {
         }
         
     }
+
+    public boolean checkUserIdDuplicate(String userId) {
+        return customerRepository.existsByUserId(userId);
+    }
     
 }

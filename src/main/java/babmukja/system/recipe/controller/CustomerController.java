@@ -3,12 +3,14 @@ package babmukja.system.recipe.controller;
 import org.springframework.web.bind.annotation.RestController;
 import babmukja.system.recipe.constants.CustomerParameterName;
 import babmukja.system.recipe.dto.CustomerDTO;
+import babmukja.system.recipe.dto.CustomerIdChkDTO;
 import babmukja.system.recipe.service.CustomerService;
 import babmukja.system.recipe.utils.ResponseJsonUtils;
 
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -35,5 +37,13 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ResponseJsonUtils.mapResponse("error", "회원가입 중 오류 발생", e.getMessage()));
         }
+    }
+
+    @PostMapping(value = CustomerParameterName.OVERLAPID, consumes = "application/json")
+    public ResponseEntity<Map<String, Object>> checkUserId(@RequestBody CustomerIdChkDTO dto) {
+        boolean exists = customerService.checkUserIdDuplicate(dto.getUser_id());
+        return ResponseEntity.ok(ResponseJsonUtils.mapResponse(
+            "success", 
+            exists ? "이미 존재하는 아이디입니다." : "사용 가능한 아이디입니다.", Map.of("user_id", dto.getUser_id(), "exists", exists)));
     }
 }
