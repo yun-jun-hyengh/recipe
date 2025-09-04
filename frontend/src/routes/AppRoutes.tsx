@@ -8,6 +8,7 @@ import HomePage from "../pages/HomePage";
 import AgreeTremPage from "../pages/AgreeTermPage";
 import NoticeListPage from "../pages/NoticeListPage";
 import NoticeWritePage from "../pages/NoticeWritePage";
+import FindIdPage from "../pages/FindIdPage";
 const AppRoutes = () => {
     const routes = useRoutes([
         { path: '/', element: <HomePage /> },
@@ -17,6 +18,7 @@ const AppRoutes = () => {
         { path: '/signup', element: <SignupPage /> },
         { path: '/noticeList', element: <NoticeListPage /> },
         { path: '/noticeWrite', element: <NoticeWritePage /> },
+        { path: '/findidpage', element: <FindIdPage /> },
     ]);
     return routes;
 };

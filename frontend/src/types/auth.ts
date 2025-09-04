@@ -15,3 +15,8 @@ export interface LoginRequest {
 export interface IdChkRequest {
     user_id: string;
 }
+
+export interface FindIdRequest {
+    user_name: string;
+    user_email: string;
+}
