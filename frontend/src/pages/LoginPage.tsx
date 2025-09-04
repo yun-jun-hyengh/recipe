@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
     return (
@@ -24,16 +25,17 @@ const LoginPage = () => {
                 </button>
 
                 <div className="mt-4 text-sm text-center text-gray-600">
-                    <a href="#" className="hover:underline">
+                    <Link to="/agreeterm" className="hover:underline">
                         회원가입
-                    </a>{' '}
-                    |{' '}
-                    <a href="#" className="hover:underline">
+                    </Link>{" "}
+                    |{" "}
+                    <Link to="/findidpage" className="hover:underline">
                         아이디 찾기
-                    </a>{' '}
-                    |{' '}<a href="#" className="hover:underline">
+                    </Link>{" "}
+                    |{" "}
+                    <Link to="/findpwpage" className="hover:underline">
                         비밀번호 찾기
-                    </a>
+                    </Link>
                 </div>
                 <div className="flex items-center my-6">
                     <hr className="flex-grow border-t border-gray-300" />
