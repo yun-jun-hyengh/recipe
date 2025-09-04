@@ -71,6 +71,10 @@ const SignupPage = () => {
             alert("사용하실 닉네임을 입력해 주세요.");
             return;
         }
+        if(!form.user_email) {
+            alert("이메일을 등록해 주세요");
+            return;
+        }
         if(!form.user_phone) {
             alert("전화번호를 입력해 주세요.");
             return;
@@ -182,7 +186,7 @@ const SignupPage = () => {
                         <label className="text-sm font-medium text-gray-700 w-18 shrink-0">이메일</label>
                         <div className="flex flex-wrap items-center gap-2">
                             <input
-                                type="email"
+                                type="text"
                                 name='user_email'
                                 value={form.user_email}
                                 onChange={handleChange}
