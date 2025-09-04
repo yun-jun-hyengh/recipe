@@ -32,6 +32,14 @@ public class SecurityConfig {
             .cors().and()
             .authorizeRequests()
                 .antMatchers("/api/customer/**").permitAll()
+                .antMatchers(
+                    "/",
+                    "/index.html",
+                    "/static/**",
+                    "/favicon.ico",
+                    "/manifest.json",
+                    "/img/**"
+                ).permitAll()
                 .anyRequest().authenticated()
             .and()
             .formLogin().disable()
