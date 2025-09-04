@@ -3,6 +3,7 @@ package babmukja.system.recipe.controller;
 import org.springframework.web.bind.annotation.RestController;
 import babmukja.system.recipe.constants.CustomerParameterName;
 import babmukja.system.recipe.dto.CustomerDTO;
+import babmukja.system.recipe.dto.CustomerFindIdDTO;
 import babmukja.system.recipe.dto.CustomerIdChkDTO;
 import babmukja.system.recipe.service.CustomerService;
 import babmukja.system.recipe.utils.ResponseJsonUtils;
@@ -45,5 +46,15 @@ public class CustomerController {
         return ResponseEntity.ok(ResponseJsonUtils.mapResponse(
             "success", 
             exists ? "이미 존재하는 아이디입니다." : "사용 가능한 아이디입니다.", Map.of("user_id", dto.getUser_id(), "exists", exists)));
+    }
+
+    @PostMapping(value = CustomerParameterName.FINDID, consumes = "application/json")
+    public ResponseEntity<Map<String, Object>> findUserId(@RequestBody CustomerFindIdDTO dto) {
+        String user_id = customerService.findUserId(dto);
+        if(user_id != null) {
+            return ResponseEntity.ok(ResponseJsonUtils.mapResponse("success", dto.getUser_name() + "님의 아이디를 찾았습니다.", user_id));
+        } else {
+            return ResponseEntity.ok(ResponseJsonUtils.mapResponse("fail", "해당 정보와 일치하는 사용자가 없습니다.", null));
+        }
     }
 }

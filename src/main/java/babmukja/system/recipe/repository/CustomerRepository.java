@@ -29,4 +29,13 @@ public class CustomerRepository {
                 .fetchFirst();
         return fetchOne != null;
     }
+
+    public String findUserIdByNameAndEmail(String user_name, String user_email) {
+        QCustomer customer = QCustomer.customer;
+
+        return queryFactory
+                .select(customer.user_id)
+                .from(customer)
+                .where(customer.user_name.eq(user_name).and(customer.user_email.eq(user_email))).fetchOne();
+    }
 }

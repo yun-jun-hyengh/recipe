@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import babmukja.system.recipe.dto.CustomerDTO;
+import babmukja.system.recipe.dto.CustomerFindIdDTO;
 import babmukja.system.recipe.entity.Customer;
 import babmukja.system.recipe.repository.CustomerRepository;
 import babmukja.system.recipe.utils.DateUtils;
@@ -44,4 +45,7 @@ public class CustomerService {
         return customerRepository.existsByUserId(userId);
     }
     
+    public String findUserId(CustomerFindIdDTO dto) {
+        return customerRepository.findUserIdByNameAndEmail(dto.getUser_name(), dto.getUser_email());
+    }
 }
