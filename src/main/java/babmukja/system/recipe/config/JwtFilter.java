@@ -22,18 +22,38 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
+    // @Override
+    // protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+    //     String header = request.getHeader("Authorization");
+    //     if(header != null && header.startsWith("Bearer ")) {
+    //         String token = header.substring(7);
+    //         if(jwtUtil.validateToken(token)) {
+    //             String user_id = jwtUtil.getUserId(token);
+    //             UsernamePasswordAuthenticationToken auth = 
+    //                     new UsernamePasswordAuthenticationToken(user_id, null, List.of());
+    //             SecurityContextHolder.getContext().setAuthentication(auth);
+    //         }
+    //     }
+    //     chain.doFilter(request, response);
+    // }
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String header = request.getHeader("Authorization");
-        if(header != null && header.startsWith("Bearer ")) {
-            String token = header.substring(7);
-            if(jwtUtil.validateToken(token)) {
-                String user_id = jwtUtil.getUserId(token);
-                UsernamePasswordAuthenticationToken auth = 
-                        new UsernamePasswordAuthenticationToken(user_id, null, List.of());
-                SecurityContextHolder.getContext().setAuthentication(auth);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
+        try {
+            String header = request.getHeader("Authorization");
+            if (header != null && header.startsWith("Bearer ")) {
+                String token = header.substring(7);
+                if (jwtUtil.validateToken(token)) {
+                    String user_id = jwtUtil.getUserId(token);
+                    UsernamePasswordAuthenticationToken auth =
+                            new UsernamePasswordAuthenticationToken(user_id, null, List.of());
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                }
             }
+        } catch (Exception e) {
+            // 예외 발생 시 로그만 남기고 Controller로 요청 전달
+            System.out.println("JwtFilter 예외: " + e.getMessage());
         }
-        chain.doFilter(request, response);
+        chain.doFilter(request, response); // 반드시 호출
     }
 }
