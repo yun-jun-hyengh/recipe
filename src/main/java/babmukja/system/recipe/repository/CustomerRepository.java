@@ -65,11 +65,5 @@ public class CustomerRepository {
                 .set(cust.refresh_token, refresh_token)
                 .set(cust.refresh_token_expiry, refresh_token_expiry)
                 .where(cust.user_id.eq(user_id)).execute();
-        // String sql = "UPDATE customer SET refresh_token = :refreshToken, refresh_token_expiry = :expiry WHERE user_id = :user_id";
-        // Query query = em.createNativeQuery(sql);
-        // query.setParameter("refreshToken", refresh_token);
-        // query.setParameter("expiry", refresh_token_expiry);
-        // query.setParameter("user_id", user_id);
-        // return query.executeUpdate();
     }
 }
