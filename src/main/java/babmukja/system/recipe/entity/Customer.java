@@ -1,5 +1,7 @@
 package babmukja.system.recipe.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -51,4 +53,9 @@ public class Customer {
     @Column(name = "unlimit")
     private Long unlimit = 0L; // 0 : 제한 1 : 제한없음
     
+    @Column(name = "refresh_token")
+    private String refresh_token;
+
+    @Column(name = "refresh_token_expiry")
+    private LocalDateTime refresh_token_expiry;
 }

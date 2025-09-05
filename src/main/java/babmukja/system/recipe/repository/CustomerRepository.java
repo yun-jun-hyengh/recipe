@@ -38,4 +38,14 @@ public class CustomerRepository {
                 .from(customer)
                 .where(customer.user_name.eq(user_name).and(customer.user_email.eq(user_email))).fetchOne();
     }
+
+    public Customer findById(String user_id) {
+        QCustomer cust = QCustomer.customer;
+        return queryFactory.selectFrom(cust)
+            .where(cust.user_id.eq(user_id)).fetchOne();
+    }
+
+    public void update(Customer customer) {
+        em.merge(customer);
+    }
 }

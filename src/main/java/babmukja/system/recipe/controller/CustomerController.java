@@ -5,6 +5,7 @@ import babmukja.system.recipe.constants.CustomerParameterName;
 import babmukja.system.recipe.dto.CustomerDTO;
 import babmukja.system.recipe.dto.CustomerFindIdDTO;
 import babmukja.system.recipe.dto.CustomerIdChkDTO;
+import babmukja.system.recipe.dto.LoginDTO;
 import babmukja.system.recipe.service.CustomerService;
 import babmukja.system.recipe.utils.ResponseJsonUtils;
 
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -56,5 +58,16 @@ public class CustomerController {
         } else {
             return ResponseEntity.ok(ResponseJsonUtils.mapResponse("fail", "해당 정보와 일치하는 사용자가 없습니다.", null));
         }
+    }
+
+    @PostMapping(value = CustomerParameterName.LOGIN, consumes = "application/json")
+    public Map<String, String> login(@RequestBody LoginDTO dto) {
+        return customerService.login(dto.getUser_id(), dto.getUser_pw());
+    }
+
+    @PostMapping(CustomerParameterName.REFRESH)
+    public Map<String, String> refresh(@RequestParam String refreshToken) {
+        String newAccessToken = customerService.refreshAccessToken(refreshToken);
+        return Map.of("accessToken", newAccessToken);
     }
 }
