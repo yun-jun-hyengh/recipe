@@ -5,10 +5,14 @@ import babmukja.system.recipe.constants.CustomerParameterName;
 import babmukja.system.recipe.dto.CustomerDTO;
 import babmukja.system.recipe.dto.CustomerFindIdDTO;
 import babmukja.system.recipe.dto.CustomerIdChkDTO;
-import babmukja.system.recipe.dto.LoginDTO;
+import babmukja.system.recipe.dto.LoginRequestDTO;
+import babmukja.system.recipe.dto.LoginResponseDTO;
+import babmukja.system.recipe.entity.Customer;
 import babmukja.system.recipe.service.CustomerService;
 import babmukja.system.recipe.utils.ResponseJsonUtils;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,13 +65,14 @@ public class CustomerController {
     }
 
     @PostMapping(value = CustomerParameterName.LOGIN, consumes = "application/json")
-    public Map<String, String> login(@RequestBody LoginDTO dto) {
+    public LoginResponseDTO login(@RequestBody LoginRequestDTO dto) {
         return customerService.login(dto.getUser_id(), dto.getUser_pw());
     }
 
     @PostMapping(CustomerParameterName.REFRESH)
     public Map<String, String> refresh(@RequestParam String refreshToken) {
-        String newAccessToken = customerService.refreshAccessToken(refreshToken);
-        return Map.of("accessToken", newAccessToken);
+        // String newAccessToken = customerService.refreshAccessToken(refreshToken);
+        // return Map.of("accessToken", newAccessToken);
+        return customerService.refreshAccessToken(refreshToken);
     }
 }

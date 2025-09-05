@@ -1,13 +1,18 @@
 package babmukja.system.recipe.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import babmukja.system.recipe.dto.CustomerDTO;
 import babmukja.system.recipe.dto.CustomerFindIdDTO;
+import babmukja.system.recipe.dto.LoginResponseDTO;
 import babmukja.system.recipe.entity.Customer;
 import babmukja.system.recipe.exception.BizException;
 import babmukja.system.recipe.repository.CustomerRepository;
@@ -20,11 +25,13 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    //private final JPAQueryFactory queryFactory;
 
     public CustomerService(CustomerRepository customerRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        //this.queryFactory = queryFactory;
     }
 
     public boolean join(CustomerDTO dto) {
@@ -56,36 +63,46 @@ public class CustomerService {
         return customerRepository.findUserIdByNameAndEmail(dto.getUser_name(), dto.getUser_email());
     }
 
-    public Map<String, String> login(String user_id, String user_pw) {
+    @Transactional
+    public LoginResponseDTO login(String user_id, String user_pw) {
         Customer customer = customerRepository.findById(user_id);
-        if (customer == null) throw new RuntimeException("일치하는 해당 사용자가 없습니다.");
+        if (customer == null) {
+            throw new RuntimeException("일치하는 해당 사용자가 없습니다.");
+        } 
 
-        if(!passwordEncoder.matches(user_pw, customer.getUser_pw()))
+        if(!passwordEncoder.matches(user_pw, customer.getUser_pw())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
-        
+        }
         String accessToken = jwtUtil.generateAccessToken(user_id);
         String refreshToken = jwtUtil.generateRefreshToken(user_id);
         customer.setRefresh_token(refreshToken);
         customer.setRefresh_token_expiry(LocalDateTime.now().plusDays(7));
-        customerRepository.update(customer);
+        customerRepository.updateRefreshToken(user_id, refreshToken, LocalDateTime.now().plusDays(7));
 
-        return Map.of(
-            "accessToken", accessToken,
-            "refreshToken", refreshToken
+        return new LoginResponseDTO(
+            accessToken,
+            refreshToken,
+            customer.getUser_idx(),
+            customer.getUser_name(),
+            customer.getNickname(),
+            customer.getAdminchk()
         );
     }
+    
+    @Transactional
+    public Map<String, String> refreshAccessToken(String refreshToken) {
+        Customer customer = customerRepository.findByRefreshToken(refreshToken);
+        if (customer == null || customer.getRefresh_token_expiry().isBefore(LocalDateTime.now()))
+            throw new RuntimeException("Refresh Token 만료 또는 없음");
+        
+        String newAccessToken = jwtUtil.generateAccessToken(customer.getUser_id());
+        String newRefreshToken = jwtUtil.generateRefreshToken(customer.getUser_id());
+        LocalDateTime expiry = LocalDateTime.now().plusDays(7);
 
-    public String refreshAccessToken(String refreshToken) {
-        if(!jwtUtil.validateToken(refreshToken)) 
-            throw new RuntimeException("유효하지 않는 토큰입니다.");
-        String user_id = jwtUtil.getUserId(refreshToken);
-        Customer customer = customerRepository.findById(user_id);
-
-        if (customer == null
-                || !refreshToken.equals(customer.getRefresh_token())
-                || customer.getRefresh_token_expiry().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Refresh Token 만료 또는 불일치");
-        }
-        return jwtUtil.generateAccessToken(user_id);
+        customerRepository.updateRefreshToken(customer.getUser_id(), newRefreshToken, expiry);
+        Map<String, String> result = new HashMap<>();
+        result.put("accessToken", newAccessToken);
+        result.put("refreshToken", newRefreshToken);
+        return result;
     }
 }
