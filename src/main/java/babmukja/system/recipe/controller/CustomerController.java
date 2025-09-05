@@ -66,6 +66,7 @@ public class CustomerController {
 
     @PostMapping(value = CustomerParameterName.LOGIN, consumes = "application/json")
     public LoginResponseDTO login(@RequestBody LoginRequestDTO dto) {
+        System.out.println("Controller에서 login 호출 직전");
         return customerService.login(dto.getUser_id(), dto.getUser_pw());
     }
 

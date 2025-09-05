@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.reactive.TransactionSynchronizationManager;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -14,6 +15,7 @@ import babmukja.system.recipe.dto.CustomerDTO;
 import babmukja.system.recipe.dto.CustomerFindIdDTO;
 import babmukja.system.recipe.dto.LoginResponseDTO;
 import babmukja.system.recipe.entity.Customer;
+import babmukja.system.recipe.entity.QCustomer;
 import babmukja.system.recipe.exception.BizException;
 import babmukja.system.recipe.repository.CustomerRepository;
 import babmukja.system.recipe.utils.DateUtils;
@@ -65,6 +67,9 @@ public class CustomerService {
 
     @Transactional
     public LoginResponseDTO login(String user_id, String user_pw) {
+        // 트랜잭션 활성 여부 확인
+        System.out.println("트랜잭션 활성 여부: " 
+    + org.springframework.transaction.support.TransactionSynchronizationManager.isActualTransactionActive());
         Customer customer = customerRepository.findById(user_id);
         if (customer == null) {
             throw new RuntimeException("일치하는 해당 사용자가 없습니다.");
@@ -75,10 +80,10 @@ public class CustomerService {
         }
         String accessToken = jwtUtil.generateAccessToken(user_id);
         String refreshToken = jwtUtil.generateRefreshToken(user_id);
-        customer.setRefresh_token(refreshToken);
-        customer.setRefresh_token_expiry(LocalDateTime.now().plusDays(7));
-        customerRepository.updateRefreshToken(user_id, refreshToken, LocalDateTime.now().plusDays(7));
-
+        LocalDateTime expiry = LocalDateTime.now().plusDays(7);
+        // customer.setRefresh_token(refreshToken);
+        // customer.setRefresh_token_expiry(LocalDateTime.now().plusDays(7));
+        customerRepository.updateRefreshToken(user_id, refreshToken, expiry);
         return new LoginResponseDTO(
             accessToken,
             refreshToken,
