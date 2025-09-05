@@ -11,7 +11,7 @@ import babmukja.system.recipe.entity.QCustomer;
 public class CustomerRepository {
     private final EntityManager em;
     private final JPAQueryFactory queryFactory;
-
+    //
     public CustomerRepository(EntityManager em, JPAQueryFactory queryFactory) {
         this.em = em;
         this.queryFactory = queryFactory;
