@@ -1,8 +1,20 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { RootState } from '../store/store';
+import { logout } from '../store/authSlice';
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch();
+    const user = useSelector((state: RootState) => state.auth.user);
+    const navigate = useNavigate();
+
+    const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
+         e.preventDefault();
+        dispatch(logout());
+        navigate("/");
+    }
    
     return(
         <header className="p-3 bg-white">
@@ -50,9 +62,20 @@ const Header = () => {
                                 <option>japan</option>
                             </select>
                         </div>
-                            <Link to="/customer" className="text-sm font-medium cursor-pointer">고객센터</Link>
-                            <Link to="/login" className="px-2 py-3 text-sm font-medium cursor-pointer md:px-3">로그인</Link>
-                            <Link to="/agreeterm" className="py-3 text-sm font-medium cursor-pointer">회원가입</Link>
+                            {user ? (
+                                <>
+                                    <Link to="/customer" className="text-sm font-medium cursor-pointer">고객센터</Link>
+                                    <span className="text-sm font-medium">반갑습니다, {user.nickname}님</span>
+                                    <Link to="/mypage" className="text-sm font-medium cursor-pointer">마이페이지</Link>
+                                    <Link to="/logout" onClick={handleLogout} className="px-2 py-3 text-sm font-medium cursor-pointer md:px-3">로그아웃</Link>
+                                </>
+                            ) : (
+                                <>
+                                    <Link to="/customer" className="text-sm font-medium cursor-pointer">고객센터</Link>
+                                    <Link to="/login" className="px-2 py-3 text-sm font-medium cursor-pointer md:px-3">로그인</Link>
+                                    <Link to="/agreeterm" className="py-3 text-sm font-medium cursor-pointer">회원가입</Link>
+                                </>
+                            )}
                         </div>
                 </div>
             </div>

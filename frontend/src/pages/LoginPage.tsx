@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { authApi } from '../api/authApi';
 import { LoginRequest } from '../types/auth';
+import { useDispatch } from 'react-redux';
+import { setAuth } from '../store/authSlice';
 
 const LoginPage = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [form, setForm] = useState<LoginRequest>({
         user_id: '',
@@ -22,7 +26,30 @@ const LoginPage = () => {
             alert("비밀번호를 입력해주세요");
             return;
         }
+
+        authApi.login(form)
+            .then((res) => {
+                const data = res.data;
+                dispatch(
+                    setAuth({
+                        accessToken: data.accessToken,
+                        refreshToken: data.refresh_token,
+                        user: {
+                            user_idx: data.user_idx,
+                            user_name: data.user_name,
+                            nickname: data.nickname,
+                            adminchk: data.adminchk,
+                        },
+                    })
+                );
+                navigate("/");
+            })
+            .catch((err) => {
+                console.log(err);
+                alert("로그인 실패");
+            })
     }
+
     return (
         <div className="flex items-center justify-center min-h-[calc(100vh-4rem-3rem)] px-4 bg-gray-100">
             <div className="w-full max-w-md p-10 bg-white shadow-md">
@@ -35,6 +62,7 @@ const LoginPage = () => {
                         value={form.user_id}
                         onChange={handleChange}
                         placeholder="아이디"
+                        onKeyDown={(e) => e.key === "Enter" && handleLogin()}
                         className="w-full px-4 py-2 border border-gray-300 focus:outline-none"
                     />
                     <input
@@ -43,6 +71,7 @@ const LoginPage = () => {
                         value={form.user_pw}
                         onChange={handleChange}
                         placeholder="비밀번호"
+                        onKeyDown={(e) => e.key === "Enter" && handleLogin()}
                         className="w-full px-4 py-2 border border-gray-300 focus:outline-none"
                     />
                 </div>
