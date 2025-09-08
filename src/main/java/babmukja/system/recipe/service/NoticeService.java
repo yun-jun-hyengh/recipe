@@ -2,6 +2,8 @@ package babmukja.system.recipe.service;
 
 import org.springframework.stereotype.Service;
 
+import babmukja.system.recipe.dto.NoticeWriteDTO;
+import babmukja.system.recipe.entity.Notice;
 import babmukja.system.recipe.repository.NoticeRepository;
 
 @Service
@@ -10,5 +12,17 @@ public class NoticeService {
 
     public NoticeService(NoticeRepository noticeRepository) {
         this.noticeRepository = noticeRepository;
+    }
+
+    public Long createNotice(NoticeWriteDTO dto) {
+        Notice notice = Notice.builder()
+            .writer(dto.getWriter())
+            .title(dto.getTitle())
+            .content(dto.getContent())
+            .filename(dto.getFilename())
+            .filepath(dto.getFilepath())
+            .build();
+        noticeRepository.save(notice);
+        return notice.getIdx();
     }
 }
