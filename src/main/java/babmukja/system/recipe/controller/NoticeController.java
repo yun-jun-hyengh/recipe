@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class NoticeController {
     
     @PostMapping(value = NoticeParameterName.NOTICEWRITE, consumes = {"multipart/form-data"})
     @ResponseBody
-    public ResponseEntity<?> write(NoticeWriteDTO dto) {
+    public ResponseEntity<?> write(@ModelAttribute NoticeWriteDTO dto) {
         try {
             String noticeDir = uploadRoot + File.separator + "notice";
             File dir = new File(noticeDir);
