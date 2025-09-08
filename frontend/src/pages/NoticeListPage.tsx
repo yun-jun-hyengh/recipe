@@ -1,7 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../store/store';
+import { useSelector } from 'react-redux';
 const NoticeListPage = () => {
     const navigate = useNavigate();
+    const user = useSelector((state: RootState) => state.auth.user);
     const handleNoticeWriter = () => {
         navigate('/noticeWrite');
     }
@@ -17,9 +20,11 @@ const NoticeListPage = () => {
             <div className="p-6 mx-auto max-w-screen-2xl" style={{lineHeight: 2.25}}>
                 <div className="flex items-center justify-between pb-2 mb-2 border-b sm:mb-4">
                     <h2 className="text-xl font-bold sm:text-2xl">공지사항</h2>
-                    <button onClick={handleNoticeWriter} className="bg-black text-white px-4 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded hover:opacity-90">
-                        등록
-                    </button>
+                    {user && user.adminchk === 1 && (
+                        <button onClick={handleNoticeWriter} className="bg-black text-white px-4 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base rounded hover:opacity-90">
+                            등록
+                        </button>
+                    )}
                 </div>
 
                 <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-end">
