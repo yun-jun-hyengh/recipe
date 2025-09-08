@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import babmukja.system.recipe.service.CustomerUserDetailService;
 import babmukja.system.recipe.utils.JwtUtil;
 
 @Configuration
@@ -18,9 +19,11 @@ import babmukja.system.recipe.utils.JwtUtil;
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
+    private final CustomerUserDetailService customerUserDetailService;
 
-    public SecurityConfig(JwtUtil jwtUtil) {
+    public SecurityConfig(JwtUtil jwtUtil, CustomerUserDetailService customerUserDetailService) {
         this.jwtUtil = jwtUtil;
+        this.customerUserDetailService = customerUserDetailService;
     }
     
     @Bean
@@ -51,7 +54,7 @@ public class SecurityConfig {
                 ).permitAll()
                 .anyRequest().authenticated()
             .and()
-            .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new JwtFilter(jwtUtil, customerUserDetailService), UsernamePasswordAuthenticationFilter.class)
             .formLogin().disable()
             .httpBasic().disable();
         return http.build();

@@ -10,16 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import babmukja.system.recipe.service.CustomerUserDetailService;
 import babmukja.system.recipe.utils.JwtUtil;
 
 public class JwtFilter extends OncePerRequestFilter {
     
     private final JwtUtil jwtUtil;
+    private final CustomerUserDetailService customerUserDetailService;
 
-    public JwtFilter(JwtUtil jwtUtil) {
+    public JwtFilter(JwtUtil jwtUtil, CustomerUserDetailService customerUserDetailService) {
         this.jwtUtil = jwtUtil;
+        this.customerUserDetailService = customerUserDetailService;
     }
 
     // @Override
@@ -45,8 +49,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 String token = header.substring(7);
                 if (jwtUtil.validateToken(token)) {
                     String user_id = jwtUtil.getUserId(token);
+                    UserDetails userDetails = customerUserDetailService.loadUserByUsername(user_id);
                     UsernamePasswordAuthenticationToken auth =
-                            new UsernamePasswordAuthenticationToken(user_id, null, List.of());
+                            new UsernamePasswordAuthenticationToken(userDetails, null, List.of());
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
             }
