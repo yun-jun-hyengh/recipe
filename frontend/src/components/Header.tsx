@@ -65,7 +65,7 @@ const Header = () => {
                             {user ? (
                                 <>
                                     <Link to="/customer" className="text-sm font-medium cursor-pointer">고객센터</Link>
-                                    <span className="text-sm font-medium">반갑습니다, {user.nickname}님</span>
+                                    <span className="text-sm font-medium">반갑습니다  {user.nickname}님</span>
                                     <Link to="/mypage" className="text-sm font-medium cursor-pointer">마이페이지</Link>
                                     <Link to="/logout" onClick={handleLogout} className="px-2 py-3 text-sm font-medium cursor-pointer md:px-3">로그아웃</Link>
                                 </>
