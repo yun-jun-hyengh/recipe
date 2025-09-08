@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { noticeApi } from '../api/noticeApi';
+import { NoticeRequest } from '../types/notice';
 
 const NoticeWritePage = () => {
     const navigate = useNavigate();
