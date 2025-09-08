@@ -52,6 +52,8 @@ public class SecurityConfig {
                     "/manifest.json",
                     "/img/**"
                 ).permitAll()
+                .antMatchers("/api/notice/noticewrite").hasRole("ADMIN")
+                .antMatchers("/api/notice/noticelist").permitAll()
                 .anyRequest().authenticated()
             .and()
             .addFilterBefore(new JwtFilter(jwtUtil, customerUserDetailService), UsernamePasswordAuthenticationFilter.class)
