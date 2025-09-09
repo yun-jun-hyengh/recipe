@@ -1,11 +1,16 @@
 package babmukja.system.recipe.controller;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import babmukja.system.recipe.constants.NoticeParameterName;
+import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeWriteDTO;
 import babmukja.system.recipe.service.NoticeService;
 import babmukja.system.recipe.utils.ResponseJsonUtils;
@@ -65,5 +71,23 @@ public class NoticeController {
                     ResponseJsonUtils.mapResponse("fail", "공지사항 등록 실패: " + e.getMessage(), null)
             );
         }
+    }
+
+    @GetMapping(NoticeParameterName.NOTICELIST)
+    @ResponseBody
+    public List<Map<String, Object>> list() {
+        List<NoticeResponseDTO> notices = noticeService.getNoticeList();
+        List<Map<String, Object>> data = notices.stream().map(n -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("idx", n.getIdx());
+            map.put("title", n.getTitle());
+            map.put("writer", n.getWriter());
+            map.put("content", n.getContent());
+            map.put("regdate", n.getRegdate());
+            map.put("viewcount", n.getViewcount());
+            return map;
+        }).collect(Collectors.toList());
+
+        return ResponseJsonUtils.listMapResponse("success", null, data);
     }
 }

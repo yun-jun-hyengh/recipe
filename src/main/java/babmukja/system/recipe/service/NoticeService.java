@@ -1,7 +1,10 @@
 package babmukja.system.recipe.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeWriteDTO;
 import babmukja.system.recipe.entity.Notice;
 import babmukja.system.recipe.repository.NoticeRepository;
@@ -24,5 +27,9 @@ public class NoticeService {
             .build();
         noticeRepository.save(notice);
         return notice.getIdx();
+    }
+
+    public List<NoticeResponseDTO> getNoticeList() {
+        return noticeRepository.noticeList();
     }
 }
