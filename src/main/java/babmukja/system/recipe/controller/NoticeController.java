@@ -32,7 +32,8 @@ public class NoticeController {
     @ResponseBody
     public ResponseEntity<?> write(@ModelAttribute NoticeWriteDTO dto) {
         try {
-            String noticeDir = uploadRoot + File.separator + "notice";
+            //String noticeDir = uploadRoot + File.separator + "notice";
+            String noticeDir = uploadRoot + "/notice";
             File dir = new File(noticeDir);
             if(!dir.exists()) {
                 dir.mkdirs();
@@ -46,10 +47,12 @@ public class NoticeController {
                 if (dot > -1) ext = originalName.substring(dot);
 
                 String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
-                String savedPath = noticeDir + File.separator + savedName;
+                //String savedPath = noticeDir + File.separator + savedName;
+                String savedPath = noticeDir + "/" + savedName;
 
                 file.transferTo(new File(savedPath));
                 dto.setFilename(savedName);
+                //dto.setFilepath("/babmujakfile/notice/" + savedName);
                 dto.setFilepath(savedPath);
             } else {
                 dto.setFilename(null);
