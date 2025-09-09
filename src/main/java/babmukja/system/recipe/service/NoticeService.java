@@ -8,6 +8,7 @@ import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeWriteDTO;
 import babmukja.system.recipe.entity.Notice;
 import babmukja.system.recipe.repository.NoticeRepository;
+import babmukja.system.recipe.utils.DateUtils;
 
 @Service
 public class NoticeService {
@@ -24,6 +25,7 @@ public class NoticeService {
             .content(dto.getContent())
             .filename(dto.getFilename())
             .filepath(dto.getFilepath())
+            .regdate(DateUtils.getCurrentDate())
             .build();
         noticeRepository.save(notice);
         return notice.getIdx();
