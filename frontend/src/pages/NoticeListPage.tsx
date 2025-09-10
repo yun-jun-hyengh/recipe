@@ -1,20 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store/store';
 import { useSelector } from 'react-redux';
+import { noticeApi } from '../api/noticeApi';
+
 const NoticeListPage = () => {
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.auth.user);
     const handleNoticeWriter = () => {
         navigate('/noticeWrite');
     }
-    const notices = [
-        { id: 5, title: "공지사항 제목이 들어갑니다.", writer: "더클라우드", date: "2022.08.14", views: 11 },
-        { id: 4, title: "공지사항 제목이 들어갑니다.", writer: "더클라우드", date: "2022.08.14", views: 8 },
-        { id: 3, title: "공지사항 제목이 들어갑니다.", writer: "더클라우드", date: "2022.08.14", views: 6 },
-        { id: 2, title: "공지사항 제목이 들어갑니다.", writer: "더클라우드", date: "2022.08.14", views: 13 },
-        { id: 1, title: "공지사항 제목이 들어갑니다.", writer: "더클라우드", date: "2022.08.14", views: 20 },
-    ];
+    
+    const [notices, setNotices] = useState<any[]>([]);
+
+    useEffect(() => {
+        noticeApi.getList()
+            .then((res) => {
+                const result = res.data[0];
+                if(result && result.data) {
+                    setNotices(result.data);
+                }
+            })
+            .catch((err) => {
+                console.error("조회실패 : ", err);
+            })
+    },[]);
+
     return (
         <div className="min-h-screen px-4 py-10">
             <div className="p-6 mx-auto max-w-screen-2xl" style={{lineHeight: 2.25}}>
@@ -54,17 +65,17 @@ const NoticeListPage = () => {
                                 <th className="px-2 py-2 text-left sm:px-3 whitespace-nowrap">제목</th>
                                 <th className="hidden px-2 py-2 sm:px-3 whitespace-nowrap md:table-cell">작성자</th>
                                 <th className="hidden px-2 py-2 sm:px-3 whitespace-nowrap sm:table-cell">작성일</th>
-                                <th className="hidden px-2 py-2 sm:px-3 whitespace-nowrap md:table-cell">조회</th>
+                                <th className="hidden px-2 py-2 sm:px-3 whitespace-nowrap md:table-cell">조회수</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {notices.map((notice) => (
-                                <tr key={notice.id} className="border-b hover:bg-gray-50">
-                                <td className="px-2 py-2 sm:px-3">{notice.id}</td>
+                            {notices.map((notice, index) => (
+                                <tr key={index} className="border-b hover:bg-gray-50">
+                                <td className="px-2 py-2 sm:px-3">{notice.idx}</td>
                                 <td className="px-2 py-2 text-left sm:px-3">{notice.title}</td>
                                 <td className="hidden px-2 py-2 sm:px-3 md:table-cell">{notice.writer}</td>
-                                <td className="hidden px-2 py-2 sm:px-3 sm:table-cell">{notice.date}</td>
-                                <td className="hidden px-2 py-2 sm:px-3 md:table-cell">{notice.views}</td>
+                                <td className="hidden px-2 py-2 sm:px-3 sm:table-cell">{notice.regdate}</td>
+                                <td className="hidden px-2 py-2 sm:px-3 md:table-cell">{notice.viewcount}</td>
                                 </tr>
                             ))}
                         </tbody>

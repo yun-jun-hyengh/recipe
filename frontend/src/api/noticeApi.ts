@@ -12,5 +12,6 @@ export const noticeApi = {
                 "Content-Type": "multipart/form-data"
             }
         })
-    }
+    },
+    getList: () => axiosInstance.get("/api/notice/noticelist"),
 };
