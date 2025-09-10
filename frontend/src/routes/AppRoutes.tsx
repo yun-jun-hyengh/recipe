@@ -9,9 +9,11 @@ import AgreeTremPage from "../pages/AgreeTermPage";
 import NoticeListPage from "../pages/NoticeListPage";
 import NoticeWritePage from "../pages/NoticeWritePage";
 import FindIdPage from "../pages/FindIdPage";
+import AdminMainPage from "../pages/AdminMainPage";
 const AppRoutes = () => {
     const routes = useRoutes([
         { path: '/', element: <HomePage /> },
+        { path: '/admin', element: <AdminMainPage /> },
         { path: '/customer', element: <CustomerPage /> },
         { path: '/login', element: <LoginPage /> },
         { path: '/agreeterm', element: <AgreeTremPage /> },
