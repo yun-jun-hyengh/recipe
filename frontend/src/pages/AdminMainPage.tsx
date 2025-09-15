@@ -56,7 +56,7 @@ const AdminMainPage = () => {
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-gray-400">
-                <th>Order ID</th><th>Customer</th><th>Amount</th><th>Status</th><th>Date</th>
+                <th>번호</th><th>이름</th><th>전화번호</th><th>이메일</th><th>가입일자</th>
               </tr>
             </thead>
             <tbody>

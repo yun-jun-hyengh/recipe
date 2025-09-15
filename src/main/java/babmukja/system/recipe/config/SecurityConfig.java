@@ -54,6 +54,7 @@ public class SecurityConfig {
                 ).permitAll()
                 .antMatchers("/api/notice/noticewrite").hasRole("ADMIN")
                 .antMatchers("/api/notice/noticelist").permitAll()
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             .and()
             .addFilterBefore(new JwtFilter(jwtUtil, customerUserDetailService), UsernamePasswordAuthenticationFilter.class)
