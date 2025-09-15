@@ -1,66 +1,22 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
-
-const FiSearch = FiIcons.FiSearch as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
-const FiSettings = FiIcons.FiSettings as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
-const FiBell = FiIcons.FiBell as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
-const FiUser = FiIcons.FiUser as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
+import AdminSideBar from '../components/AdminSideBar';
+import AdminHeader from '../components/AdminHeader';
+// const FiSearch = FiIcons.FiSearch as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
+// const FiSettings = FiIcons.FiSettings as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
+// const FiBell = FiIcons.FiBell as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
+// const FiUser = FiIcons.FiUser as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
 
 const AdminMainPage = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg flex flex-col">
-        <div className="p-6 text-xl font-bold text-indigo-600">Metis</div>
-        <nav className="flex-1 px-4 space-y-2">
-          {[
-            "Dashboard","Analytics","Users","Products","Orders",
-            "Forms","Elements","Reports","Messages","Calendar","Files"
-          ].map((item, i) => (
-            <div key={i} className={`p-2 rounded-lg cursor-pointer hover:bg-indigo-50 transition ${item==="Dashboard"?"bg-indigo-100 text-indigo-600":""}`}>
-              {item}
-            </div>
-          ))}
-          <div className="pt-6 text-xs text-gray-400 uppercase">Admin</div>
-          {["Settings","Security","Help & Support"].map((item, i) => (
-            <div key={i} className="p-2 rounded-lg cursor-pointer hover:bg-indigo-50 transition">{item}</div>
-          ))}
-        </nav>
-      </aside>
+      <AdminSideBar />
 
       {/* Main */}
       <main className="flex-1 p-6">
         {/* Header */}
-        <header className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-2">
-            <input placeholder="Search... (Ctrl+K)" className="w-72 border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-            <FiSearch className="w-5 h-5 text-gray-500" />
-          </div>
-          <div className="flex items-center space-x-4">
-            <FiSettings className="w-5 h-5 text-gray-500 cursor-pointer" />
-            <FiBell className="w-5 h-5 text-gray-500 cursor-pointer" />
-            <div className="flex items-center space-x-2 cursor-pointer">
-              <FiUser className="w-5 h-5 text-gray-500" />
-              <span>John Doe</span>
-            </div>
-          </div>
-        </header>
-
-        {/* Top Stats */}
-        <div className="grid grid-cols-4 gap-4 mb-6">
-          {[
-            { title: "Total Users", value: "12,428", change: "+12.5%" },
-            { title: "Revenue", value: "$54,320", change: "+8.2%" },
-            { title: "Orders", value: "1,852", change: "-2.1%" },
-            { title: "Avg. Response", value: "2.3s", change: "+5.4%" },
-          ].map((stat, i) => (
-            <div key={i} className="bg-white shadow-md rounded-lg p-4">
-              <p className="text-sm text-gray-400">{stat.title}</p>
-              <h2 className="text-2xl font-bold">{stat.value}</h2>
-              <p className={`text-xs ${stat.change.startsWith("-")?"text-red-600":"text-green-600"}`}>{stat.change}</p>
-            </div>
-          ))}
-        </div>
+        <AdminHeader />
 
         {/* Main Grid */}
         <div className="grid grid-cols-3 gap-6">
@@ -96,7 +52,7 @@ const AdminMainPage = () => {
 
         {/* Recent Orders */}
         <div className="bg-white shadow-md rounded-lg mt-6 p-4">
-          <h3 className="font-bold mb-2">Recent Orders</h3>
+          <h3 className="font-bold mb-2">신규 가입자(최근 3개월)</h3>
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-gray-400">
