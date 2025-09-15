@@ -13,6 +13,7 @@ const AdminSideBar = () => {
                 <div className="p-2 rounded-lg cursor-pointer hover:bg-indigo-50 transition">배송관리</div>
                 <div className="p-2 rounded-lg cursor-pointer hover:bg-indigo-50 transition">결제내역</div>
                 <div className="p-2 rounded-lg cursor-pointer hover:bg-indigo-50 transition">상품 카테고리 관리</div>
+                <div className="p-2 rounded-lg cursor-pointer hover:bg-indigo-50 transition">요리초보가이드</div>
             </nav>
         </aside>
     )
