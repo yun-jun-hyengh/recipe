@@ -27,19 +27,21 @@ const UserListPage = () => {
                     <table className="w-full text-sm">
                         <thead>
                             <tr className="text-left text-gray-400">
-                                <th>번호</th><th>이름</th><th>전화번호</th><th>이메일</th><th>가입일자</th>
+                                <th>번호</th>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>전화번호</th>
+                                <th>이메일</th>
+                                <th>닉네임</th>
+                                <th>가입일자</th>
+                                <th>비공개레시피사용량</th>
+                                <th>제한유무</th>
+                                <th>권한</th>
+                                <th>회원삭제</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {[
-                                ["#1000","Sarah Wilson","$462.14","Cancelled","02/08/2025"],
-                                ["#7002","Sarah Wilson","$299.90","Shipped","02/08/2025"],
-                                ["#6802","John Doe","$442.68","Shipped","02/08/2025"],
-                                ["#5034","Jane Smith","$223.79","Completed","02/08/2025"],
-                                ["#9102","Mike Johnson","$96.73","Cancelled","04/08/2025"],
-                            ].map((order, i) => (
-                                <tr key={i} className="border-t">{order.map((col, j) => <td key={j} className="py-4">{col}</td>)}</tr>
-                            ))}
+                            
                         </tbody>
                     </table>
                 </div>
