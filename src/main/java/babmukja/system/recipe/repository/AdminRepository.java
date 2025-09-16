@@ -53,19 +53,6 @@ public class AdminRepository {
                         .then("관리자")
                         .when(customer.adminchk.eq(0L))
                         .then("일반사용자").otherwise("").as("auth");
-        
-        // 해당 회원의 비공개 레시피 등록 개수 
-        // NumberExpression<Long> inactiveCount = Expressions.numberTemplate(
-        //         Long.class,
-        //         "coalesce((select count(*) from recipe r where r.user_idx = {0} and r.is_public = 0), 0)",
-        //         customer.user_idx
-        // );
-
-        // 잔여 비공개 레시피 등록 가능 수 / 최대 등록 가능 수 
-        // StringExpression remainingInactive = Expressions.stringTemplate(
-        //     "concat({0}, '/', {1})", 
-        //     customer.private_recipe_limit.subtract(inactiveCount),
-        //     customer.private_recipe_limit);
 
         return queryFactory
                 .select(
