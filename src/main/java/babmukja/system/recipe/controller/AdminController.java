@@ -58,4 +58,10 @@ public class AdminController {
             dto.getPage(), 
             (int) Math.ceil((double) totalCount / dto.getPageSize()));
     }
+
+    @GetMapping(AdminPageParameterName.USERTOP5)
+    public List<Map<String, Object>> getRecentCustomer() {
+        List<Map<String, Object>> data = adminService.getRecentCustomer();
+        return ResponseJsonUtils.listMapResponse("success", "최근가입회원5명조회완료", data);
+    }
 }

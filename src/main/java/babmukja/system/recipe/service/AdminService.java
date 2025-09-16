@@ -1,6 +1,7 @@
 package babmukja.system.recipe.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -23,5 +24,9 @@ public class AdminService {
 
     public long countCustomer(CustomerSearchDTO dto) {
         return adminRepository.countCustomer(dto);
+    }
+
+    public List<Map<String, Object>> getRecentCustomer() {
+        return adminRepository.findRecentUsers();
     }
 }

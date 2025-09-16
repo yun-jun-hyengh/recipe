@@ -1,12 +1,17 @@
 package babmukja.system.recipe.repository;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -16,6 +21,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import babmukja.system.recipe.dto.CustomerSearchDTO;
+import babmukja.system.recipe.entity.Customer;
 import babmukja.system.recipe.entity.QCustomer;
 import babmukja.system.recipe.entity.QRecipe;
 
@@ -94,5 +100,41 @@ public class AdminRepository {
                 .select(customer.user_idx.count())
                 .from(customer)
                 .where(dto.getUser_name() != null ? customer.user_name.contains(dto.getUser_name()) : null).fetchOne();
+    }
+
+    // @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> findRecentUsers() {
+        QCustomer customer = QCustomer.customer;
+        String oneMonthAgo = LocalDate.now().minusMonths(1).toString();
+
+        List<Tuple> result = queryFactory
+            .select(customer.user_idx, customer.user_name, customer.user_phone, customer.user_email, customer.regdate)
+            .from(customer)
+            .where(customer.regdate.goe(oneMonthAgo))
+            .orderBy(customer.regdate.desc()).limit(5).fetch();
+        
+        List<Map<String, Object>> list = new ArrayList<>();
+        for(Tuple t : result) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("user_idx", t.get(customer.user_idx));
+            map.put("user_name", t.get(customer.user_name));
+            map.put("user_phone", t.get(customer.user_phone));
+            map.put("user_email", t.get(customer.user_email));
+            map.put("regdate", t.get(customer.regdate));
+
+            list.add(map);
+        }
+        // List<Map> result = queryFactory
+        //         .select(Projections.fields(
+        //             Map.class,
+        //             customer.user_idx.as("user_idx"),
+        //             customer.user_name.as("user_name"),
+        //             customer.user_phone.as("user_phone"),
+        //             customer.user_email.as("user_email"),
+        //             customer.regdate.as("regdate")
+        //         )).from(customer)
+        //         .where(customer.regdate.goe(oneMonthAgo))
+        //         .orderBy(customer.regdate.desc()).limit(5).fetch();
+        return list;
     }
 }
