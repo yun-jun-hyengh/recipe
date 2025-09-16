@@ -30,6 +30,20 @@ public class ResponseJsonUtils {
         return list;
     }
 
+    public static List<Map<String, Object>> listMapResponse(String status, String message, Object data, long totalElement, int currentPage, int totalPages) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("status", status);
+        map.put("message", message);
+        map.put("data", data);
+        map.put("totalElements", totalElement);
+        map.put("currentPage", currentPage);
+        map.put("totalPages", totalPages);
+
+        List<Map<String, Object>> list = new ArrayList<>();
+        list.add(map);
+        return list;
+    }
+
     public static Map<String, Object> mapWithList(String status, String message, List<?> data) {
         Map<String, Object> res = new HashMap<>();
         res.put("status", status);

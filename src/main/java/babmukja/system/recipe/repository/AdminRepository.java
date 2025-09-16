@@ -84,7 +84,15 @@ public class AdminRepository {
                     customer.regdate,
                     customer.private_recipe_limit,
                     customer.unlimit
-                )
+                ).offset(dto.getOffset()).limit(dto.getPageSize())
                 .fetch();
+    }
+
+    public long countCustomer(CustomerSearchDTO dto) {
+        QCustomer customer = QCustomer.customer;
+        return queryFactory
+                .select(customer.user_idx.count())
+                .from(customer)
+                .where(dto.getUser_name() != null ? customer.user_name.contains(dto.getUser_name()) : null).fetchOne();
     }
 }

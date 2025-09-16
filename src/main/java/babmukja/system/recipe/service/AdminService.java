@@ -20,4 +20,8 @@ public class AdminService {
     public List<Tuple> userList(CustomerSearchDTO dto) {
         return adminRepository.userList(dto);
     }
+
+    public long countCustomer(CustomerSearchDTO dto) {
+        return adminRepository.countCustomer(dto);
+    }
 }

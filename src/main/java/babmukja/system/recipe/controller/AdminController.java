@@ -29,6 +29,8 @@ public class AdminController {
     @GetMapping(AdminPageParameterName.USERLIST)
     public List<Map<String, Object>> getUserList(@ModelAttribute CustomerSearchDTO dto) {
         List<Tuple> results = adminService.userList(dto);
+        long totalCount = adminService.countCustomer(dto);
+
         List<Map<String, Object>> dataList = new ArrayList<>();
         for(Tuple t : results) {
             Map<String, Object> row = new HashMap<>();
@@ -46,6 +48,14 @@ public class AdminController {
             row.put("remainingInactive", t.get(11, String.class));
             dataList.add(row);
         }
-        return ResponseJsonUtils.listMapResponse("success", "회원조회완료", dataList);
+
+       // return ResponseJsonUtils.listMapResponse("success", "회원조회완료", dataList);
+       return ResponseJsonUtils.listMapResponse(
+            "success", 
+            "회원조회완료", 
+            dataList, 
+            totalCount, 
+            dto.getPage(), 
+            (int) Math.ceil((double) totalCount / dto.getPageSize()));
     }
 }
