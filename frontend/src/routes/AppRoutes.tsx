@@ -10,10 +10,14 @@ import NoticeListPage from "../pages/NoticeListPage";
 import NoticeWritePage from "../pages/NoticeWritePage";
 import FindIdPage from "../pages/FindIdPage";
 import AdminMainPage from "../pages/AdminMainPage";
+import UserListPage from "../pages/UserListPage";
+import BannerListPage from "../pages/BannerListPage";
 const AppRoutes = () => {
     const routes = useRoutes([
         { path: '/', element: <HomePage /> },
         { path: '/admin', element: <AdminMainPage /> },
+        { path: '/admin/userList', element: <UserListPage /> },
+        { path: '/admin/bannerList', element: <BannerListPage /> },
         { path: '/customer', element: <CustomerPage /> },
         { path: '/login', element: <LoginPage /> },
         { path: '/agreeterm', element: <AgreeTremPage /> },
