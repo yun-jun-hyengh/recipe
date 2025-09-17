@@ -29,4 +29,9 @@ public class AdminService {
     public List<Map<String, Object>> getRecentCustomer() {
         return adminRepository.findRecentUsers();
     }
+
+    public boolean deleteCustomer(Long user_idx) {
+        long deleteCount = adminRepository.deleteByCustomerIdx(user_idx);
+        return deleteCount > 0;
+    }
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -138,5 +139,12 @@ public class AdminRepository {
         //         .where(customer.regdate.goe(oneMonthAgo))
         //         .orderBy(customer.regdate.desc()).limit(5).fetch();
         return list;
+    }
+
+    @Transactional
+    public long deleteByCustomerIdx(Long user_idx) {
+        QCustomer customer = QCustomer.customer;
+        return queryFactory
+                .delete(customer).where(customer.user_idx.eq(user_idx)).execute();
     }
 }

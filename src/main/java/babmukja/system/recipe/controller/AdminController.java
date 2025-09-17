@@ -5,14 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.querydsl.core.Tuple;
 
 import babmukja.system.recipe.constants.AdminPageParameterName;
+import babmukja.system.recipe.dto.CustomerDeleteDTO;
 import babmukja.system.recipe.dto.CustomerSearchDTO;
 import babmukja.system.recipe.service.AdminService;
 import babmukja.system.recipe.utils.ResponseJsonUtils;
@@ -64,5 +67,15 @@ public class AdminController {
     public List<Map<String, Object>> getRecentCustomer() {
         List<Map<String, Object>> data = adminService.getRecentCustomer();
         return ResponseJsonUtils.listMapResponse("success", "최근가입회원5명조회완료", data);
+    }
+
+    @DeleteMapping(AdminPageParameterName.USERADMINDEL)
+    public Map<String, Object> deleteCustomer(@RequestBody CustomerDeleteDTO dto) {
+        boolean success = adminService.deleteCustomer(dto.getUser_idx());
+        if(success) {
+            return ResponseJsonUtils.mapResponse("success", "회원삭제완료", null);
+        } else {
+            return ResponseJsonUtils.mapResponse("fail", "회원삭제실패", null);
+        }
     }
 }
