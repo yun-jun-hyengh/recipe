@@ -34,6 +34,10 @@ const UserListPage = () => {
         fetchData();
     }, [page]);
 
+    const pageBlock = 10;
+    const startPage = Math.floor((page - 1) / pageBlock) * pageBlock + 1;
+    const endPage = Math.min(startPage + pageBlock - 1, totalPages);
+
     return (
         <div className="flex min-h-screen bg-gray-50">
             <AdminSideBar />
@@ -99,8 +103,16 @@ const UserListPage = () => {
                         </tbody>
                     </table>
 
-                    <div className="flex justify-center mt-4 gap-2">
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+                    <div className='flex justify-center mt-4 gap-1'>
+                        {startPage > 1 && (
+                            <button
+                                onClick={() => setPage(startPage - 1)}
+                                className="px-3 py-1 rounded bg-gray-200"
+                            >
+                                &lt;
+                            </button>
+                        )}
+                        {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((num) => (
                             <button
                                 key={num}
                                 onClick={() => setPage(num)}
@@ -111,6 +123,15 @@ const UserListPage = () => {
                                 {num}
                             </button>
                         ))}
+
+                        {endPage < totalPages && (
+                            <button
+                                onClick={() => setPage(endPage + 1)}
+                                className="px-3 py-1 rounded bg-gray-200"
+                            >
+                                &gt;
+                            </button>
+                        )}
                     </div>
                 </div>
             </main>
