@@ -79,10 +79,14 @@ const AdminMainPage = () => {
           {users.length === 0 ? (
             <p>최근 가입 회원이 없습니다.</p>
           ) : (
-            <table className="w-full text-sm">
+            <table className="w-full text-sm text-center">
             <thead>
               <tr className="text-left text-gray-400">
-                <th>번호</th><th>이름</th><th>전화번호</th><th>이메일</th><th>가입일자</th>
+                <th className='text-center'>번호</th>
+                <th className='text-center'>이름</th>
+                <th className='text-center'>전화번호</th>
+                <th className='text-center'>이메일</th>
+                <th className='text-center'>가입일자</th>
               </tr>
             </thead>
             <tbody>

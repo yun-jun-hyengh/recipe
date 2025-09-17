@@ -76,28 +76,32 @@ const UserListPage = () => {
                                 <th className='text-center'>가입일자</th>
                                 <th className='text-center'>비공개레시피사용량</th>
                                 <th className='text-center'>제한유무</th>
-                                <th className='text-center'>비공개레시피사용개수</th>
+                                <th className='text-center'>레시피사용개수</th>
                                 <th className='text-center'>권한</th>
                                 <th className='text-center'>회원삭제</th>
-                                <th className='text-center'>권한변경</th>
                             </tr>
                         </thead>
                         <tbody>
                             {customers?.map((m) => (
                                 <tr key={m.user_idx}>
-                                    <td className="p-5">{m.user_idx}</td>
-                                    <td className="p-5">{m.user_id}</td>
-                                    <td className="p-5">{m.user_name}</td>
-                                    <td className="p-5">{m.user_phone}</td>
-                                    <td className="p-5">{m.user_email}</td>
-                                    <td className="p-5">{m.nickname}</td>
-                                    <td className="p-5">{m.regdate}</td>
-                                    <td className="p-5">{m.remainingInactive}</td>
-                                    <td className='p-5'>{m.unlimit_result}</td>
-                                    <td className='p-5'>{m.private_recipe_limit}</td>
-                                    <td className='p-5'>{m.auth}</td>
-                                    <td className='p-5'></td>
-                                    <td className='p-5'></td>
+                                    <td className="p-4">{m.user_idx}</td>
+                                    <td className="p-4">{m.user_id}</td>
+                                    <td className="p-4">{m.user_name}</td>
+                                    <td className="p-4">{m.user_phone}</td>
+                                    <td className="p-4">{m.user_email}</td>
+                                    <td className="p-4">{m.nickname}</td>
+                                    <td className="p-4">{m.regdate}</td>
+                                    <td className="p-4">{m.remainingInactive}</td>
+                                    <td className='p-4'>{m.unlimit_result}</td>
+                                    <td className='p-4'>{m.private_recipe_limit}</td>
+                                    <td className='p-4'>
+                                        {m.auth}
+                                    </td>
+                                    <td className='p-4'>
+                                        <button className="bg-red-500 text-white rounded px-4 py-1 hover:bg-red-700">
+                                            회원삭제
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
