@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as FiIcons from 'react-icons/fi';
 import AdminSideBar from '../components/AdminSideBar';
 import AdminHeader from '../components/AdminHeader';
@@ -6,8 +6,25 @@ import AdminHeader from '../components/AdminHeader';
 // const FiSettings = FiIcons.FiSettings as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
 // const FiBell = FiIcons.FiBell as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
 // const FiUser = FiIcons.FiUser as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
+import { adminApi } from '../api/adminApi';
+import { CustomerRecentList } from '../types/admin';
+import { RootState } from '../store/store';
+import { useSelector } from 'react-redux';
 
 const AdminMainPage = () => {
+  const [users, setUsers] = useState<CustomerRecentList[]>([]);
+  const token = useSelector((state: RootState) => state.auth.accessToken);
+  useEffect(() => {
+    adminApi.getRecentCustomer(token || undefined)
+      .then((res) => {
+        const response = res.data[0];
+        if (response.status === "success") {
+          setUsers(response.data);
+        }
+      })
+      .catch((err) => console.error("서버에러", err));
+    }, []);
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -52,25 +69,29 @@ const AdminMainPage = () => {
 
         {/* Recent Orders */}
         <div className="bg-white shadow-md rounded-lg mt-6 p-4">
-          <h3 className="font-bold mb-2">신규 가입자(최근 3개월)</h3>
-          <table className="w-full text-sm">
+          <h3 className="font-bold mb-2">신규 가입자(최근 1개월)</h3>
+          {users.length === 0 ? (
+            <p>최근 가입 회원이 없습니다.</p>
+          ) : (
+            <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-gray-400">
                 <th>번호</th><th>이름</th><th>전화번호</th><th>이메일</th><th>가입일자</th>
               </tr>
             </thead>
             <tbody>
-              {[
-                ["#1000","Sarah Wilson","$462.14","Cancelled","02/08/2025"],
-                ["#7002","Sarah Wilson","$299.90","Shipped","02/08/2025"],
-                ["#6802","John Doe","$442.68","Shipped","02/08/2025"],
-                ["#5034","Jane Smith","$223.79","Completed","02/08/2025"],
-                ["#9102","Mike Johnson","$96.73","Cancelled","04/08/2025"],
-              ].map((order, i) => (
-                <tr key={i} className="border-t">{order.map((col, j) => <td key={j} className="py-2">{col}</td>)}</tr>
+              {users.map((user) => (
+                <tr key={user.user_idx} className="border-b hover:bg-gray-50">
+                  <td className="p-2">{user.user_idx}</td>
+                  <td className="p-2">{user.user_name}</td>
+                  <td className="p-2">{user.user_phone}</td>
+                  <td className="p-2">{user.user_email}</td>
+                  <td className="p-2">{user.regdate}</td>
+                </tr>
               ))}
             </tbody>
           </table>
+          )}
         </div>
       </main>
     </div>
