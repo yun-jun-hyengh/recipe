@@ -43,9 +43,10 @@ public class AdminController {
             row.put("regdate", t.get(6, String.class));
             row.put("private_recipe_limit", t.get(7, Long.class));
             row.put("unlimit", t.get(8, Long.class));
-            row.put("unlimit_result", t.get(9, String.class));
-            row.put("auth", t.get(10, String.class));
-            row.put("remainingInactive", t.get(11, String.class));
+            row.put("adminchk", t.get(9, Long.class));
+            row.put("unlimit_result", t.get(10, String.class));
+            row.put("auth", t.get(11, String.class));
+            row.put("remainingInactive", t.get(12, String.class));
             dataList.add(row);
         }
 

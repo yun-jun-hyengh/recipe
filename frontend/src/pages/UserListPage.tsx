@@ -38,6 +38,7 @@ const UserListPage = () => {
                                 <th>제한유무</th>
                                 <th>권한</th>
                                 <th>회원삭제</th>
+                                <th>권한변경</th>
                             </tr>
                         </thead>
                         <tbody>

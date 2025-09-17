@@ -71,6 +71,7 @@ public class AdminRepository {
                     customer.regdate,
                     customer.private_recipe_limit,
                     customer.unlimit,
+                    customer.adminchk,
                     unlimit_result,
                     auth,
                     remainingInactive.as("remainingInactive")
@@ -89,7 +90,8 @@ public class AdminRepository {
                     customer.nickname,
                     customer.regdate,
                     customer.private_recipe_limit,
-                    customer.unlimit
+                    customer.unlimit,
+                    customer.adminchk
                 ).offset(dto.getOffset()).limit(dto.getPageSize())
                 .fetch();
     }

@@ -36,34 +36,40 @@ const AdminMainPage = () => {
         <AdminHeader />
 
         {/* Main Grid */}
-        <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-2 bg-white shadow-md rounded-lg p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white shadow-md rounded-lg p-4 flex flex-col min-h-60">
             <h3 className="font-bold mb-2">Revenue Overview</h3>
-            <div className="h-40 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">[Graph Placeholder]</div>
+            <div className="flex-1 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+              [Graph Placeholder]
+            </div>
           </div>
-          <div className="bg-white shadow-md rounded-lg p-4 space-y-2">
+          <div className="bg-white shadow-md rounded-lg p-4 flex flex-col min-h-60">
             <h3 className="font-bold mb-2">Recent Activity</h3>
-            {[
-              "New user registered (2m ago)",
-              "Order #1234 completed (5m ago)",
-              "Server maintenance scheduled (1h ago)"
-            ].map((act, i) => <div key={i} className="text-sm text-gray-600">{act}</div>)}
+            <div className="flex-1 space-y-2 overflow-y-auto">
+              {[
+                "New user registered (2m ago)",
+                "Order #1234 completed (5m ago)",
+                "Server maintenance scheduled (1h ago)"
+              ].map((act, i) => (
+                <div key={i} className="text-sm text-gray-600">{act}</div>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Bottom Grid */}
-        <div className="grid grid-cols-3 gap-6 mt-6">
-          <div className="bg-white shadow-md rounded-lg p-4">
+        {/* Middle Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div className="bg-white shadow-md rounded-lg p-4 flex flex-col min-h-60">
             <h3 className="font-bold mb-2">User Growth (Last 7 Days)</h3>
-            <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">[Bar Chart Placeholder]</div>
+            <div className="flex-1 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+              [Bar Chart Placeholder]
+            </div>
           </div>
-          <div className="bg-white shadow-md rounded-lg p-4">
+          <div className="bg-white shadow-md rounded-lg p-4 flex flex-col min-h-60">
             <h3 className="font-bold mb-2">Order Status Distribution</h3>
-            <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">[Pie Chart Placeholder]</div>
-          </div>
-          <div className="bg-white shadow-md rounded-lg p-4">
-            <h3 className="font-bold mb-2">Storage Status</h3>
-            <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">[Progress Circle Placeholder]</div>
+            <div className="flex-1 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+              [Pie Chart Placeholder]
+            </div>
           </div>
         </div>
 
