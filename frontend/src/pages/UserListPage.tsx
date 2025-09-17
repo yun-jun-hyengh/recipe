@@ -85,19 +85,19 @@ const UserListPage = () => {
                         <tbody>
                             {customers?.map((m) => (
                                 <tr key={m.user_idx}>
-                                    <td className="p-6">{m.user_idx}</td>
-                                    <td className="p-6">{m.user_id}</td>
-                                    <td className="p-6">{m.user_name}</td>
-                                    <td className="p-6">{m.user_phone}</td>
-                                    <td className="p-6">{m.user_email}</td>
-                                    <td className="p-6">{m.nickname}</td>
-                                    <td className="p-6">{m.regdate}</td>
-                                    <td className="p-6">{m.remainingInactive}</td>
-                                    <td className='p-6'>{m.unlimit_result}</td>
-                                    <td className='p-6'>{m.private_recipe_limit}</td>
-                                    <td className='p-6'>{m.auth}</td>
-                                    <td className='p-6'></td>
-                                    <td className='p-6'></td>
+                                    <td className="p-5">{m.user_idx}</td>
+                                    <td className="p-5">{m.user_id}</td>
+                                    <td className="p-5">{m.user_name}</td>
+                                    <td className="p-5">{m.user_phone}</td>
+                                    <td className="p-5">{m.user_email}</td>
+                                    <td className="p-5">{m.nickname}</td>
+                                    <td className="p-5">{m.regdate}</td>
+                                    <td className="p-5">{m.remainingInactive}</td>
+                                    <td className='p-5'>{m.unlimit_result}</td>
+                                    <td className='p-5'>{m.private_recipe_limit}</td>
+                                    <td className='p-5'>{m.auth}</td>
+                                    <td className='p-5'></td>
+                                    <td className='p-5'></td>
                                 </tr>
                             ))}
                         </tbody>
