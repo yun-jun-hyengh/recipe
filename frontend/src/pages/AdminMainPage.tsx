@@ -96,8 +96,37 @@ const AdminMainPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           <div className="bg-white shadow-md rounded-lg p-4 flex flex-col min-h-60">
             <h3 className="font-bold mb-2">최근공지사항</h3>
-            <div className="flex-1 bg-gray-100 rounded-lg flex items-center justify-center">
-              [Bar Chart Placeholder]
+            <div className="flex-1 rounded-lg flex items-center justify-center">
+              <table className="table-auto border-collapse border border-gray-300 w-full text-center">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border border-gray-300 p-2">번호</th>
+                    <th className="border border-gray-300 p-2">제목</th>
+                    <th className="border border-gray-300 p-2">작성자</th>
+                    <th className="border border-gray-300 p-2">등록일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 p-2">1</td>
+                    <td className="border border-gray-300 p-2">공지1</td>
+                    <td className="border border-gray-300 p-2">김철수</td>
+                    <td className="border border-gray-300 p-2">2025-09-18</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">2</td>
+                    <td className="border border-gray-300 p-2">공지2</td>
+                    <td className="border border-gray-300 p-2">이영희</td>
+                    <td className="border border-gray-300 p-2">2025-09-17</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">3</td>
+                    <td className="border border-gray-300 p-2">공지3</td>
+                    <td className="border border-gray-300 p-2">박민수</td>
+                    <td className="border border-gray-300 p-2">2025-09-16</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
           <div className="bg-white shadow-md rounded-lg p-4 flex flex-col min-h-60">
