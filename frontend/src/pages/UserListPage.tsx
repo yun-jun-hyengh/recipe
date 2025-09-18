@@ -30,6 +30,19 @@ const UserListPage = () => {
             });
     };
 
+    const handleDelete = (user_idx: number) => {
+        adminApi.deleteCustomer(user_idx, token || undefined)
+            .then((res) => {
+                if(res.status === "success") {
+                    alert(res.message);
+                    fetchData();
+                } else {
+                    alert(res.message);
+                }
+            })
+            .catch((err) => console.log("에러 : ", err));
+    }
+
     useEffect(() => {
         fetchData();
     }, [page]);
@@ -98,7 +111,10 @@ const UserListPage = () => {
                                         {m.auth}
                                     </td>
                                     <td className='p-4'>
-                                        <button className="bg-red-500 text-white rounded px-4 py-1 hover:bg-red-700">
+                                        <button 
+                                            className="bg-red-500 text-white rounded px-4 py-1 hover:bg-red-700"
+                                            onClick={() => handleDelete(m.user_idx)}
+                                        >
                                             회원삭제
                                         </button>
                                     </td>

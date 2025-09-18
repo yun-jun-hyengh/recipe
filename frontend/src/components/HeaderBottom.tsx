@@ -16,7 +16,7 @@ const HeaderBottom = () => {
                     <nav className="flex ml-4 space-x-2 text-sm sm:space-x-4 md:space-x-7 sm:text-base">
                         <a href="#" className="hover:text-blue-600 whitespace-nowrap">공개 레시피</a>
                         <a href="#" className="hover:text-blue-600 whitespace-nowrap">비공개 레시피</a>
-                        <a href="#" className="hover:text-blue-600 whitespace-nowrap">요리자랑</a>
+                        <a href="#" className="hover:text-blue-600 whitespace-nowrap">요리초보가이드</a>
                         <Link to="/noticeList" className="hover:text-blue-600 whitespace-nowrap">공지사항</Link>
                     </nav>
 

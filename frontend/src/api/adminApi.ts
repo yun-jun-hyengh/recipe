@@ -21,5 +21,13 @@ export const adminApi = {
             params,
             headers: token ? { Authorization: `Bearer ${token}` } : {},
         }).then((res) => res.data);
+    },
+
+    deleteCustomer: (user_idx: number, token?: string) => {
+        return axiosInstance.delete(`/api/admin/userdel`, {
+            data: { user_idx },
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        })
+        .then((res) => res.data);
     }
 }

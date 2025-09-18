@@ -38,21 +38,56 @@ const AdminMainPage = () => {
         {/* Main Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white shadow-md rounded-lg p-4 flex flex-col min-h-60">
-            <h3 className="font-bold mb-2">Revenue Overview</h3>
+            <h3 className="font-bold mb-2">접속자 통계</h3>
             <div className="flex-1 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
               [Graph Placeholder]
             </div>
           </div>
           <div className="bg-white shadow-md rounded-lg p-4 flex flex-col min-h-60">
-            <h3 className="font-bold mb-2">Recent Activity</h3>
+            <h3 className="font-bold mb-2">인기 레시피</h3>
             <div className="flex-1 space-y-2 overflow-y-auto">
-              {[
-                "New user registered (2m ago)",
-                "Order #1234 completed (5m ago)",
-                "Server maintenance scheduled (1h ago)"
-              ].map((act, i) => (
-                <div key={i} className="text-sm text-gray-600">{act}</div>
-              ))}
+              <table className="table-auto border-collapse border border-gray-300 w-full text-center">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border border-gray-300 p-2">레시피번호</th>
+                    <th className="border border-gray-300 p-2">레시피제목</th>
+                    <th className="border border-gray-300 p-2">작성자</th>
+                    <th className="border border-gray-300 p-2">등록일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 p-1">1</td>
+                    <td className="border border-gray-300 p-1">김치찌개</td>
+                    <td className="border border-gray-300 p-1">홍길동</td>
+                    <td className="border border-gray-300 p-1">2025-09-18</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-1">2</td>
+                    <td className="border border-gray-300 p-1">된장찌개</td>
+                    <td className="border border-gray-300 p-1">이몽룡</td>
+                    <td className="border border-gray-300 p-1">2025-09-17</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-1">3</td>
+                    <td className="border border-gray-300 p-1">비빔밥</td>
+                    <td className="border border-gray-300 p-1">성춘향</td>
+                    <td className="border border-gray-300 p-1">2025-09-16</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-1">4</td>
+                    <td className="border border-gray-300 p-1">불고기</td>
+                    <td className="border border-gray-300 p-1">임꺽정</td>
+                    <td className="border border-gray-300 p-1">2025-09-15</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-1">5</td>
+                    <td className="border border-gray-300 p-1">삼계탕</td>
+                    <td className="border border-gray-300 p-1">강감찬</td>
+                    <td className="border border-gray-300 p-1">2025-09-14</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -60,15 +95,44 @@ const AdminMainPage = () => {
         {/* Middle Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           <div className="bg-white shadow-md rounded-lg p-4 flex flex-col min-h-60">
-            <h3 className="font-bold mb-2">User Growth (Last 7 Days)</h3>
-            <div className="flex-1 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+            <h3 className="font-bold mb-2">최근공지사항</h3>
+            <div className="flex-1 bg-gray-100 rounded-lg flex items-center justify-center">
               [Bar Chart Placeholder]
             </div>
           </div>
           <div className="bg-white shadow-md rounded-lg p-4 flex flex-col min-h-60">
-            <h3 className="font-bold mb-2">Order Status Distribution</h3>
-            <div className="flex-1 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
-              [Pie Chart Placeholder]
+            <h3 className="font-bold mb-2">최근 고객 문의사항</h3>
+            <div className="flex-1 rounded-lg flex items-center justify-center">
+              <table className="table-auto border-collapse border border-gray-300 w-full text-center">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border border-gray-300 p-2">번호</th>
+                    <th className="border border-gray-300 p-2">제목</th>
+                    <th className="border border-gray-300 p-2">작성자</th>
+                    <th className="border border-gray-300 p-2">등록일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 p-2">1</td>
+                    <td className="border border-gray-300 p-2">배송이 너무 늦어요</td>
+                    <td className="border border-gray-300 p-2">김철수</td>
+                    <td className="border border-gray-300 p-2">2025-09-18</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">2</td>
+                    <td className="border border-gray-300 p-2">제품 불량 문의</td>
+                    <td className="border border-gray-300 p-2">이영희</td>
+                    <td className="border border-gray-300 p-2">2025-09-17</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-2">3</td>
+                    <td className="border border-gray-300 p-2">환불 절차가 어떻게 되나요?</td>
+                    <td className="border border-gray-300 p-2">박민수</td>
+                    <td className="border border-gray-300 p-2">2025-09-16</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
