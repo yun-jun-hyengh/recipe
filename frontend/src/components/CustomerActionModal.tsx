@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CustomerListData } from "../types/admin";
 import { adminApi } from "../api/adminApi";
 import { RootState } from '../store/store';
@@ -18,7 +18,14 @@ export default function CustomerActionModal({
 }: CustomerActiveModalProps) {
     //const [selectedAdmin, setSelectedAdmin] = useState<number>(customer?.)
     const token = useSelector((state: RootState) => state.auth.accessToken);
-    const [adminchk, setAdminchk] = useState(customer ? customer.adminchk : 0);
+    const [adminchk, setAdminchk] = useState<number>(0);
+    const [unlimit, setUnlimit] = useState<number>(0);
+    useEffect(() => {
+        if(customer) {
+            setAdminchk(customer.adminchk);
+            setUnlimit(customer.unlimit);
+        }
+    }, [customer]);
     if(!isOpen || !customer) {
         return null;
     }
@@ -110,14 +117,34 @@ export default function CustomerActionModal({
                         />
                     </div>
                     <div>
+                        <label className="block text-sm font-medium text-gray-700">레시피사용권한</label>
+                        <select
+                            value={unlimit}
+                            onChange={(e) => setUnlimit(Number(e.target.value))}
+                            className="w-full border rounded px-3 py-2 bg-gray-100 text-center"
+                        >
+                            <option value={0}>제한</option>
+                            <option value={1}>제한없음</option>
+                        </select>
+                    </div>
+                    <div>
                         <label className="block text-sm font-medium text-gray-700">권한</label>
                         <select
                             value={adminchk}
                             onChange={(e) => setAdminchk(Number(e.target.value))}
                             className="w-full border rounded px-3 py-2 bg-gray-100 text-center"
                         >
-                            <option value={0}>일반사용자</option>
-                            <option value={1}>관리자</option>
+                            {customer.adminchk === 1 ? (
+                                <>
+                                    <option value={1}>관리자</option>
+                                    <option value={0}>일반사용자</option>
+                                </>
+                            ) : (
+                                <>
+                                    <option value={0}>일반사용자</option>
+                                    <option value={1}>관리자</option>
+                                </>
+                            )}
                         </select>
                     </div>
                 </div>
