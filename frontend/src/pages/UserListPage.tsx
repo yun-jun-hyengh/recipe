@@ -6,6 +6,7 @@ import { RootState } from '../store/store';
 import { useSelector } from 'react-redux';
 import { CustomerListData, CustomerListResponse, CustomerSearchDTO } from '../types/admin';
 import { adminApi } from "../api/adminApi";
+import CustomerActionModal from '../components/CustomerActionModal';
 
 const UserListPage = () => {
     const FiSearch = FiIcons.FiSearch as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
@@ -16,6 +17,9 @@ const UserListPage = () => {
     const [page, setPage] = useState(1);
     const [pageSize] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
+
+    const [selectedCustomer, setSelectedCustomer] = useState<CustomerListData | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const fetchData = () => {
         const params: CustomerSearchDTO = { page, pageSize, user_name };
@@ -51,8 +55,24 @@ const UserListPage = () => {
     const startPage = Math.floor((page - 1) / pageBlock) * pageBlock + 1;
     const endPage = Math.min(startPage + pageBlock - 1, totalPages);
 
+    const openModal = (customer: CustomerListData) => {
+        setSelectedCustomer(customer);
+        setIsModalOpen(true);
+    }
+
+    const closeModal = () => {
+        setSelectedCustomer(null);
+        setIsModalOpen(false);
+    }
+
     return (
         <div className="flex min-h-screen bg-gray-50">
+            <CustomerActionModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                customer={selectedCustomer}
+                onDelete={fetchData}
+            />
             <AdminSideBar />
             <main className="flex-1 p-6">
                 <AdminHeader />
@@ -96,7 +116,7 @@ const UserListPage = () => {
                         </thead>
                         <tbody>
                             {customers?.map((m) => (
-                                <tr key={m.user_idx}>
+                                <tr key={m.user_idx} onClick={() => openModal(m)} className='cursor-pointer hover:bg-gray-100'>
                                     <td className="p-4">{m.user_idx}</td>
                                     <td className="p-4">{m.user_id}</td>
                                     <td className="p-4">{m.user_name}</td>
@@ -113,7 +133,10 @@ const UserListPage = () => {
                                     <td className='p-4'>
                                         <button 
                                             className="bg-red-500 text-white rounded px-4 py-1 hover:bg-red-700"
-                                            onClick={() => handleDelete(m.user_idx)}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDelete(m.user_idx);
+                                            }}
                                         >
                                             회원삭제
                                         </button>
