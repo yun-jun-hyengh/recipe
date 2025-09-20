@@ -123,8 +123,17 @@ export default function CustomerActionModal({
                             onChange={(e) => setUnlimit(Number(e.target.value))}
                             className="w-full border rounded px-3 py-2 bg-gray-100 text-center"
                         >
-                            <option value={0}>제한</option>
-                            <option value={1}>제한없음</option>
+                            {customer.unlimit === 1 ? (
+                                <>
+                                    <option value={1}>제한없음</option>
+                                    <option value={0}>제한</option>
+                                </>
+                            ) : (
+                                <>
+                                    <option value={0}>제한</option>
+                                    <option value={1}>제한없음</option>
+                                </>
+                            )}
                         </select>
                     </div>
                     <div>
