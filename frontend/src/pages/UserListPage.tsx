@@ -72,6 +72,7 @@ const UserListPage = () => {
                 onClose={closeModal}
                 customer={selectedCustomer}
                 onDelete={fetchData}
+                onUpdate={fetchData}
             />
             <AdminSideBar />
             <main className="flex-1 p-6">

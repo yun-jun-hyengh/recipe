@@ -8,6 +8,7 @@ interface CustomerActiveModalProps {
     onClose: () => void;
     customer: CustomerListData | null;
     onDelete: () => void;
+    onUpdate: () => void;
 }
 
 export default function CustomerActionModal({
@@ -15,15 +16,18 @@ export default function CustomerActionModal({
     onClose,
     customer,
     onDelete,
+    onUpdate,
 }: CustomerActiveModalProps) {
     //const [selectedAdmin, setSelectedAdmin] = useState<number>(customer?.)
     const token = useSelector((state: RootState) => state.auth.accessToken);
     const [adminchk, setAdminchk] = useState<number>(0);
     const [unlimit, setUnlimit] = useState<number>(0);
+    const [private_recipe_limit, setPrivateRecipeLimit] = useState<number>(0);
     useEffect(() => {
         if(customer) {
             setAdminchk(customer.adminchk);
             setUnlimit(customer.unlimit);
+            setPrivateRecipeLimit(customer.private_recipe_limit);
         }
     }, [customer]);
     if(!isOpen || !customer) {
@@ -41,6 +45,13 @@ export default function CustomerActionModal({
                 }
             })
             .catch((err) => console.log("에러 : ", err));
+    }
+
+    const handleUpdate = () => {
+        console.log('회원번호 : ', customer.user_idx);
+        console.log('레시피사용개수 : ', private_recipe_limit);
+        console.log('레시피사용권한 : ', unlimit);
+        console.log('회원권한 : ', adminchk);
     }
 
     return (
@@ -112,7 +123,8 @@ export default function CustomerActionModal({
                         <label className="block text-sm font-medium text-gray-700">레시피사용개수</label>
                         <input
                             type="text"
-                            value={customer.private_recipe_limit}
+                            value={private_recipe_limit}
+                            onChange={(e) => setPrivateRecipeLimit(Number(e.target.value))}
                             className="w-full border rounded px-3 py-2 bg-gray-100"
                         />
                     </div>
@@ -167,6 +179,7 @@ export default function CustomerActionModal({
                     </button>
                     <button
                         className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-700"
+                        onClick={handleUpdate}
                     >
                         수정
                     </button>
