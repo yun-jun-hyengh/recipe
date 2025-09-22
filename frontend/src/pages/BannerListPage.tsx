@@ -8,7 +8,11 @@ const BannerListPage = () => {
             <AdminSideBar />
             <main className="flex-1 p-6">
                 <AdminHeader />
-                <div>배너관리리스트</div>
+                <div className="bg-white shadow-md rounded-lg mt-6 p-4 h-[800px] overflow-y-auto">
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="font-bold mb-2">배너 리스트</h3>
+                    </div>
+                </div>
             </main>
         </div>
     )
