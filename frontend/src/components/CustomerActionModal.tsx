@@ -48,10 +48,24 @@ export default function CustomerActionModal({
     }
 
     const handleUpdate = () => {
-        console.log('회원번호 : ', customer.user_idx);
-        console.log('레시피사용개수 : ', private_recipe_limit);
-        console.log('레시피사용권한 : ', unlimit);
-        console.log('회원권한 : ', adminchk);
+        // console.log('회원번호 : ', customer.user_idx);
+        // console.log('레시피사용개수 : ', private_recipe_limit);
+        // console.log('레시피사용권한 : ', unlimit);
+        // console.log('회원권한 : ', adminchk);
+        adminApi.updateCustomer(
+            {user_idx: customer.user_idx, private_recipe_limit, unlimit, adminchk},
+            token || undefined
+        ).then((res) => {
+            if(res.data.status === "success") {
+                alert(res.data.message);
+                onUpdate();
+                onClose();
+            } else {
+                alert(res.data.message);
+            }
+        }).catch((err) => {
+            console.log('에러 : ', err);
+        })
     }
 
     return (

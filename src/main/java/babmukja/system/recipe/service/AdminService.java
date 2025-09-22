@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.querydsl.core.Tuple;
 
 import babmukja.system.recipe.dto.CustomerSearchDTO;
+import babmukja.system.recipe.dto.CustomerUpdateDTO;
 import babmukja.system.recipe.repository.AdminRepository;
 
 @Service
@@ -33,5 +34,9 @@ public class AdminService {
     public boolean deleteCustomer(Long user_idx) {
         long deleteCount = adminRepository.deleteByCustomerIdx(user_idx);
         return deleteCount > 0;
+    }
+
+    public boolean updateCustomer(CustomerUpdateDTO dto) {
+        return adminRepository.updateByCustomerIdx(dto) > 0;
     }
 }

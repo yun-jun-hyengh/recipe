@@ -22,6 +22,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import babmukja.system.recipe.dto.CustomerSearchDTO;
+import babmukja.system.recipe.dto.CustomerUpdateDTO;
 import babmukja.system.recipe.entity.Customer;
 import babmukja.system.recipe.entity.QCustomer;
 import babmukja.system.recipe.entity.QRecipe;
@@ -146,5 +147,17 @@ public class AdminRepository {
         QCustomer customer = QCustomer.customer;
         return queryFactory
                 .delete(customer).where(customer.user_idx.eq(user_idx)).execute();
+    }
+
+    @Transactional
+    public long updateByCustomerIdx(CustomerUpdateDTO dto) {
+        QCustomer customer = QCustomer.customer;
+
+        return queryFactory.update(customer)
+                .set(customer.private_recipe_limit, dto.getPrivate_recipe_limit())
+                .set(customer.unlimit, dto.getUnlimit())
+                .set(customer.adminchk, dto.getAdminchk())
+                .where(customer.user_idx.eq(dto.getUser_idx()))
+                .execute();
     }
 }

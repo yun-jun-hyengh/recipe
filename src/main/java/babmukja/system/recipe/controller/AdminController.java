@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import com.querydsl.core.Tuple;
 import babmukja.system.recipe.constants.AdminPageParameterName;
 import babmukja.system.recipe.dto.CustomerDeleteDTO;
 import babmukja.system.recipe.dto.CustomerSearchDTO;
+import babmukja.system.recipe.dto.CustomerUpdateDTO;
 import babmukja.system.recipe.service.AdminService;
 import babmukja.system.recipe.utils.ResponseJsonUtils;
 
@@ -77,5 +79,14 @@ public class AdminController {
         } else {
             return ResponseJsonUtils.mapResponse("fail", "회원삭제실패", null);
         }
+    }
+
+    @PostMapping(AdminPageParameterName.USERADMINUPDATE)
+    @ResponseBody
+    public Map<String, Object> updateCustomer(@RequestBody CustomerUpdateDTO dto) {
+        boolean success = adminService.updateCustomer(dto);
+        return success 
+                ? ResponseJsonUtils.mapResponse("success", "회원 수정 완료", null) 
+                : ResponseJsonUtils.mapResponse("fail", "회원 수정 실패", null);
     }
 }
