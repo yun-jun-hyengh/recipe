@@ -12,12 +12,14 @@ import FindIdPage from "../pages/FindIdPage";
 import AdminMainPage from "../pages/AdminMainPage";
 import UserListPage from "../pages/UserListPage";
 import BannerListPage from "../pages/BannerListPage";
+import BannerRegisterPage from "../pages/BannerRegisterPage";
 const AppRoutes = () => {
     const routes = useRoutes([
         { path: '/', element: <HomePage /> },
         { path: '/admin', element: <AdminMainPage /> },
         { path: '/admin/userList', element: <UserListPage /> },
         { path: '/admin/bannerList', element: <BannerListPage /> },
+        { path: '/admin/bannerjoin', element: <BannerRegisterPage /> },
         { path: '/customer', element: <CustomerPage /> },
         { path: '/login', element: <LoginPage /> },
         { path: '/agreeterm', element: <AgreeTremPage /> },

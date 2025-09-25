@@ -1,8 +1,13 @@
 import React from 'react';
 import AdminSideBar from '../components/AdminSideBar';
 import AdminHeader from '../components/AdminHeader';
+import { useNavigate } from 'react-router-dom';
 
 const BannerListPage = () => {
+    const navigate = useNavigate();
+    const handleRegister = () => {
+        navigate('/admin/bannerjoin');
+    }
     return(
         <div className="flex min-h-screen bg-gray-50">
             <AdminSideBar />
@@ -12,7 +17,9 @@ const BannerListPage = () => {
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="font-bold mb-2">배너 리스트</h3>
                         <div className="flex items-center space-x-2">
-                            <button className="px-4 py-2 bg-purple-800 text-white font-semibold rounded-md hover:bg-purple-900 transition">
+                            <button
+                                onClick={handleRegister} 
+                                className="px-4 py-2 bg-purple-800 text-white font-semibold rounded-md hover:bg-purple-900 transition">
                                 배너등록
                             </button>
                         </div>
