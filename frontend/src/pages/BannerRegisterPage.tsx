@@ -8,7 +8,7 @@ const BannerRegisterPage = () => {
             <AdminSideBar />
             <main className="flex-1 p-6">
                 <AdminHeader />
-                
+                <h2>배너등록페이지</h2>
             </main>
         </div>
     );
