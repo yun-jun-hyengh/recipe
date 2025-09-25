@@ -1,9 +1,15 @@
 import React from "react";
+import AdminSideBar from "../components/AdminSideBar";
+import AdminHeader from "../components/AdminHeader";
 
 const BannerRegisterPage = () => {
     return(
-        <div>
-            <h2>배너등록</h2>
+        <div className="flex min-h-screen bg-gray-50">
+            <AdminSideBar />
+            <main className="flex-1 p-6">
+                <AdminHeader />
+                
+            </main>
         </div>
     );
 };
