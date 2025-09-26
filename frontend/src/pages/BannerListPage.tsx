@@ -30,9 +30,9 @@ const BannerListPage = () => {
                                 <th className='text-center'>번호</th>
                                 <th className='text-center'>배너 이미지</th>
                                 <th className='text-center'>배너 설명</th>
-                                <th className='text-center'>사용유무</th>
-                                <th className='text-center'>배너삭제</th>
-                                <th className='text-center'>배너수정</th>
+                                <th className='text-center'>노출 상태</th>
+                                <th className='text-center'>배너 삭제</th>
+                                <th className='text-center'>배너 수정</th>
                             </tr>
                         </thead>
                         <tbody>
