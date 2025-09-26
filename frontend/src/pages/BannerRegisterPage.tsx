@@ -1,20 +1,42 @@
 import React, { useState } from "react";
 import AdminSideBar from "../components/AdminSideBar";
 import AdminHeader from "../components/AdminHeader";
+import { useNavigate } from "react-router-dom";
 
 const BannerRegisterPage = () => {
     const [ba_img, setBaImg] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
-    const [isActive, setIsActive] = useState(true);
+    // const [isActive, setIsActive] = useState(true);
     const [ba_descript, setBaDescript] = useState<string>("");
     const [ba_use, setBaUse] = useState(1);
+    const navigate = useNavigate();
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if(file) {
+        if (!file) return;
+
+        const img = new Image();
+        img.src = URL.createObjectURL(file);
+
+        img.onload = () => {
+            const width = img.width;
+            const height = img.height;
+            const ratio = width / height;
+
+            if(Math.abs(ratio - 16 / 5) > 0.01) {
+                alert("이미지 비율이 맞지 않습니다. 1536x480 비율에 맞는 이미지를 선택하세요.");
+                setBaImg(null);
+                setPreview(null);
+                e.target.value = "";
+                return;
+            }
             setBaImg(file);
-            setPreview(URL.createObjectURL(file));
+            setPreview(img.src);
         }
+        // if(file) {
+        //     setBaImg(file);
+        //     setPreview(URL.createObjectURL(file));
+        // }
     }
 
     const handleRegister = () => {
@@ -22,7 +44,7 @@ const BannerRegisterPage = () => {
     }
 
     const handleCancle = () => {
-
+        navigate('/admin/bannerList');
     }
 
     return(
