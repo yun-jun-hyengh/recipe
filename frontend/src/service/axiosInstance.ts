@@ -5,6 +5,7 @@ import { store } from "../store/store";
 import { setAuth, logout } from "../store/authSlice";
 
 const axiosInstance = axios.create({
+  //  baseURL: "http://192.168.111.128:8080",
     baseURL: "http://localhost:10000",
     withCredentials: true,
     headers: {
