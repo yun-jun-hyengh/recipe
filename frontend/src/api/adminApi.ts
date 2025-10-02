@@ -36,5 +36,15 @@ export const adminApi = {
         return axiosInstance.post(`/api/admin/userupdate`, customer, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
+    },
+
+    bannerRegister: (formData: FormData, token?: string) => {
+        return axiosInstance
+            .post("/api/admin/bannerreg", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                },
+            });
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.querydsl.core.Tuple;
 
 import babmukja.system.recipe.constants.AdminPageParameterName;
+import babmukja.system.recipe.dto.BannerRegisterDTO;
 import babmukja.system.recipe.dto.CustomerDeleteDTO;
 import babmukja.system.recipe.dto.CustomerSearchDTO;
 import babmukja.system.recipe.dto.CustomerUpdateDTO;
@@ -88,5 +89,13 @@ public class AdminController {
         return success 
                 ? ResponseJsonUtils.mapResponse("success", "회원 수정 완료", null) 
                 : ResponseJsonUtils.mapResponse("fail", "회원 수정 실패", null);
+    }
+
+    @PostMapping(AdminPageParameterName.BANNERREGISTER)
+    public Map<String, Object> registerBanner(@ModelAttribute BannerRegisterDTO bannerRegisterDTO) {
+        System.out.println("파일 이름 : " + bannerRegisterDTO.getBa_img());
+        System.out.println("설명 : " + bannerRegisterDTO.getBa_descript());
+        System.out.println("사용여부 : " + bannerRegisterDTO.getBa_use());
+        return ResponseJsonUtils.mapResponse("success", "배너등록완료",null);
     }
 }

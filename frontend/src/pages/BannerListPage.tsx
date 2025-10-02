@@ -36,12 +36,14 @@ const BannerListPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <td className="p-4"></td>
-                            <td className="p-4"></td>
-                            <td className="p-4"></td>
-                            <td className="p-4"></td>
-                            <td className="p-4"></td>
-                            <td className="p-4"></td>
+                            <tr>
+                                <td className="p-4"></td>
+                                <td className="p-4"></td>
+                                <td className="p-4"></td>
+                                <td className="p-4"></td>
+                                <td className="p-4"></td>
+                                <td className="p-4"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

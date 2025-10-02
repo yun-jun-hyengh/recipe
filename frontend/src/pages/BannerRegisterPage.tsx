@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import AdminSideBar from "../components/AdminSideBar";
 import AdminHeader from "../components/AdminHeader";
 import { useNavigate } from "react-router-dom";
+import { adminApi } from "../api/adminApi";
+import { RootState } from "../store/store";
+import { useSelector } from "react-redux";
 
 const BannerRegisterPage = () => {
+    const token = useSelector((state: RootState) => state.auth.accessToken);
     const [ba_img, setBaImg] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
     // const [isActive, setIsActive] = useState(true);
@@ -40,7 +44,27 @@ const BannerRegisterPage = () => {
     }
 
     const handleRegister = () => {
+        if(!ba_img) {
+            alert("배너 이미지를 등록해주세요.");
+            return;
+        }
 
+        // console.log("파일 : ", ba_img);
+        // console.log("상세설명 : ", ba_descript);
+        // console.log("사용 여부 : ", ba_use);
+        const formData = new FormData();
+        formData.append("ba_img", ba_img);
+        formData.append("ba_descript", ba_descript);
+        formData.append("ba_use", ba_use.toString());
+
+        adminApi
+            .bannerRegister(formData, token || undefined)
+            .then((res) => {
+                alert(res.data.message);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
     const handleCancle = () => {
