@@ -23,6 +23,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import babmukja.system.recipe.dto.CustomerSearchDTO;
 import babmukja.system.recipe.dto.CustomerUpdateDTO;
+import babmukja.system.recipe.entity.Banner;
 import babmukja.system.recipe.entity.Customer;
 import babmukja.system.recipe.entity.QCustomer;
 import babmukja.system.recipe.entity.QRecipe;
@@ -159,5 +160,10 @@ public class AdminRepository {
                 .set(customer.adminchk, dto.getAdminchk())
                 .where(customer.user_idx.eq(dto.getUser_idx()))
                 .execute();
+    }
+
+    @Transactional
+    public void bannerSave(Banner banner) {
+        em.persist(banner);
     }
 }

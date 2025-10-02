@@ -1,10 +1,14 @@
 package babmukja.system.recipe.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.querydsl.core.Tuple;
 
@@ -20,12 +25,16 @@ import babmukja.system.recipe.dto.BannerRegisterDTO;
 import babmukja.system.recipe.dto.CustomerDeleteDTO;
 import babmukja.system.recipe.dto.CustomerSearchDTO;
 import babmukja.system.recipe.dto.CustomerUpdateDTO;
+import babmukja.system.recipe.entity.Banner;
 import babmukja.system.recipe.service.AdminService;
 import babmukja.system.recipe.utils.ResponseJsonUtils;
 
 @RestController
 public class AdminController {
     private final AdminService adminService;
+
+    @Value("${app.upload.root}")
+    private String uploadRoot;
 
     public AdminController(AdminService adminService) {
         this.adminService = adminService;
@@ -93,9 +102,31 @@ public class AdminController {
 
     @PostMapping(AdminPageParameterName.BANNERREGISTER)
     public Map<String, Object> registerBanner(@ModelAttribute BannerRegisterDTO bannerRegisterDTO) {
-        System.out.println("파일 이름 : " + bannerRegisterDTO.getBa_img());
-        System.out.println("설명 : " + bannerRegisterDTO.getBa_descript());
-        System.out.println("사용여부 : " + bannerRegisterDTO.getBa_use());
-        return ResponseJsonUtils.mapResponse("success", "배너등록완료",null);
+        // System.out.println("파일 이름 : " + bannerRegisterDTO.getBa_img());
+        // System.out.println("설명 : " + bannerRegisterDTO.getBa_descript());
+        // System.out.println("사용여부 : " + bannerRegisterDTO.getBa_use());
+        MultipartFile file = bannerRegisterDTO.getBa_img();
+
+        try {
+            String originalFilename = file.getOriginalFilename();
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String storedFileName = UUID.randomUUID() + extension;
+            String bannerDir = uploadRoot + "/banner";
+
+            File dest = new File(bannerDir + "/" + storedFileName);
+            dest.getParentFile().mkdirs();
+            file.transferTo(dest);
+
+            Banner banner = new Banner();
+            banner.setBa_img(storedFileName);
+            banner.setBa_img_path(bannerDir + "/" + storedFileName);
+            banner.setBa_descript(bannerRegisterDTO.getBa_descript());
+            banner.setBa_use(bannerRegisterDTO.getBa_use());
+            adminService.saveBanner(banner);
+            return ResponseJsonUtils.mapResponse("success", "배너등록완료",null);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseJsonUtils.mapResponse("fail", "배너등록실패", null);
+        }
     }
 }

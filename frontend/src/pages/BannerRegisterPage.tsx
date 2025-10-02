@@ -61,6 +61,7 @@ const BannerRegisterPage = () => {
             .bannerRegister(formData, token || undefined)
             .then((res) => {
                 alert(res.data.message);
+                navigate("/admin/bannerList");
             })
             .catch((err) => {
                 console.log(err);

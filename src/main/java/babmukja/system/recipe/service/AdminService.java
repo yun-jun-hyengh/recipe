@@ -9,6 +9,7 @@ import com.querydsl.core.Tuple;
 
 import babmukja.system.recipe.dto.CustomerSearchDTO;
 import babmukja.system.recipe.dto.CustomerUpdateDTO;
+import babmukja.system.recipe.entity.Banner;
 import babmukja.system.recipe.repository.AdminRepository;
 
 @Service
@@ -38,5 +39,9 @@ public class AdminService {
 
     public boolean updateCustomer(CustomerUpdateDTO dto) {
         return adminRepository.updateByCustomerIdx(dto) > 0;
+    }
+
+    public void saveBanner(Banner banner) {
+        adminRepository.bannerSave(banner);
     }
 }
