@@ -26,22 +26,30 @@ const BannerListPage = () => {
         //         setBanners(listData);
         //         setTotalPages(res.data[0].totalPages);
         //     });
-        adminApi.getBannerList(p, size, token || undefined).then((res) => {
+        const reqPage = Math.max(1, p);
+        adminApi.getBannerList(reqPage, size, token || undefined).then((res) => {
             const payload = Array.isArray(res.data) ? res.data[0] : res.data;
-            setBanners(payload?.data ?? []);
-            setTotalPages(payload?.totalPages ?? 1);
-            setPage(payload?.currentPage ?? p);
+            const data = payload?.data ?? [];
+            const tp = payload?.totalPages ?? 1;
+            setBanners(data);
+            setTotalPages(tp);
+            setPage(reqPage);
         })
     }
 
     useEffect(() => {
+        if (!token) return;
         loadBanners(page);
     }, [page, token]);
 
     const goPage = (p: number) => {
-        if(p < 0 || p >= totalPages) return;
+        if(p < 1 || p > totalPages) return;
         setPage(p);
     }
+
+    const maxButtons = 10;
+    const startPage = Math.floor((page - 1) / maxButtons) * maxButtons + 1;
+    const endPage = Math.min(startPage + maxButtons - 1, totalPages);
 
     return(
         <div className="flex min-h-screen bg-gray-50">
@@ -78,12 +86,12 @@ const BannerListPage = () => {
                             {banners.map((b, idx) => (
                                 <tr key={b.ba_idx}>
                                     <td className="p-4">{b.ba_idx}</td>
-                                    <td className="p-4">
-                                        {/* <img
-                                            src={adminApi.getBannerImage(`${b.ba_img_path}${b.ba_img}`, token || undefined)}
-                                            alt={b.ba_descript}
-                                            width={100}
-                                        /> */}
+                                    <td className="p-4 text-center">
+                                        <img
+                                            src={adminApi.getBannerImage(`${b.ba_img_path}`, token!)}
+                                            className='mx-auto'
+                                            width={200}
+                                        />
                                     </td>
                                     <td className="p-4">{b.ba_descript}</td>
                                     <td className="p-4">{b.ba_use === 1 ? "사용" : "미사용"}</td>
@@ -99,21 +107,36 @@ const BannerListPage = () => {
                         </tbody>
                     </table>
                     <div className="flex items-center justify-center mt-4">
-                        <button onClick={() => goPage(0)} disabled={page <= 0} className="px-3 py-1 bg-gray-200 rounded mr-2">처음</button>
-                        <button onClick={() => goPage(page - 1)} disabled={page <= 0} className="px-3 py-1 bg-gray-200 rounded mr-2">이전</button>
-
-                        {Array.from({ length: totalPages }, (_, i) => (
                         <button
-                            key={i}
-                            onClick={() => goPage(i)}
-                            className={`px-3 py-1 mx-1 rounded ${i === page ? "bg-purple-700 text-white" : "bg-gray-200"}`}
+                          onClick={() => goPage(page - 1)}
+                          disabled={page <= 1}
+                          className="px-3 py-1 bg-gray-200 rounded mr-2"
                         >
-                            {i + 1}
+                          이전
                         </button>
-                        ))}
 
-                        <button onClick={() => goPage(page + 1)} disabled={page >= totalPages - 1} className="px-3 py-1 bg-gray-200 rounded ml-2">다음</button>
-                        <button onClick={() => goPage(totalPages - 1)} disabled={page >= totalPages - 1} className="px-3 py-1 bg-gray-200 rounded ml-2">끝</button>
+                        {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+                          const pageNumber = startPage + i;
+                          return (
+                            <button
+                              key={pageNumber}
+                              onClick={() => goPage(pageNumber)}
+                              className={`px-3 py-1 mx-1 rounded ${
+                                pageNumber === page ? "bg-purple-700 text-white font-bold" : "bg-gray-200"
+                              }`}
+                            >
+                              {pageNumber}
+                            </button>
+                          );
+                        })}
+
+                        <button
+                          onClick={() => goPage(page + 1)}
+                          disabled={page >= totalPages}
+                          className="px-3 py-1 bg-gray-200 rounded ml-2"
+                        >
+                          다음
+                        </button>
                     </div>
                 </div>
             </main>

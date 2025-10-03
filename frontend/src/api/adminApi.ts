@@ -63,11 +63,14 @@ export const adminApi = {
     //     return 
     // }
 
-    getBannerImage: (path: string, token?: string) => {
-        return axiosInstance.get(`/api/admin/bannerImage`, {
-            params: { path },
-            responseType: "blob",
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-        }) as Promise<AxiosResponse<Blob, any>>;
+    getBannerImage: (path: string, token: string) => {
+        // return axiosInstance.get(`/api/admin/bannerImage`, {
+        //     params: { path },
+        //     responseType: "blob",
+        //     headers: token ? { Authorization: `Bearer ${token}` } : {},
+        // }) as Promise<AxiosResponse<Blob, any>>;
+        return `${axiosInstance.defaults.baseURL}/api/admin/bannerImage?path=${encodeURIComponent(
+            path
+        )}&token=${encodeURIComponent(token)}`;
     }
 }

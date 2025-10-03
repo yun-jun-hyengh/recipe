@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,17 +32,19 @@ import babmukja.system.recipe.dto.CustomerUpdateDTO;
 import babmukja.system.recipe.entity.Banner;
 import babmukja.system.recipe.service.AdminService;
 import babmukja.system.recipe.utils.FileUtil;
+import babmukja.system.recipe.utils.JwtUtil;
 import babmukja.system.recipe.utils.ResponseJsonUtils;
 
 @RestController
 public class AdminController {
     private final AdminService adminService;
-
+    private final JwtUtil jwtUtil;
     @Value("${app.upload.root}")
     private String uploadRoot;
 
-    public AdminController(AdminService adminService) {
+    public AdminController(AdminService adminService, JwtUtil jwtUtil) {
         this.adminService = adminService;
+        this.jwtUtil = jwtUtil;
     }
 
     @ResponseBody
@@ -159,7 +163,10 @@ public class AdminController {
     }
 
     @GetMapping(AdminPageParameterName.BANNERIMAGE)
-    public ResponseEntity<?> serveBanner(@RequestParam String path) {
+    public ResponseEntity<Resource> serveBanner(@RequestParam String path, @RequestParam String token) {
+        if(!jwtUtil.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         return FileUtil.serverFile(path);
     }
 }
