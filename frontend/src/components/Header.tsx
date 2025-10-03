@@ -65,7 +65,6 @@ const Header = () => {
                             {user ? (
                                 <>
                                     <Link to="/customer" className="text-sm font-medium cursor-pointer">고객센터</Link>
-                                    <span className="text-sm font-medium">반갑습니다  {user.nickname}님</span>
                                     <Link to="/mypage" className="text-sm font-medium cursor-pointer">마이페이지</Link>
                                     {user.adminchk === 1 && (
                                         <Link to="/admin" target='_blank' rel="noopener noreferrer" className="text-sm font-medium cursor-pointer">관리자페이지</Link>
