@@ -44,4 +44,12 @@ public class AdminService {
     public void saveBanner(Banner banner) {
         adminRepository.bannerSave(banner);
     }
+
+    public List<Banner> getAllBanners(int page, int size) {
+        return adminRepository.findAllBanners(page, size);
+    }
+
+    public long getBannerCount() {
+        return adminRepository.countBanners();
+    }
 }

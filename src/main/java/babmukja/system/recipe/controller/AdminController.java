@@ -9,11 +9,13 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +29,7 @@ import babmukja.system.recipe.dto.CustomerSearchDTO;
 import babmukja.system.recipe.dto.CustomerUpdateDTO;
 import babmukja.system.recipe.entity.Banner;
 import babmukja.system.recipe.service.AdminService;
+import babmukja.system.recipe.utils.FileUtil;
 import babmukja.system.recipe.utils.ResponseJsonUtils;
 
 @RestController
@@ -128,5 +131,35 @@ public class AdminController {
             e.printStackTrace();
             return ResponseJsonUtils.mapResponse("fail", "배너등록실패", null);
         }
+    }
+
+    @GetMapping(AdminPageParameterName.BANNERLIST)
+    public List<Map<String, Object>> getBannerList(@RequestParam(defaultValue = "1") int page, 
+                                                   @RequestParam(defaultValue = "10") int size) {
+        page = Math.max(page, 1);
+        List<Banner> banners = adminService.getAllBanners(page, size);
+        long totalElements = adminService.getBannerCount();
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        for(Banner b : banners) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("ba_idx", b.getBa_idx());
+            map.put("ba_img", b.getBa_img());
+            map.put("ba_img_path", b.getBa_img_path());
+            map.put("ba_descript", b.getBa_descript());
+            map.put("ba_use", b.getBa_use());
+            dataList.add(map);
+        }
+        return ResponseJsonUtils.listMapResponse(
+            "success", 
+            "배너 리스트 조회", 
+            dataList,
+            totalElements, page, totalPages);
+    }
+
+    @GetMapping(AdminPageParameterName.BANNERIMAGE)
+    public ResponseEntity<?> serveBanner(@RequestParam String path) {
+        return FileUtil.serverFile(path);
     }
 }

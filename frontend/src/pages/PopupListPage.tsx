@@ -30,7 +30,14 @@ const PopupListPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            
+                            <tr>
+                                <td className="p-4"></td>
+                                <td className="p-4"></td>
+                                <td className="p-4"></td>
+                                <td className="p-4"></td>
+                                <td className="p-4"></td>
+                                <td className="p-4"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

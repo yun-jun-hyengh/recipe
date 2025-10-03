@@ -6,4 +6,6 @@ public class AdminPageParameterName {
     public static final String USERADMINDEL = "/api/admin/userdel";
     public static final String USERADMINUPDATE = "/api/admin/userupdate";
     public static final String BANNERREGISTER = "/api/admin/bannerreg";
+    public static final String BANNERLIST = "/api/admin/bannerList";
+    public static final String BANNERIMAGE = "/api/admin/bannerImage";
 }

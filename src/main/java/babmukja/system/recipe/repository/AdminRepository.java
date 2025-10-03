@@ -25,6 +25,7 @@ import babmukja.system.recipe.dto.CustomerSearchDTO;
 import babmukja.system.recipe.dto.CustomerUpdateDTO;
 import babmukja.system.recipe.entity.Banner;
 import babmukja.system.recipe.entity.Customer;
+import babmukja.system.recipe.entity.QBanner;
 import babmukja.system.recipe.entity.QCustomer;
 import babmukja.system.recipe.entity.QRecipe;
 
@@ -165,5 +166,23 @@ public class AdminRepository {
     @Transactional
     public void bannerSave(Banner banner) {
         em.persist(banner);
+    }
+
+    public List<Banner> findAllBanners(int page, int size) {
+        QBanner banner = QBanner.banner;
+        int offset = Math.max((page - 1) * size, 0);
+        return queryFactory
+                .selectFrom(banner)
+                .orderBy(banner.ba_idx.desc())
+                .offset(offset)
+                .limit(size)
+                .fetch();
+    }
+
+    public long countBanners() {
+        QBanner banner = QBanner.banner;
+        return queryFactory
+                .select(banner.count())
+                .from(banner).fetchOne();
     }
 }

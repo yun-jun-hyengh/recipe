@@ -36,3 +36,11 @@ export interface CustomerListResponse {
     currentPage: number;
     totalPages: number;
 }
+
+export interface BannerList {
+    ba_idx: number;
+    ba_img: string;
+    ba_img_path: string;
+    ba_descript: string;
+    ba_use: number;
+}
