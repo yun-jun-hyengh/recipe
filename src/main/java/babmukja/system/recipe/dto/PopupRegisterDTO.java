@@ -13,5 +13,5 @@ public class PopupRegisterDTO {
     private String start_date;
     private String end_date;
     private MultipartFile popup_filename;
-    private Long is_active;
+    private Long is_active; // 사용 미사용
 }
