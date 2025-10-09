@@ -14,6 +14,7 @@ import UserListPage from "../pages/UserListPage";
 import BannerListPage from "../pages/BannerListPage";
 import BannerRegisterPage from "../pages/BannerRegisterPage";
 import PopupListPage from "../pages/PopupListPage";
+import BannerUpdatePage from "../pages/BannerUpdatePage";
 const AppRoutes = () => {
     const routes = useRoutes([
         { path: '/', element: <HomePage /> },
@@ -21,6 +22,7 @@ const AppRoutes = () => {
         { path: '/admin/userList', element: <UserListPage /> },
         { path: '/admin/bannerList', element: <BannerListPage /> },
         { path: '/admin/bannerjoin', element: <BannerRegisterPage /> },
+        { path: '/admin/bannerupdate', element: <BannerUpdatePage /> },
         { path: '/admin/popupList', element: <PopupListPage /> },
         { path: '/customer', element: <CustomerPage /> },
         { path: '/login', element: <LoginPage /> },

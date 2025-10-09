@@ -14,6 +14,7 @@ const BannerListPage = () => {
     const [page, setPage] = useState<number>(1);
     const [size] = useState<number>(10);
     const [totalPages, setTotalPages] = useState<number>(1);
+    const [selected, setSelected] = useState<number[]>([]); 
 
     const handleRegister = () => {
         navigate('/admin/bannerjoin');
@@ -47,6 +48,40 @@ const BannerListPage = () => {
         setPage(p);
     }
 
+    const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if(e.target.checked) {
+            setSelected(banners.map((b) => b.ba_idx));
+        } else {
+            setSelected([]);
+        }
+    }
+
+    const handleSelectOne = (ba_idx: number) => {
+        if(selected.includes(ba_idx)) {
+            setSelected(selected.filter((id) => id !== ba_idx));
+        } else {
+            setSelected([...selected, ba_idx]);
+        }
+    }
+
+    const handleDelete = () => {
+        adminApi.deleteBanners(selected, token ?? "")
+            .then((res) => {
+                if(res.data.status === "success") {
+                    alert(res.data.message);
+                    loadBanners(page);
+                } else {
+                    alert(res.data.message);
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+    }
+
+    const handleEdit = (banner: BannerList) => {
+        navigate('/admin/bannerupdate', { state: banner });
+    }
+
     const maxButtons = 10;
     const startPage = Math.floor((page - 1) / maxButtons) * maxButtons + 1;
     const endPage = Math.min(startPage + maxButtons - 1, totalPages);
@@ -61,7 +96,9 @@ const BannerListPage = () => {
                         <h3 className="font-bold mb-2">배너 리스트</h3>
                         <div className="flex items-center space-x-2">
                             <button
-                                className="px-4 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition">
+                                className="px-4 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition"
+                                onClick={handleDelete}
+                                >
                                 배너삭제
                             </button>
                             <button
@@ -75,6 +112,13 @@ const BannerListPage = () => {
                     <table className="w-full text-sm text-center">
                         <thead>
                             <tr className="text-left text-gray-400">
+                                <th className='text-center'>
+                                    <input
+                                        type='checkbox'
+                                        checked={banners.length > 0 && banners.every((b) => selected.includes(b.ba_idx))}
+                                        onChange={handleSelectAll}
+                                    />
+                                </th>
                                 <th className='text-center'>번호</th>
                                 <th className='text-center'>배너 이미지</th>
                                 <th className='text-center'>배너 설명</th>
@@ -85,6 +129,13 @@ const BannerListPage = () => {
                         <tbody>
                             {banners.map((b, idx) => (
                                 <tr key={b.ba_idx}>
+                                    <td className="p-4 text-center">
+                                        <input
+                                            type="checkbox"
+                                            checked={selected.includes(b.ba_idx)}
+                                            onChange={() => handleSelectOne(b.ba_idx)}
+                                        />
+                                    </td>
                                     <td className="p-4">{b.ba_idx}</td>
                                     <td className="p-4 text-center">
                                         <img
@@ -97,6 +148,7 @@ const BannerListPage = () => {
                                     <td className="p-4">{b.ba_use === 1 ? "사용" : "미사용"}</td>
                                     <td className="p-4">
                                         <button
+                                            onClick={() => handleEdit(b)}
                                             className="px-2 py-1 bg-blue-500 text-white rounded mr-2"
                                         >
                                             수정

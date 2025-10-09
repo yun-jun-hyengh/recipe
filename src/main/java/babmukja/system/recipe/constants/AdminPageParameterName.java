@@ -8,4 +8,5 @@ public class AdminPageParameterName {
     public static final String BANNERREGISTER = "/api/admin/bannerreg";
     public static final String BANNERLIST = "/api/admin/bannerList";
     public static final String BANNERIMAGE = "/api/admin/bannerImage";
+    public static final String BANNERDELETE = "/api/admin/bannerDelete";
 }

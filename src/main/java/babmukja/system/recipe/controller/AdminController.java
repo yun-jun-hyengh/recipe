@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.querydsl.core.Tuple;
 
 import babmukja.system.recipe.constants.AdminPageParameterName;
+import babmukja.system.recipe.dto.BannerDeleteDTO;
 import babmukja.system.recipe.dto.BannerRegisterDTO;
 import babmukja.system.recipe.dto.CustomerDeleteDTO;
 import babmukja.system.recipe.dto.CustomerSearchDTO;
@@ -168,5 +169,21 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return FileUtil.serverFile(path);
+    }
+
+    @PostMapping(AdminPageParameterName.BANNERDELETE)
+    @ResponseBody
+    public ResponseEntity<?> deleteBanners(@RequestBody BannerDeleteDTO dto) {
+        try {
+            adminService.deleteBannerList(dto);
+            return ResponseEntity.ok(
+                ResponseJsonUtils.mapResponse("success", "선택된 배너가 삭제되었습니다.", null)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok(
+                ResponseJsonUtils.mapResponse("error", "삭제 중 오류 발생", null)
+            );
+        }
     }
 }

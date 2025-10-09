@@ -185,4 +185,18 @@ public class AdminRepository {
                 .select(banner.count())
                 .from(banner).fetchOne();
     }
+
+    public String findImagePathByIdx(Long ba_idx) {
+        String sql = "SELECT ba_img_path FROM banner WHERE ba_idx = :ba_idx";
+        return (String) em.createNativeQuery(sql)
+            .setParameter("ba_idx", ba_idx)
+            .getSingleResult();
+    }
+
+    public void bannerDeleteByIdx(Long ba_idx) {
+        String sql = "DELETE FROM banner WHERE ba_idx = :ba_idx";
+        em.createNativeQuery(sql)
+            .setParameter("ba_idx", ba_idx)
+            .executeUpdate();
+    }
 }

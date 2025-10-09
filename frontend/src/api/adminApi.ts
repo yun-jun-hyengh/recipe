@@ -72,5 +72,13 @@ export const adminApi = {
         return `${axiosInstance.defaults.baseURL}/api/admin/bannerImage?path=${encodeURIComponent(
             path
         )}&token=${encodeURIComponent(token)}`;
+    },
+
+    deleteBanners: (ba_idx_list: number[], token: string) => {
+        return axiosInstance.post(
+            `/api/admin/bannerDelete`,
+            { ba_idx_list },
+            { headers: token ? { Authorization: `Bearer ${token}` } : {} }
+        );
     }
 }

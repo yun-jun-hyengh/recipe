@@ -1,12 +1,15 @@
 package babmukja.system.recipe.service;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.Tuple;
 
+import babmukja.system.recipe.dto.BannerDeleteDTO;
 import babmukja.system.recipe.dto.CustomerSearchDTO;
 import babmukja.system.recipe.dto.CustomerUpdateDTO;
 import babmukja.system.recipe.entity.Banner;
@@ -51,5 +54,18 @@ public class AdminService {
 
     public long getBannerCount() {
         return adminRepository.countBanners();
+    }
+
+    @Transactional
+    public void deleteBannerList(BannerDeleteDTO dto) {
+        for(Long ba_idx : dto.getBa_idx_list()) {
+            String filePath = adminRepository.findImagePathByIdx(ba_idx);
+
+            File file = new File(filePath);
+            if(file.exists() && file.isFile()) {
+                file.delete();
+            }
+            adminRepository.bannerDeleteByIdx(ba_idx);
+        }
     }
 }
