@@ -80,5 +80,12 @@ export const adminApi = {
             { ba_idx_list },
             { headers: token ? { Authorization: `Bearer ${token}` } : {} }
         );
+    },
+
+    updateBanner: (ba_idx: number, ba_descript: string, ba_use: number, token: string) => {
+        const data = { ba_idx, ba_descript, ba_use };
+        return axiosInstance.post("/api/admin/bannerUpdate", data, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        })
     }
 }

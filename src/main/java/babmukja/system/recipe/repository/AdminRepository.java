@@ -199,4 +199,12 @@ public class AdminRepository {
             .setParameter("ba_idx", ba_idx)
             .executeUpdate();
     }
+
+    public long updateBanner(Long ba_idx, String ba_descript, Long ba_use) {
+        QBanner banner = QBanner.banner;
+        return queryFactory.update(banner)
+                .set(banner.ba_descript, ba_descript)
+                .set(banner.ba_use, ba_use)
+                .where(banner.ba_idx.eq(ba_idx)).execute();
+    }
 }

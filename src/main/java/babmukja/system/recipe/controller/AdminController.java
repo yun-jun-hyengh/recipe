@@ -27,6 +27,7 @@ import com.querydsl.core.Tuple;
 import babmukja.system.recipe.constants.AdminPageParameterName;
 import babmukja.system.recipe.dto.BannerDeleteDTO;
 import babmukja.system.recipe.dto.BannerRegisterDTO;
+import babmukja.system.recipe.dto.BannerUpdateDTO;
 import babmukja.system.recipe.dto.CustomerDeleteDTO;
 import babmukja.system.recipe.dto.CustomerSearchDTO;
 import babmukja.system.recipe.dto.CustomerUpdateDTO;
@@ -184,6 +185,17 @@ public class AdminController {
             return ResponseEntity.ok(
                 ResponseJsonUtils.mapResponse("error", "삭제 중 오류 발생", null)
             );
+        }
+    }
+
+    @PostMapping(AdminPageParameterName.BANNERUPDATE)
+    @ResponseBody
+    public Map<String, Object> updateBanner(@RequestBody BannerUpdateDTO dto) {
+        long updated = adminService.updateBanner(dto.getBa_idx(), dto.getBa_descript(), dto.getBa_use());
+        if(updated > 0) {
+            return ResponseJsonUtils.mapResponse("success", "배너 수정 완료", null);
+        } else {
+            return ResponseJsonUtils.mapResponse("fail", "배너 수정 실패", null);
         }
     }
 }

@@ -15,7 +15,38 @@ const BannerUpdatePage = () => {
 
     const [ba_descript, setBaDescript] = useState(banner.ba_descript);
     const [ba_use, setBaUse] = useState(banner.ba_use);
+    const [ba_idx] = useState<number>(banner.ba_idx);
     // const [ba_img_path, setBaImgPath] = useState(banner.ba_img_path);
+
+    const handleDelete = () => {
+        const baIdxArray = [banner.ba_idx];
+        adminApi.deleteBanners(baIdxArray, token ?? "")
+            .then((res) => {
+                if(res.data.status === "success") {
+                    alert(res.data.message);
+                    navigate("/admin/bannerList")
+                } else {
+                    alert(res.data.message);
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+    }
+
+    const handleUpdate = () => {
+        adminApi.updateBanner(ba_idx, ba_descript, ba_use, token ?? "")
+            .then((res) => {
+                if(res.data.status === "success") {
+                    alert(res.data.message);
+                    navigate("/admin/bannerList");
+                } else {
+                    alert(res.data.message);
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+    }
+
     return (
         <div className="flex min-h-screen bg-gray-50">
             <AdminSideBar />
@@ -64,16 +95,19 @@ const BannerUpdatePage = () => {
 
                     <div className="mb-4 flex gap-4 mt-8">
                         <button
+                            onClick={handleUpdate}
                             className="py-2 font-bold text-white transition duration-300 ease-in-out bg-[#000066] rounded-md shadow-md px-14 hover:bg-[#000033]"
                         >
                             수정
                         </button>
                         <button
+                            onClick={handleDelete}
                             className="py-2 font-bold text-white transition duration-300 ease-in-out bg-red-600 rounded-md shadow-md px-14 hover:bg-red-700"
                         >
                             삭제
                         </button>
                         <button
+                            onClick={() => navigate("/admin/bannerList")}
                             className="py-2 font-bold text-gray-800 transition duration-300 ease-in-out bg-gray-200 rounded-md shadow-md px-14 hover:bg-gray-300"
                         >
                             취소

@@ -68,4 +68,9 @@ public class AdminService {
             adminRepository.bannerDeleteByIdx(ba_idx);
         }
     }
+
+    @Transactional
+    public long updateBanner(Long ba_idx, String ba_descript, Long ba_use) {
+        return adminRepository.updateBanner(ba_idx, ba_descript, ba_use);
+    }
 }
