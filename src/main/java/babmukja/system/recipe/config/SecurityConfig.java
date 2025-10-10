@@ -44,6 +44,7 @@ public class SecurityConfig {
             .cors().and()
             .authorizeRequests()
                 .antMatchers("/api/customer/**").permitAll()
+                .antMatchers("/api/home/**").permitAll()
                 .antMatchers(
                     "/",
                     "/index.html",
