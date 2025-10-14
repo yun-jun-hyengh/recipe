@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-
+import axiosInstance from "../../service/axiosInstance";
 interface Banner {
   ba_idx: number;
   ba_img_path: string;
@@ -23,7 +22,7 @@ const Banner = () => {
     //   setIndex((prev) => (prev + 1) % images.length);
     // }, 3000);
     // return () => clearInterval(timer); // 타이머 잰다 
-    axios.get('/api/home/bannerActive')
+    axiosInstance.get('/api/home/bannerActive')
       .then(res => {
         const data = res.data[0]?.data ?? [];
         setBanners(data);
@@ -42,7 +41,7 @@ const Banner = () => {
   return (
     <div className="relative w-full overflow-hidden">
       <img
-        src={`/api/home/bannerActiveFilePath?path=${encodeURIComponent(banners[index].ba_img_path)}`}
+        src={`http://localhost:10000/api/home/bannerActiveFilePath?path=${encodeURIComponent(banners[index].ba_img_path)}`}
         alt={`Banner ${banners[index].ba_idx}`}
         className="object-cover w-full h-[30rem] transition duration-700"
       />
