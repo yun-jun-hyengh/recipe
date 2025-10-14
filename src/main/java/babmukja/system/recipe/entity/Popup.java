@@ -33,6 +33,12 @@ public class Popup {
     @Column(name = "end_date")
     private String end_date;
 
+    @Column(name = "popup_filename")
+    private String popup_filename;
+
+    @Column(name = "popup_filepath")
+    private String popup_filepath;
+
     @Column(name = "is_active")
     private Long is_active;
 }
