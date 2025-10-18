@@ -38,7 +38,9 @@ public class NoticeRepository {
                     notice.title,
                     notice.content,
                     notice.regdate,
-                    notice.viewcount
+                    notice.viewcount,
+                    notice.filename,
+                    notice.filepath
                 )).from(notice).orderBy(notice.idx.desc()).fetch();
     }
 }

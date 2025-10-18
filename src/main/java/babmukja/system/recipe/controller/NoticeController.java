@@ -85,6 +85,8 @@ public class NoticeController {
             map.put("content", n.getContent());
             map.put("regdate", n.getRegdate());
             map.put("viewcount", n.getViewcount());
+            map.put("filename", n.getFilename());
+            map.put("filepath", n.getFilepath());
             return map;
         }).collect(Collectors.toList());
 
