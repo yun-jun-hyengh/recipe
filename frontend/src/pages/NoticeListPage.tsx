@@ -26,6 +26,10 @@ const NoticeListPage = () => {
             })
     },[]);
 
+    const goDetail = (idx: string) => {
+        navigate(`/noticedetail/${idx}`);
+    }
+
     return (
         <div className="min-h-screen px-4 py-10">
             <div className="p-6 mx-auto max-w-screen-2xl" style={{lineHeight: 2.25}}>
@@ -72,7 +76,12 @@ const NoticeListPage = () => {
                             {notices.map((notice, index) => (
                                 <tr key={index} className="border-b hover:bg-gray-50">
                                 <td className="px-2 py-2 sm:px-3">{notice.idx}</td>
-                                <td className="px-2 py-2 text-left sm:px-3">{notice.title}</td>
+                                <td 
+                                    className="px-2 py-2 text-left sm:px-3 hover:underline cursor-pointer"
+                                    onClick={() => goDetail(notice.idx)}
+                                >
+                                    {notice.title}
+                                </td>
                                 <td className="hidden px-2 py-2 sm:px-3 md:table-cell">{notice.writer}</td>
                                 <td className="hidden px-2 py-2 sm:px-3 sm:table-cell">{notice.regdate}</td>
                                 <td className="hidden px-2 py-2 sm:px-3 md:table-cell">{notice.viewcount}</td>

@@ -1,7 +1,15 @@
 import React from "react";
 import * as FiIcons from "react-icons/fi";
 import type { IconType } from "react-icons";
+import { useParams, useNavigate } from "react-router-dom";
 const NoticeDetailPage = () => {
+    // const location = useLocation();
+    // const navigate = useNavigate();
+    // const notice = location.state;
+
+    const { idx } = useParams();
+    const navigate = useNavigate();
+
     const MessageIcon = FiIcons.FiMessageCircle as React.ComponentType<{ size?: number }>;
     const EyeIcon = FiIcons.FiEye as React.ComponentType<{ size?: number }>;
     const EditIcon = FiIcons.FiEdit2 as React.ComponentType<{ size?: number }>;

@@ -31,7 +31,7 @@ const AppRoutes = () => {
         { path: '/signup', element: <SignupPage /> },
         { path: '/noticeList', element: <NoticeListPage /> },
         { path: '/noticeWrite', element: <NoticeWritePage /> },
-        { path: '/noticedetail', element: <NoticeDetailPage /> },
+        { path: '/noticedetail/:idx', element: <NoticeDetailPage /> },
         { path: '/findidpage', element: <FindIdPage /> },
     ]);
     return routes;
