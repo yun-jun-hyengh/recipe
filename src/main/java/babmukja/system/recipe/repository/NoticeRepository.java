@@ -1,6 +1,8 @@
 package babmukja.system.recipe.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 
@@ -42,5 +44,24 @@ public class NoticeRepository {
                     notice.filename,
                     notice.filepath
                 )).from(notice).orderBy(notice.idx.desc()).fetch();
+    }
+
+    public Map<String, Object> findNoticeDetail(Long idx) {
+        QNotice notice = QNotice.notice;
+
+        Notice n = queryFactory.selectFrom(notice)
+                    .where(notice.idx.eq(idx)).fetchFirst();
+        
+        Map<String, Object> map = new HashMap<>();
+        map.put("idx", n.getIdx());
+        map.put("writer", n.getWriter());
+        map.put("title", n.getTitle());
+        map.put("content", n.getContent());
+        map.put("filename", n.getFilename());
+        map.put("filepath", n.getFilepath());
+        map.put("viewcount", n.getViewcount());
+        map.put("regdate", n.getRegdate());
+
+        return map;
     }
 }

@@ -13,11 +13,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import babmukja.system.recipe.constants.NoticeParameterName;
+import babmukja.system.recipe.dto.NoticeIdxDTO;
 import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeWriteDTO;
 import babmukja.system.recipe.service.NoticeService;
@@ -91,5 +93,14 @@ public class NoticeController {
         }).collect(Collectors.toList());
 
         return ResponseJsonUtils.listMapResponse("success", null, data);
+    }
+
+    @GetMapping(NoticeParameterName.NOTICEDETAIL)
+    public Map<String, Object> getNoticeDetail(NoticeIdxDTO dto) {
+        Map<String, Object> detail = noticeService.getNoticeDetail(dto.getIdx());
+        if(detail == null) {
+            return ResponseJsonUtils.mapResponse("fail", "해당 게시글이 존재하지 않습니다.", null);
+        } 
+        return ResponseJsonUtils.mapResponse("success", "조회성공", detail);
     }
 }

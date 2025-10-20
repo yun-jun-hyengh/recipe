@@ -1,6 +1,7 @@
 package babmukja.system.recipe.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -33,5 +34,9 @@ public class NoticeService {
 
     public List<NoticeResponseDTO> getNoticeList() {
         return noticeRepository.noticeList();
+    }
+
+    public Map<String, Object> getNoticeDetail(Long idx) {
+        return noticeRepository.findNoticeDetail(idx);
     }
 }
