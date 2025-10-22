@@ -1,3 +1,4 @@
+import NoticeDetailPage from "../pages/NoticeDetailPage";
 import axiosInstance from "../service/axiosInstance";
 import { NoticeRequest } from "../types/notice";
 import { NoticeDetail } from "../types/notice";
@@ -17,6 +18,9 @@ export const noticeApi = {
     getList: () => axiosInstance.get("/api/notice/noticelist"),
 
     noticedetail: (idx: number) => {
-
+        return axiosInstance.get<{ status: string; message: string; data: NoticeDetail}>(
+            `/api/notice/noticedetail`,
+            { params: { idx }}
+        );
     },
 };

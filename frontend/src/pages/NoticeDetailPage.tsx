@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as FiIcons from "react-icons/fi";
 import type { IconType } from "react-icons";
 import { useParams, useNavigate } from "react-router-dom";
+import { NoticeDetail } from "../types/notice";
+import { noticeApi } from "../api/noticeApi";
 const NoticeDetailPage = () => {
     // const location = useLocation();
     // const navigate = useNavigate();
@@ -15,6 +17,27 @@ const NoticeDetailPage = () => {
     const EditIcon = FiIcons.FiEdit2 as React.ComponentType<{ size?: number }>;
     const TrashIcon = FiIcons.FiTrash2 as React.ComponentType<{ size?: number }>;
     const MoreIcon = FiIcons.FiMoreVertical as React.ComponentType<{ size?: number }>;
+
+    const [notice, setNotice] = useState<NoticeDetail | null>(null);
+
+    useEffect(() => {
+        if (idx) {
+            noticeApi.noticedetail(Number(idx))
+                .then((res) => {
+                    if (res.data.status === "success") {
+                        setNotice(res.data.data);
+                        console.log(res.data.data);
+                    } else {
+                        alert("데이터를 불러올 수 없습니다.");
+                        navigate("/notice");
+                    }
+                })
+                .catch((err) => {
+                    console.error("상세 조회 실패:", err);
+                });
+        }
+    }, [idx, navigate]);
+
     return (
         <div className="min-h-screen px-4 py-10">
             <div className="p-6 mx-auto max-w-screen-2xl">
