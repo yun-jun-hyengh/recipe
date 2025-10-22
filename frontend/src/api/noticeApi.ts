@@ -1,5 +1,6 @@
 import axiosInstance from "../service/axiosInstance";
 import { NoticeRequest } from "../types/notice";
+import { NoticeDetail } from "../types/notice";
 
 export const noticeApi = {
     // noticewrite: (formData: FormData) => axiosInstance.post("/api/notice/noticewrite", formData, {
@@ -14,4 +15,8 @@ export const noticeApi = {
         })
     },
     getList: () => axiosInstance.get("/api/notice/noticelist"),
+
+    noticedetail: (idx: number) => {
+
+    },
 };
