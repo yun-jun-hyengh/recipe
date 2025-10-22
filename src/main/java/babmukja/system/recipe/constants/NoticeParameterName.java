@@ -4,4 +4,5 @@ public class NoticeParameterName {
     public static final String NOTICELIST = "/api/notice/noticelist";
     public static final String NOTICEWRITE = "/api/notice/noticewrite";
     public static final String NOTICEDETAIL = "/api/notice/noticedetail";
+    public static final String NOTICEDELETE = "/api/notice/noticedelete";
 }

@@ -54,6 +54,7 @@ public class SecurityConfig {
                     "/img/**"
                 ).permitAll()
                 .antMatchers("/api/notice/noticewrite").hasRole("ADMIN")
+                .antMatchers("/api/notice/noticedelete").hasRole("ADMIN")
                 .antMatchers("/api/notice/noticelist").permitAll()
                 .antMatchers("/api/notice/noticedetail").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")

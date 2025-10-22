@@ -1,9 +1,11 @@
 package babmukja.system.recipe.service;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeWriteDTO;
@@ -38,5 +40,18 @@ public class NoticeService {
 
     public Map<String, Object> getNoticeDetail(Long idx) {
         return noticeRepository.findNoticeDetail(idx);
+    }
+
+    @Transactional
+    public boolean deleteNotice(Long idx) {
+        String filepath = noticeRepository.findNoticeImagePathByIdx(idx);
+        long deleted = noticeRepository.deleteByNoticeIdx(idx);
+        if(deleted > 0 && filepath != null && !filepath.isEmpty()) {
+            File file = new File(filepath);
+            if(file.exists()) {
+                file.delete();
+            }
+        }
+        return deleted > 0;
     }
 }

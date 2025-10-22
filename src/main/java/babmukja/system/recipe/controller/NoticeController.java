@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -102,5 +103,16 @@ public class NoticeController {
             return ResponseJsonUtils.mapResponse("fail", "해당 게시글이 존재하지 않습니다.", null);
         } 
         return ResponseJsonUtils.mapResponse("success", "조회성공", detail);
+    }
+
+    @PostMapping(NoticeParameterName.NOTICEDELETE)
+    public Map<String, Object> deleteNotice(@RequestBody NoticeIdxDTO dto) {
+        Long idx = dto.getIdx();
+        boolean result = noticeService.deleteNotice(idx);
+        if(result) {
+            return ResponseJsonUtils.mapResponse("success", "공지사항 삭제 완료", null);
+        } else {
+            return ResponseJsonUtils.mapResponse("fail", "삭제실패", null);
+        }
     }
 }

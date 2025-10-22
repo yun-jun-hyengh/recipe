@@ -64,4 +64,17 @@ public class NoticeRepository {
 
         return map;
     }
+
+    public long deleteByNoticeIdx(Long idx) {
+        QNotice notice = QNotice.notice;
+        return queryFactory
+                .delete(notice).where(notice.idx.eq(idx)).execute();
+    }
+
+    public String findNoticeImagePathByIdx(Long idx) {
+        QNotice notice = QNotice.notice;
+        return queryFactory
+                .select(notice.filepath).from(notice).where(notice.idx.eq(idx))
+                .fetchFirst();
+    }
 }

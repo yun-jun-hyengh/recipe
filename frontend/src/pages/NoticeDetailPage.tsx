@@ -29,7 +29,7 @@ const NoticeDetailPage = () => {
                         // console.log(res.data.data);
                     } else {
                         alert("데이터를 불러올 수 없습니다.");
-                        navigate("/notice");
+                        navigate("/noticeList");
                     }
                 })
                 .catch((err) => {
@@ -37,6 +37,10 @@ const NoticeDetailPage = () => {
                 });
         }
     }, [idx, navigate]);
+
+    const handleDelete = () => {
+        
+    }
 
     return (
         <div className="min-h-screen px-4 py-10">
@@ -57,6 +61,7 @@ const NoticeDetailPage = () => {
                         <button
                             type="button"
                             className="p-2 hover:text-red-600 transition"
+                            onClick={handleDelete}
                             aria-label="삭제"
                             >
                             <TrashIcon size={20} />
@@ -64,6 +69,7 @@ const NoticeDetailPage = () => {
                         <button
                             type="button"
                             className="p-2 hover:text-gray-800 transition"
+                            onClick={() => navigate('/noticeList')}
                             aria-label="목록"
                             >
                             <MoreIcon size={20} />
