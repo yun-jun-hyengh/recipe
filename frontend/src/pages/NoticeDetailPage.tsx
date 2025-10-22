@@ -26,7 +26,7 @@ const NoticeDetailPage = () => {
                 .then((res) => {
                     if (res.data.status === "success") {
                         setNotice(res.data.data);
-                        console.log(res.data.data);
+                        // console.log(res.data.data);
                     } else {
                         alert("데이터를 불러올 수 없습니다.");
                         navigate("/notice");
@@ -45,7 +45,7 @@ const NoticeDetailPage = () => {
                     <h2 className="text-xl font-bold sm:text-2xl">공지사항</h2>
                 </div>
                 <div className="flex items-center justify-between mt-4">
-                    <h1 className="text-2xl font-extrabold sm:text-3xl mt-4">gfthgth</h1>
+                    <h1 className="text-2xl font-extrabold sm:text-3xl mt-4">{notice?.title}</h1>
                     <div className="flex items-center gap-3 text-gray-600">
                         <button
                             type="button"
@@ -77,17 +77,18 @@ const NoticeDetailPage = () => {
                     <div className="flex items-center gap-2">
                         <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
                         </div>
-                        <span className="font-medium text-gray-700">최고관리자</span>
+                        <span className="font-medium text-gray-700">{notice?.writer}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <MessageIcon size={16} />
                         <EyeIcon size={16} />3회
-                        <span>25-06-22 17:14</span>
+                        <span>{notice?.regdate}</span>
                     </div>
                 </div>
 
                 <div className="mt-6 text-gray-800 leading-relaxed break-words">
                    { /* 공지사항 내용 들어갈 부분 */}
+                   {notice?.content}
                 </div>
 
                 <div className="mt-10 border-t pt-4 text-gray-600 text-sm">
