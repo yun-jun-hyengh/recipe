@@ -108,6 +108,7 @@ public class NoticeController {
     @PostMapping(NoticeParameterName.NOTICEDELETE)
     public Map<String, Object> deleteNotice(@RequestBody NoticeIdxDTO dto) {
         Long idx = dto.getIdx();
+        System.out.println(idx);
         boolean result = noticeService.deleteNotice(idx);
         if(result) {
             return ResponseJsonUtils.mapResponse("success", "공지사항 삭제 완료", null);

@@ -25,9 +25,9 @@ export const noticeApi = {
     },
 
     deleteNotice: (idx: number) => {
-        axiosInstance.post<{ status: string; message: string; data: any }>(
+        return axiosInstance.post<{ status: string; message: string; data: any }>(
             `/api/notice/noticedelete`,
-            { params: { idx }}
+            {idx}
         );
     }
 };

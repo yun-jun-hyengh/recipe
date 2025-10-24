@@ -39,7 +39,22 @@ const NoticeDetailPage = () => {
     }, [idx, navigate]);
 
     const handleDelete = () => {
-        
+        const ok = window.confirm("정말 삭제하시겠습니까?");
+        if(!ok) {
+            return;
+        }
+        noticeApi.deleteNotice(Number(idx))
+            .then((res) => {
+                if(res.data.status === "success") {
+                    alert(res.data.message);
+                    navigate('/noticeList');
+                } else {
+                    alert(res.data.message);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
     return (
