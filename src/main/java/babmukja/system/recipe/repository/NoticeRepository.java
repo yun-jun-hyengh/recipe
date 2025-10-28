@@ -9,10 +9,12 @@ import javax.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import babmukja.system.recipe.dto.NoticeResponseDTO;
+import babmukja.system.recipe.dto.NoticeSearchDTO;
 import babmukja.system.recipe.entity.Notice;
 import babmukja.system.recipe.entity.QNotice;
 
@@ -31,8 +33,37 @@ public class NoticeRepository {
         em.persist(notice);
     }
 
-    public List<NoticeResponseDTO> noticeList() {
+    public List<NoticeResponseDTO> noticeList(NoticeSearchDTO dto, long[] totalElementsHolder) {
         QNotice notice = QNotice.notice;
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if(dto.getKeyword() != null && !dto.getKeyword().trim().isEmpty()) {
+            String keyword = dto.getKeyword();
+            switch(dto.getSearchType()) {
+                case "title":
+                    builder.and(notice.title.containsIgnoreCase(keyword));
+                    break;
+                case "writer":
+                    builder.and(notice.writer.containsIgnoreCase(keyword));
+                    break;
+                case "both":
+                    builder.and(
+                        notice.title.containsIgnoreCase(keyword)
+                        .or(notice.writer.containsIgnoreCase(keyword))
+                    );
+                    break;
+            }
+        }
+
+        long total = queryFactory.select(notice.count())
+                        .from(notice)
+                        .where(builder).fetchOne();
+        
+        totalElementsHolder[0] = total;
+
+        int pageSize = 10;
+        int offset = (dto.getPage() - 1) * pageSize;
+
         return queryFactory
                 .select(Projections.constructor(NoticeResponseDTO.class, 
                     notice.idx,
@@ -43,7 +74,8 @@ public class NoticeRepository {
                     notice.viewcount,
                     notice.filename,
                     notice.filepath
-                )).from(notice).orderBy(notice.idx.desc()).fetch();
+                )).from(notice).where(builder)
+                .orderBy(notice.idx.desc()).offset(offset).limit(pageSize).fetch();
     }
 
     public Map<String, Object> findNoticeDetail(Long idx) {

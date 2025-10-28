@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import babmukja.system.recipe.constants.NoticeParameterName;
 import babmukja.system.recipe.dto.NoticeIdxDTO;
 import babmukja.system.recipe.dto.NoticeResponseDTO;
+import babmukja.system.recipe.dto.NoticeSearchDTO;
 import babmukja.system.recipe.dto.NoticeWriteDTO;
 import babmukja.system.recipe.service.NoticeService;
 import babmukja.system.recipe.utils.ResponseJsonUtils;
@@ -78,22 +79,15 @@ public class NoticeController {
 
     @GetMapping(NoticeParameterName.NOTICELIST)
     @ResponseBody
-    public List<Map<String, Object>> list() {
-        List<NoticeResponseDTO> notices = noticeService.getNoticeList();
-        List<Map<String, Object>> data = notices.stream().map(n -> {
-            Map<String, Object> map = new HashMap<>();
-            map.put("idx", n.getIdx());
-            map.put("title", n.getTitle());
-            map.put("writer", n.getWriter());
-            map.put("content", n.getContent());
-            map.put("regdate", n.getRegdate());
-            map.put("viewcount", n.getViewcount());
-            map.put("filename", n.getFilename());
-            map.put("filepath", n.getFilepath());
-            return map;
-        }).collect(Collectors.toList());
+    public List<Map<String, Object>> list(@RequestBody NoticeSearchDTO dto) {
+        long[] totalElementsHolder = new long[1];
+        List<NoticeResponseDTO> notices = noticeService.getNoticeList(dto, totalElementsHolder);
 
-        return ResponseJsonUtils.listMapResponse("success", null, data);
+        long totalElements = totalElementsHolder[0];
+        int pageSize = 10;
+        int totalPages = (int) Math.ceil((double) totalElements / pageSize);
+
+        return ResponseJsonUtils.listMapResponse("success", "조회성공", notices, totalElements, dto.getPage(), totalPages);
     }
 
     @GetMapping(NoticeParameterName.NOTICEDETAIL)

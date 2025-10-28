@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import babmukja.system.recipe.dto.NoticeResponseDTO;
+import babmukja.system.recipe.dto.NoticeSearchDTO;
 import babmukja.system.recipe.dto.NoticeWriteDTO;
 import babmukja.system.recipe.entity.Notice;
 import babmukja.system.recipe.repository.NoticeRepository;
@@ -34,8 +35,8 @@ public class NoticeService {
         return notice.getIdx();
     }
 
-    public List<NoticeResponseDTO> getNoticeList() {
-        return noticeRepository.noticeList();
+    public List<NoticeResponseDTO> getNoticeList(NoticeSearchDTO dto, long[] totalElementsHolder) {
+        return noticeRepository.noticeList(dto, totalElementsHolder);
     }
 
     public Map<String, Object> getNoticeDetail(Long idx) {
