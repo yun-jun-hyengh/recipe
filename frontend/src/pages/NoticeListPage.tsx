@@ -45,9 +45,10 @@ const NoticeListPage = () => {
         fetchNotices();
     },[searchType, keyword, page]);
 
-    const goDetail = (idx: string) => {
-        navigate(`/noticedetail/${idx}`);
-    }
+    // const goDetail = (notice: NoticeItem) => {
+    //     // navigate(`/noticedetail/${state: notice}`);
+    //     navigate("/noticedetail", { state: notice });
+    // }
 
     const handleSearch = () => {
         setPage(1);
@@ -117,7 +118,7 @@ const NoticeListPage = () => {
                                 <td className="px-2 py-2 sm:px-3">{notice.idx}</td>
                                 <td 
                                     className="px-2 py-2 text-left sm:px-3 hover:underline cursor-pointer"
-                                    // onClick={() => goDetail(notice.idx)}
+                                    onClick={() => navigate(`/noticedetail/${notice.idx}`)}
                                 >
                                     {notice.title}
                                 </td>

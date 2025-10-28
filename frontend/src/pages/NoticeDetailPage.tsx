@@ -8,8 +8,8 @@ const NoticeDetailPage = () => {
     // const location = useLocation();
     // const navigate = useNavigate();
     // const notice = location.state;
-
-    const { idx } = useParams();
+    const params = useParams<{ idx: string }>();
+    const idx  = Number(params.idx);
     const navigate = useNavigate();
 
     const MessageIcon = FiIcons.FiMessageCircle as React.ComponentType<{ size?: number }>;
