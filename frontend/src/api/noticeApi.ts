@@ -2,7 +2,7 @@ import NoticeDetailPage from "../pages/NoticeDetailPage";
 import axiosInstance from "../service/axiosInstance";
 import { NoticeRequest } from "../types/notice";
 import { NoticeDetail } from "../types/notice";
-
+import { NoticeListResponse } from "../types/notice";
 export const noticeApi = {
     // noticewrite: (formData: FormData) => axiosInstance.post("/api/notice/noticewrite", formData, {
     //     headers: { "Content-Type": "multipart/form-data" }, 
@@ -15,7 +15,12 @@ export const noticeApi = {
             }
         })
     },
-    getList: () => axiosInstance.get("/api/notice/noticelist"),
+    getList: (params: { searchType: string; keyword: string; page: number}) => {
+        return axiosInstance.get<NoticeListResponse>(
+            `/api/notice/noticelist`,
+            { params }
+        );
+    },
 
     noticedetail: (idx: number) => {
         return axiosInstance.get<{ status: string; message: string; data: NoticeDetail}>(

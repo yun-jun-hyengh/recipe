@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store/store';
 import { useSelector } from 'react-redux';
 import { noticeApi } from '../api/noticeApi';
+import { NoticeListResponse } from '../types/notice';
+import { NoticeItem } from '../types/notice';
+import { AxiosResponse } from "axios";
 
 const NoticeListPage = () => {
     const navigate = useNavigate();
@@ -11,23 +14,53 @@ const NoticeListPage = () => {
         navigate('/noticeWrite');
     }
     
-    const [notices, setNotices] = useState<any[]>([]);
+    const [noticeList, setNoticeList] = useState<NoticeItem[]>([]);
+    const [searchType, setSearchType] = useState("title");
+    const [keyword, setKeyword] = useState("");
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
-    useEffect(() => {
-        noticeApi.getList()
-            .then((res) => {
-                const result = res.data[0];
-                if(result && result.data) {
-                    setNotices(result.data);
+    const pageGroupStart = Math.floor((page - 1) / 10) * 10 + 1;
+    const pageGroupEnd = Math.min(pageGroupStart + 9, totalPages);
+
+    const fetchNotices = () => {
+        noticeApi.getList({ searchType, keyword, page })
+            .then((res: AxiosResponse<any>) => {
+                const raw = res.data;
+                // console.log(JSON.stringify(result.status));
+                const arr: NoticeListResponse[] = Array.isArray(raw) ? raw : [raw];
+                const result = arr[0];
+                // console.log(result.status);
+                if(result.status === "success") {
+                    setNoticeList(result.data ?? []);
+                    setTotalPages(result.totalPages ?? 1);
                 }
             })
             .catch((err) => {
-                console.error("조회실패 : ", err);
+                console.log(err);
             })
-    },[]);
+    }
+
+    useEffect(() => {
+        fetchNotices();
+    },[searchType, keyword, page]);
 
     const goDetail = (idx: string) => {
         navigate(`/noticedetail/${idx}`);
+    }
+
+    const handleSearch = () => {
+        setPage(1);
+        fetchNotices();
+        // noticeApi.getList({ searchType, keyword, page: 1 })
+        //     .then((res) => {
+        //         const result = res.data;
+        //         if(result.status === "success") {
+        //             // setNoticeList(result.data);
+        //             // setTotalPages(result.totalPages);
+        //         }
+        //     })
+        //     .catch((err) => console.error(err));
     }
 
     return (
@@ -45,7 +78,8 @@ const NoticeListPage = () => {
                 <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-end">
                     <select
                         className="w-full px-3 py-2 text-sm border rounded sm:w-48 focus:outline-none focus:ring-2 focus:ring-black"
-                        defaultValue="title"
+                        value={searchType}
+                        onChange={(e) => setSearchType(e.target.value)}
                     >
                         <option value="title">제목</option>
                         <option value="writer">작성자</option>
@@ -53,10 +87,15 @@ const NoticeListPage = () => {
                     </select>
                     <input
                         type="text"
-                        placeholder="제목으로 검색"
+                        placeholder="검색어 입력"
                         className="w-full px-3 py-2 text-sm border rounded sm:w-64 focus:outline-none focus:ring-2 focus:ring-black"
+                        value={keyword}
+                        onChange={(e) => setKeyword(e.target.value)}
                     />
-                    <button className="px-4 py-2 text-sm text-white bg-gray-500 rounded hover:bg-gray-700 hover:opacity-90">
+                    <button 
+                        className="px-4 py-2 text-sm text-white bg-gray-500 rounded hover:bg-gray-700 hover:opacity-90"
+                        onClick={handleSearch}
+                    >
                         검색
                     </button>
                 </div>
@@ -73,12 +112,12 @@ const NoticeListPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {notices.map((notice, index) => (
+                            {noticeList.map((notice, index) => (
                                 <tr key={index} className="border-b hover:bg-gray-50">
                                 <td className="px-2 py-2 sm:px-3">{notice.idx}</td>
                                 <td 
                                     className="px-2 py-2 text-left sm:px-3 hover:underline cursor-pointer"
-                                    onClick={() => goDetail(notice.idx)}
+                                    // onClick={() => goDetail(notice.idx)}
                                 >
                                     {notice.title}
                                 </td>
@@ -92,16 +131,35 @@ const NoticeListPage = () => {
                 </div>
 
                 <div className="flex items-center justify-center gap-1 mt-6">
-                    <button className="px-2 py-1 text-xs border sm:text-sm">&lt;&lt;</button>
-                        {[1, 2, 3, 4, 5].map((page) => (
+                    {pageGroupStart > 1 && (
+                        <button 
+                            className="px-2 py-1 text-xs border sm:text-sm"
+                            onClick={() => setPage(pageGroupStart - 1)}
+                        >
+                            &lt;&lt;
+                        </button>
+                    )}
+                    {Array.from({ length: 10}, (_, i) => pageGroupStart + i)
+                        .filter((p) => p <= totalPages)
+                        .map((p) => (
                             <button
-                            key={page}
-                            className={`px-3 py-1 text-xs sm:text-sm border ${page === 1 ? "bg-black text-white" : ""}`}
+                                key={p}
+                                onClick={() => setPage(p)}
+                                className={`px-3 py-1 text-xs sm:text-sm border 
+                                    ${page === p ? "bg-black text-white" : ""}`}
                             >
-                            {page}
+                                {p}
                             </button>
-                        ))}
-                        <button className="px-2 py-1 text-xs border sm:text-sm">&gt;&gt;</button>
+                        ))
+                    }
+                    {pageGroupEnd < totalPages && (
+                        <button 
+                            className="px-2 py-1 text-xs border sm:text-sm"
+                            onClick={() => setPage(pageGroupEnd + 1)}
+                        >
+                            &gt;&gt;
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

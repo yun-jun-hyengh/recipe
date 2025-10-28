@@ -79,7 +79,7 @@ public class NoticeController {
 
     @GetMapping(NoticeParameterName.NOTICELIST)
     @ResponseBody
-    public List<Map<String, Object>> list(@RequestBody NoticeSearchDTO dto) {
+    public List<Map<String, Object>> list(@ModelAttribute NoticeSearchDTO dto) {
         long[] totalElementsHolder = new long[1];
         List<NoticeResponseDTO> notices = noticeService.getNoticeList(dto, totalElementsHolder);
 
