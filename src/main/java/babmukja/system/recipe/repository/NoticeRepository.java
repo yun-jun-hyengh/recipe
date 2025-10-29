@@ -109,4 +109,11 @@ public class NoticeRepository {
                 .select(notice.filepath).from(notice).where(notice.idx.eq(idx))
                 .fetchFirst();
     }
+
+    public void increaseViewCount(Long idx) {
+        QNotice notice = QNotice.notice;
+        queryFactory
+            .update(notice).set(notice.viewcount, notice.viewcount.coalesce(0L).add(1))
+            .where(notice.idx.eq(idx)).execute();
+    }
 }

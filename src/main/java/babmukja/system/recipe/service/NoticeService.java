@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import babmukja.system.recipe.dto.NoticeResponseDTO;
@@ -39,7 +40,9 @@ public class NoticeService {
         return noticeRepository.noticeList(dto, totalElementsHolder);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Map<String, Object> getNoticeDetail(Long idx) {
+        noticeRepository.increaseViewCount(idx);
         return noticeRepository.findNoticeDetail(idx);
     }
 

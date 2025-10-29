@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as FiIcons from "react-icons/fi";
 import type { IconType } from "react-icons";
 import { useParams, useNavigate } from "react-router-dom";
@@ -19,8 +19,9 @@ const NoticeDetailPage = () => {
     const MoreIcon = FiIcons.FiMoreVertical as React.ComponentType<{ size?: number }>;
 
     const [notice, setNotice] = useState<NoticeDetail | null>(null);
-
+    const hasFetched = useRef(false);
     useEffect(() => {
+        if (!idx || hasFetched.current) return;
         if (idx) {
             noticeApi.noticedetail(Number(idx))
                 .then((res) => {
@@ -36,7 +37,7 @@ const NoticeDetailPage = () => {
                     console.error("상세 조회 실패:", err);
                 });
         }
-    }, [idx, navigate]);
+    }, [idx]);
 
     const handleDelete = () => {
         const ok = window.confirm("정말 삭제하시겠습니까?");
