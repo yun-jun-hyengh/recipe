@@ -118,7 +118,7 @@ const NoticeListPage = () => {
                                 <td className="px-2 py-2 sm:px-3">{notice.idx}</td>
                                 <td 
                                     className="px-2 py-2 text-left sm:px-3 hover:underline cursor-pointer"
-                                    onClick={() => navigate(`/noticedetail/${notice.idx}`)}
+                                    onClick={() => navigate(`/noticedetail/${notice.idx}`, { state: { page } })}
                                 >
                                     {notice.title}
                                 </td>

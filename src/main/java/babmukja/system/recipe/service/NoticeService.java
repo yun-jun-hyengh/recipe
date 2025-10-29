@@ -40,7 +40,7 @@ public class NoticeService {
         return noticeRepository.noticeList(dto, totalElementsHolder);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public Map<String, Object> getNoticeDetail(Long idx) {
         noticeRepository.increaseViewCount(idx);
         return noticeRepository.findNoticeDetail(idx);
