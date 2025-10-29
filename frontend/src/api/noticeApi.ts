@@ -34,5 +34,9 @@ export const noticeApi = {
             `/api/notice/noticedelete`,
             {idx}
         );
+    },
+
+    getNoticeImage: (path: string) => {
+        return `${axiosInstance.defaults.baseURL}/api/notice/noticeimage?path=${encodeURIComponent(path)}`;
     }
 };

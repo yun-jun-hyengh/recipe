@@ -4,6 +4,7 @@ import type { IconType } from "react-icons";
 import { useParams, useNavigate } from "react-router-dom";
 import { NoticeDetail } from "../types/notice";
 import { noticeApi } from "../api/noticeApi";
+
 const NoticeDetailPage = () => {
     // const location = useLocation();
     // const navigate = useNavigate();
@@ -111,6 +112,15 @@ const NoticeDetailPage = () => {
                 <div className="mt-6 text-gray-800 leading-relaxed break-words whitespace-pre-line">
                    { /* 공지사항 내용 들어갈 부분 */}
                    {notice?.content}
+
+                   {notice?.filepath && (
+                    <div className="mt-4 flex justify-center">
+                        <img 
+                            src={noticeApi.getNoticeImage(`${notice.filepath}`)}
+                            className="max-w-full h-auto rounded shadow-md border border-gray-200" 
+                        />
+                    </div>
+                   )}
                 </div>
 
                 <div className="mt-10 border-t pt-4 text-gray-600 text-sm">

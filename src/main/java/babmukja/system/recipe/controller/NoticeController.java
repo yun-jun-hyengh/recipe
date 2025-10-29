@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeSearchDTO;
 import babmukja.system.recipe.dto.NoticeWriteDTO;
 import babmukja.system.recipe.service.NoticeService;
+import babmukja.system.recipe.utils.FileUtil;
 import babmukja.system.recipe.utils.ResponseJsonUtils;
 
 @RestController
@@ -109,5 +111,10 @@ public class NoticeController {
         } else {
             return ResponseJsonUtils.mapResponse("fail", "삭제실패", null);
         }
+    }
+
+    @GetMapping(NoticeParameterName.NOTICEIMAGE)
+    public ResponseEntity<Resource> findImage(@RequestParam String path) {
+        return FileUtil.serverFile(path);
     }
 }

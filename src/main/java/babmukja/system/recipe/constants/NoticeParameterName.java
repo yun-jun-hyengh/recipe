@@ -5,4 +5,6 @@ public class NoticeParameterName {
     public static final String NOTICEWRITE = "/api/notice/noticewrite";
     public static final String NOTICEDETAIL = "/api/notice/noticedetail";
     public static final String NOTICEDELETE = "/api/notice/noticedelete";
+    public static final String NOTICEIMAGE = "/api/notice/noticeimage";
+    public static final String NOTICEUPDATE = "/api/notice/noticeupdate";
 }
