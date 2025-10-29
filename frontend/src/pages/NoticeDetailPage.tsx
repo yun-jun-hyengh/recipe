@@ -107,7 +107,7 @@ const NoticeDetailPage = () => {
                     </div>
                 </div>
 
-                <div className="mt-6 text-gray-800 leading-relaxed break-words">
+                <div className="mt-6 text-gray-800 leading-relaxed break-words whitespace-pre-line">
                    { /* 공지사항 내용 들어갈 부분 */}
                    {notice?.content}
                 </div>
