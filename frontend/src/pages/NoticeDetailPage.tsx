@@ -4,6 +4,8 @@ import type { IconType } from "react-icons";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { NoticeDetail } from "../types/notice";
 import { noticeApi } from "../api/noticeApi";
+import { RootState } from "../store/store";
+import { useSelector } from "react-redux";
 
 const NoticeDetailPage = () => {
     // const location = useLocation();
@@ -20,6 +22,7 @@ const NoticeDetailPage = () => {
     const TrashIcon = FiIcons.FiTrash2 as React.ComponentType<{ size?: number }>;
     const MoreIcon = FiIcons.FiMoreVertical as React.ComponentType<{ size?: number }>;
 
+    const user = useSelector((state: RootState) => state.auth.user);
     const [notice, setNotice] = useState<NoticeDetail | null>(null);
     const hasFetched = useRef(false);
     useEffect(() => {
@@ -69,21 +72,26 @@ const NoticeDetailPage = () => {
                 <div className="flex items-center justify-between mt-4">
                     <h1 className="text-2xl font-extrabold sm:text-3xl mt-4">{notice?.title}</h1>
                     <div className="flex items-center gap-3 text-gray-600">
-                        <button
-                            type="button"
-                            className="p-2 hover:text-blue-600 transition"
-                            aria-label="수정"
-                            >
-                            <EditIcon size={20} />
-                        </button>
-                        <button
-                            type="button"
-                            className="p-2 hover:text-red-600 transition"
-                            onClick={handleDelete}
-                            aria-label="삭제"
-                            >
-                            <TrashIcon size={20} />
-                        </button>
+                        {user && user.adminchk === 1 && (
+                            <div className="flex items-center gap-3 text-gray-600">
+                                <button
+                                    type="button"
+                                    className="p-2 hover:text-blue-600 transition"
+                                    aria-label="수정"
+                                    >
+                                    <EditIcon size={20} />
+                                </button>
+                                <button
+                                    type="button"
+                                    className="p-2 hover:text-red-600 transition"
+                                    onClick={handleDelete}
+                                    aria-label="삭제"
+                                    >
+                                    <TrashIcon size={20} />
+                                </button>
+                            </div>
+                        )}
+                        
                         <button
                             type="button"
                             className="p-2 hover:text-gray-800 transition"
@@ -104,7 +112,6 @@ const NoticeDetailPage = () => {
                         <span className="font-medium text-gray-700">{notice?.writer}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <MessageIcon size={16} />
                         <EyeIcon size={16} />{notice?.viewcount ? notice?.viewcount : 0}회
                         <span>{notice?.regdate}</span>
                     </div>
