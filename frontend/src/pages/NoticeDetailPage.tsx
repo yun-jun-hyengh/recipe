@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as FiIcons from "react-icons/fi";
 import type { IconType } from "react-icons";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { NoticeDetail } from "../types/notice";
 import { noticeApi } from "../api/noticeApi";
 
@@ -12,7 +12,8 @@ const NoticeDetailPage = () => {
     const params = useParams<{ idx: string }>();
     const idx  = Number(params.idx);
     const navigate = useNavigate();
-
+    const location = useLocation();
+    const prevPage = location.state?.page || 1;
     const MessageIcon = FiIcons.FiMessageCircle as React.ComponentType<{ size?: number }>;
     const EyeIcon = FiIcons.FiEye as React.ComponentType<{ size?: number }>;
     const EditIcon = FiIcons.FiEdit2 as React.ComponentType<{ size?: number }>;
@@ -31,7 +32,7 @@ const NoticeDetailPage = () => {
                         // console.log(res.data.data);
                     } else {
                         alert("데이터를 불러올 수 없습니다.");
-                        navigate("/noticeList");
+                        navigate("/noticeList", { state: { page: prevPage }});
                     }
                 })
                 .catch((err) => {
@@ -86,7 +87,7 @@ const NoticeDetailPage = () => {
                         <button
                             type="button"
                             className="p-2 hover:text-gray-800 transition"
-                            onClick={() => navigate('/noticeList')}
+                            onClick={() => navigate('/noticeList', { state: { page: prevPage }})}
                             aria-label="목록"
                             >
                             <MoreIcon size={20} />
