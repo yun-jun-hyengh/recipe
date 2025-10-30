@@ -122,9 +122,9 @@ const NoticeListPage = () => {
                                 >
                                     {notice.title}
                                 </td>
-                                <td className="hidden px-2 py-2 sm:px-3 md:table-cell">{notice.writer}</td>
-                                <td className="hidden px-2 py-2 sm:px-3 sm:table-cell">{notice.regdate}</td>
-                                <td className="hidden px-2 py-2 sm:px-3 md:table-cell">{notice.viewcount}</td>
+                                    <td className="hidden px-2 py-2 sm:px-3 md:table-cell">{notice.writer}</td>
+                                    <td className="hidden px-2 py-2 sm:px-3 sm:table-cell">{notice.regdate}</td>
+                                    <td className="hidden px-2 py-2 sm:px-3 md:table-cell">{notice.viewcount ? notice.viewcount : 0}</td>
                                 </tr>
                             ))}
                         </tbody>

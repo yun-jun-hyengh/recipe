@@ -104,7 +104,7 @@ const NoticeDetailPage = () => {
                     </div>
                     <div className="flex items-center gap-2">
                         <MessageIcon size={16} />
-                        <EyeIcon size={16} />3회
+                        <EyeIcon size={16} />{notice?.viewcount ? notice?.viewcount : 0}회
                         <span>{notice?.regdate}</span>
                     </div>
                 </div>
