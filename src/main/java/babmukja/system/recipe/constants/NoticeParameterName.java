@@ -7,4 +7,5 @@ public class NoticeParameterName {
     public static final String NOTICEDELETE = "/api/notice/noticedelete";
     public static final String NOTICEIMAGE = "/api/notice/noticeimage";
     public static final String NOTICEUPDATE = "/api/notice/noticeupdate";
+    public static final String NOTICEPREVNEXT = "/api/notice/prevnext";
 }

@@ -38,5 +38,7 @@ export const noticeApi = {
 
     getNoticeImage: (path: string) => {
         return `${axiosInstance.defaults.baseURL}/api/notice/noticeimage?path=${encodeURIComponent(path)}`;
-    }
+    },
+
+    prevNext: (idx: number) => axiosInstance.get(`/api/notice/prevnext`, { params: { idx }})
 };

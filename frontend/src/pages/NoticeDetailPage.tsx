@@ -6,6 +6,7 @@ import { NoticeDetail } from "../types/notice";
 import { noticeApi } from "../api/noticeApi";
 import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
+import { PrevNextResponse, ApiWrapper } from "../types/notice";
 
 const NoticeDetailPage = () => {
     // const location = useLocation();
@@ -24,6 +25,7 @@ const NoticeDetailPage = () => {
 
     const user = useSelector((state: RootState) => state.auth.user);
     const [notice, setNotice] = useState<NoticeDetail | null>(null);
+    const [prevNext, setPrevNext] = useState<PrevNextResponse | null>(null);
     const hasFetched = useRef(false);
     useEffect(() => {
         if (!idx || hasFetched.current) return;
@@ -41,6 +43,18 @@ const NoticeDetailPage = () => {
                 .catch((err) => {
                     console.error("상세 조회 실패:", err);
                 });
+            
+            noticeApi.prevNext(Number(idx))
+                .then((res) => {
+                    const wrapper = res.data as ApiWrapper<PrevNextResponse>;
+                    if(wrapper.status === "success") {
+                        setPrevNext(wrapper.data);
+                    } else {
+                        setPrevNext(null);
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                })
         }
     }, [idx]);
 
@@ -131,17 +145,42 @@ const NoticeDetailPage = () => {
                    )}
                 </div>
 
-                <div className="mt-10 border-t pt-4 text-gray-600 text-sm">
-                    <div className="flex items-center justify-between hover:bg-gray-50 transition p-2 rounded-lg">
-                        <div className="flex items-center gap-2">
-                            <span className="text-gray-500">▼</span>
-                            <span>다음글</span>
+                <div className="mt-10 border-t pt-4 text-gray-600 text-sm space-y-2">
+                    {prevNext?.prev ? (
+                        <div className="flex items-center justify-between hover:bg-gray-50 transition p-2 rounded-lg">
+                            <div className="flex items-center gap-2">
+                                <span className="text-gray-500">▲</span>
+                                <span>이전글 : </span>
+                                <span 
+                                    className="text-gray-700 hover:underline cursor-pointer"
+                                    onClick={() => navigate(`/noticedetail/${prevNext.prev!.idx}`, { state: { page: prevPage } })}
+                                >
+                                    {prevNext.prev.title}    
+                                </span>
+                            </div>
+                            <span className="text-gray-400">{prevNext.prev.regdate}</span>
                         </div>
-                        <div className="flex items-center gap-4">
-                            <span className="text-gray-700 hover:underline cursor-pointer">tregtrg</span>
-                            <span className="text-gray-400">25.06.22</span>
+                    ) : (
+                        <div className="text-gray-400">이전글 없음</div>
+                    )}
+
+                    {prevNext?.next ? (
+                        <div className="flex items-center justify-between hover:bg-gray-50 transition p-2 rounded-lg">
+                            <div className="flex items-center gap-2">
+                                <span className="text-gray-500">▼</span>
+                                <span>다음글 : </span>
+                                <span 
+                                    className="text-gray-700 hover:underline cursor-pointer"
+                                    onClick={() => navigate(`/noticedetail/${prevNext.next!.idx}`, { state: { page: prevPage } })}
+                                >
+                                    {prevNext.next.title}
+                                </span>
+                            </div>
+                            <span className="text-gray-400">{prevNext.next.regdate}</span>
                         </div>
-                    </div>
+                    ) : (
+                        <div className="text-gray-400">다음글 없음</div>
+                    )}
                 </div>
 
                 <div className="mt-10">

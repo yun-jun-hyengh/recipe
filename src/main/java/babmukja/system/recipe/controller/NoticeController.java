@@ -117,4 +117,15 @@ public class NoticeController {
     public ResponseEntity<Resource> findImage(@RequestParam String path) {
         return FileUtil.serverFile(path);
     }
+
+    @GetMapping(NoticeParameterName.NOTICEPREVNEXT)
+    @ResponseBody
+    public Map<String, Object> getPrevNext(@ModelAttribute NoticeIdxDTO dto) {
+        try {
+            Map<String, Object> data = noticeService.getPrevNextNotice(dto.getIdx());
+            return ResponseJsonUtils.mapResponse("success", "이전/다음글 조회 성공", data);
+        } catch (Exception e) {
+            return ResponseJsonUtils.mapResponse("fail", "이전/다음글 조회 실패: " + e.getMessage(), null);
+        }
+    }
 }

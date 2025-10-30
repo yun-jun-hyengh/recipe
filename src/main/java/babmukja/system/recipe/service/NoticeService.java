@@ -58,4 +58,9 @@ public class NoticeService {
         }
         return deleted > 0;
     }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> getPrevNextNotice(Long idx) {
+        return noticeRepository.findPrevNext(idx);
+    }
 }

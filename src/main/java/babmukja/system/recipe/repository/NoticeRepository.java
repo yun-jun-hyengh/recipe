@@ -116,4 +116,35 @@ public class NoticeRepository {
             .update(notice).set(notice.viewcount, notice.viewcount.coalesce(0L).add(1))
             .where(notice.idx.eq(idx)).execute();
     }
+
+    public Map<String, Object> findPrevNext(Long idx) {
+        QNotice notice = QNotice.notice;
+        Map<String, Object> result = new HashMap<>();
+        
+        // 이전글
+        var prev = queryFactory
+                    .selectFrom(notice)
+                    .where(notice.idx.gt(idx))
+                    .orderBy(notice.idx.asc())
+                    .limit(1).fetchOne();
+        
+        var next = queryFactory
+                    .selectFrom(notice)
+                    .where(notice.idx.lt(idx))
+                    .orderBy(notice.idx.desc())
+                    .limit(1).fetchOne();
+        
+        result.put("prev", prev != null ? Map.of(
+            "idx", prev.getIdx(),
+            "title", prev.getTitle(),
+            "regdate", prev.getRegdate()
+        ) : null);
+
+        result.put("next", next != null ? Map.of(
+            "idx", next.getIdx(),
+            "title", next.getTitle(),
+            "regdate", next.getRegdate()
+        ) : null);
+        return result;
+    }
 }
