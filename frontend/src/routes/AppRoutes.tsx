@@ -16,6 +16,7 @@ import BannerRegisterPage from "../pages/BannerRegisterPage";
 import PopupListPage from "../pages/PopupListPage";
 import BannerUpdatePage from "../pages/BannerUpdatePage";
 import NoticeDetailPage from "../pages/NoticeDetailPage";
+import NoticeUpdatePage from "../pages/NoticeUpdatePage";
 const AppRoutes = () => {
     const routes = useRoutes([
         { path: '/', element: <HomePage /> },
@@ -32,6 +33,7 @@ const AppRoutes = () => {
         { path: '/noticeList', element: <NoticeListPage /> },
         { path: '/noticeWrite', element: <NoticeWritePage /> },
         { path: '/noticedetail/:idx', element: <NoticeDetailPage /> },
+        { path: '/noticeupdate/:idx', element: <NoticeUpdatePage /> },
         { path: '/findidpage', element: <FindIdPage /> },
     ]);
     return routes;

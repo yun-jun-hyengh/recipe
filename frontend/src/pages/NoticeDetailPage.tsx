@@ -77,6 +77,13 @@ const NoticeDetailPage = () => {
             })
     }
 
+    const handleUpdate = () => {
+        if(!notice) {
+            return;
+        }
+        navigate(`/noticeupdate/${notice.idx}`, { state: { notice }});
+    }
+
     return (
         <div className="min-h-screen px-4 py-10">
             <div className="p-6 mx-auto max-w-screen-2xl">
@@ -92,6 +99,7 @@ const NoticeDetailPage = () => {
                                     type="button"
                                     className="p-2 hover:text-blue-600 transition"
                                     aria-label="수정"
+                                    onClick={handleUpdate}
                                     >
                                     <EditIcon size={20} />
                                 </button>
