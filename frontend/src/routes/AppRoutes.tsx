@@ -17,6 +17,7 @@ import PopupListPage from "../pages/PopupListPage";
 import BannerUpdatePage from "../pages/BannerUpdatePage";
 import NoticeDetailPage from "../pages/NoticeDetailPage";
 import NoticeUpdatePage from "../pages/NoticeUpdatePage";
+import MyPage from "../pages/MyPage";
 const AppRoutes = () => {
     const routes = useRoutes([
         { path: '/', element: <HomePage /> },
@@ -35,6 +36,7 @@ const AppRoutes = () => {
         { path: '/noticedetail/:idx', element: <NoticeDetailPage /> },
         { path: '/noticeupdate/:idx', element: <NoticeUpdatePage /> },
         { path: '/findidpage', element: <FindIdPage /> },
+        { path: '/mypage', element: <MyPage /> },
     ]);
     return routes;
 };
