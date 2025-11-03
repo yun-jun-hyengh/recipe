@@ -72,6 +72,13 @@ const NoticeUpdatePage = () => {
                             </div>
                         </div>
                     </div>
+
+                    <div className="grid grid-cols-1 gap-4 py-2 md:grid-cols-4">
+                        <label className="pt-2 font-semibold text-gray-700 md:col-span-1">첨부파일</label>
+                        <div className="flex flex-col items-start gap-2 md:col-span-3 sm:flex-row sm:items-center">
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
