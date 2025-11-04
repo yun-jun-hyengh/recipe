@@ -20,6 +20,7 @@ import babmukja.system.recipe.dto.NoticeUpdateDTO;
 import babmukja.system.recipe.entity.Notice;
 import babmukja.system.recipe.entity.NoticeReply;
 import babmukja.system.recipe.entity.QNotice;
+import babmukja.system.recipe.utils.DateUtils;
 
 @Repository
 public class NoticeRepository {
@@ -166,9 +167,14 @@ public class NoticeRepository {
         return result;
     }
 
-    public Long insertReply(NoticeReplyRegisterDTO dto) {
+    @Transactional
+    public void insertReply(NoticeReplyRegisterDTO dto) {
         NoticeReply comment = new NoticeReply();
         comment.setIdx(dto.getIdx());
-        return 0L;
+        comment.setUser_idx(dto.getUser_idx());
+        comment.setRe_writer(dto.getRe_writer());
+        comment.setRe_content(dto.getRe_content());
+        comment.setRe_regdate(DateUtils.getCurrentDate());
+        em.persist(comment);
     }
 }

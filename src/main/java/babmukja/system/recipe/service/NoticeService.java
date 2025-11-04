@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import babmukja.system.recipe.dto.NoticeReplyRegisterDTO;
 import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeSearchDTO;
 import babmukja.system.recipe.dto.NoticeUpdateDTO;
@@ -68,5 +69,9 @@ public class NoticeService {
     @Transactional
     public Map<String, Object> updateNotice(NoticeUpdateDTO dto) {
         return noticeRepository.updateNotice(dto);
+    }
+
+    public void insertReply(NoticeReplyRegisterDTO dto) {
+        noticeRepository.insertReply(dto);
     }
 }

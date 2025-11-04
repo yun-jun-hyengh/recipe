@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import babmukja.system.recipe.constants.NoticeParameterName;
 import babmukja.system.recipe.dto.NoticeIdxDTO;
+import babmukja.system.recipe.dto.NoticeReplyRegisterDTO;
 import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeSearchDTO;
 import babmukja.system.recipe.dto.NoticeUpdateDTO;
@@ -168,6 +169,21 @@ public class NoticeController {
             return ResponseJsonUtils.mapResponse("success", "공지사항 수정 완료", null);
         } catch(Exception e) {
             return ResponseJsonUtils.mapResponse("fail", "수정 실패: " + e.getMessage(), null);
+        }
+    }
+
+    @PostMapping(NoticeParameterName.NOTICEREPLYJOIN)
+    public ResponseEntity<?> insertComment(@RequestBody NoticeReplyRegisterDTO dto) {
+        try {
+            noticeService.insertReply(dto);
+            return ResponseEntity.ok(
+                ResponseJsonUtils.mapResponse("success", "댓글 등록 완료", null)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(
+                ResponseJsonUtils.mapResponse("fail", "댓글 등록 실패", e.getMessage())
+            );
         }
     }
 }
