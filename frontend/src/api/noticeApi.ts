@@ -40,5 +40,14 @@ export const noticeApi = {
         return `${axiosInstance.defaults.baseURL}/api/notice/noticeimage?path=${encodeURIComponent(path)}`;
     },
 
-    prevNext: (idx: number) => axiosInstance.get(`/api/notice/prevnext`, { params: { idx }})
+    prevNext: (idx: number) => axiosInstance.get(`/api/notice/prevnext`, { params: { idx }}),
+
+    updateNotice: (formdata: FormData, token: string | null) => {
+        return axiosInstance.post(`/api/notice/noticeupdate`, formdata, {
+            headers: {
+                Authorization: token ? `Bearer ${token}` : "",
+                "Content-Type": "multipart/form-data"
+            }
+        })
+    }
 };

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeSearchDTO;
+import babmukja.system.recipe.dto.NoticeUpdateDTO;
 import babmukja.system.recipe.dto.NoticeWriteDTO;
 import babmukja.system.recipe.entity.Notice;
 import babmukja.system.recipe.repository.NoticeRepository;
@@ -62,5 +63,10 @@ public class NoticeService {
     @Transactional(readOnly = true)
     public Map<String, Object> getPrevNextNotice(Long idx) {
         return noticeRepository.findPrevNext(idx);
+    }
+
+    @Transactional
+    public Map<String, Object> updateNotice(NoticeUpdateDTO dto) {
+        return noticeRepository.updateNotice(dto);
     }
 }

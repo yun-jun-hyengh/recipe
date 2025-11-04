@@ -2,6 +2,8 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { noticeApi } from "../api/noticeApi";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const NoticeUpdatePage = () => {
     const navigate = useNavigate();
@@ -13,6 +15,10 @@ const NoticeUpdatePage = () => {
     const [filename, setFileName] = useState("");
     const [filepath, setFilePath] = useState("");
     const [previewOpen, setPreviewOpen] = useState(false);
+    const [file, setFile] = useState<File | null>(null);
+
+    //const user = useSelector((state: RootState) => state.auth.user);
+    const token = useSelector((state: RootState) => state.auth.accessToken);
 
     useEffect(() => {
         if(notice) {
@@ -23,6 +29,41 @@ const NoticeUpdatePage = () => {
             setFilePath(notice.filepath);
         }
     }, [notice]);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if(e.target.files && e.target.files[0]) {
+            const selectedFile = e.target.files[0];
+            setFile(selectedFile);
+            setFileName(selectedFile.name);
+            setFilePath(URL.createObjectURL(selectedFile));
+        }
+    }
+
+    const handleUpdateSubmit = () => {
+        const formData = new FormData();
+        formData.append("idx", notice.idx);
+        formData.append("title", title);
+        formData.append("content", content);
+        formData.append("wriiter", writer);
+        if (file) {
+            formData.append("file", file);
+        } else {
+            formData.append("filename", filename);
+            formData.append("filepath", filepath);
+        }
+
+        noticeApi.updateNotice(formData, token)
+            .then((res) => {
+                if(res.data.status === "success") {
+                    alert(res.data.message);
+                    navigate(-1);
+                } else {
+                    alert(res.data.message);
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+    }
     
     return (
         <div className="min-h-screen px-4 py-10">
@@ -84,12 +125,7 @@ const NoticeUpdatePage = () => {
                                 type="file" 
                                 id="attach-file" 
                                 className="hidden"
-                                onChange={(e) => {
-                                    if(e.target.files && e.target.files[0]) {
-                                        setFileName(e.target.files[0].name);
-                                        setFilePath(URL.createObjectURL(e.target.files[0]));
-                                    }
-                                }} 
+                                onChange={handleFileChange}
                             />
                             <div className="flex gap-2">
                                 <button
@@ -136,7 +172,10 @@ const NoticeUpdatePage = () => {
                 </div>
 
                 <div className="flex justify-center gap-4 mt-8">
-                    <button className="py-2 font-bold text-white transition duration-300 ease-in-out bg-black rounded-md shadow-md px-14 hover:bg-gray-800">
+                    <button 
+                        className="py-2 font-bold text-white transition duration-300 ease-in-out bg-black rounded-md shadow-md px-14 hover:bg-gray-800"
+                        onClick={handleUpdateSubmit}
+                    >
                         수정
                     </button>
                     <button 

@@ -15,6 +15,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeSearchDTO;
+import babmukja.system.recipe.dto.NoticeUpdateDTO;
 import babmukja.system.recipe.entity.Notice;
 import babmukja.system.recipe.entity.QNotice;
 
@@ -145,6 +146,21 @@ public class NoticeRepository {
             "title", next.getTitle(),
             "regdate", next.getRegdate()
         ) : null);
+        return result;
+    }
+
+    public Map<String, Object> updateNotice(NoticeUpdateDTO dto) {
+        QNotice notice = QNotice.notice;
+        long updateRows = queryFactory
+                            .update(notice)
+                            .set(notice.title, dto.getTitle())
+                            .set(notice.content, dto.getContent())
+                            .set(notice.filename, dto.getFilename())
+                            .set(notice.filepath, dto.getFilepath())
+                            .where(notice.idx.eq(dto.getIdx())).execute();
+        Map<String, Object> result = new HashMap<>();
+        result.put("updateRows", updateRows);
+        result.put("idx", dto.getIdx());
         return result;
     }
 }

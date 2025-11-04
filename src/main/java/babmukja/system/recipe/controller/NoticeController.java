@@ -1,6 +1,9 @@
 package babmukja.system.recipe.controller;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +27,7 @@ import babmukja.system.recipe.constants.NoticeParameterName;
 import babmukja.system.recipe.dto.NoticeIdxDTO;
 import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeSearchDTO;
+import babmukja.system.recipe.dto.NoticeUpdateDTO;
 import babmukja.system.recipe.dto.NoticeWriteDTO;
 import babmukja.system.recipe.service.NoticeService;
 import babmukja.system.recipe.utils.FileUtil;
@@ -126,6 +130,44 @@ public class NoticeController {
             return ResponseJsonUtils.mapResponse("success", "이전/다음글 조회 성공", data);
         } catch (Exception e) {
             return ResponseJsonUtils.mapResponse("fail", "이전/다음글 조회 실패: " + e.getMessage(), null);
+        }
+    }
+
+    @PostMapping(NoticeParameterName.NOTICEUPDATE)
+    @ResponseBody
+    public Map<String, Object> updateNotice(@ModelAttribute NoticeUpdateDTO dto) {
+        try {
+            // String noticeDir = uploadRoot + "/notice";
+            // File dir = new File(noticeDir);
+            // if(!dir.exists()) {
+            //     dir.mkdirs();
+            // }
+            Path noticeDir = Paths.get(uploadRoot, "notice");
+            // System.out.println(noticeDir);
+            if (!Files.exists(noticeDir)) {
+                Files.createDirectories(noticeDir);
+            }
+            if(dto.getFile() != null && !dto.getFile().isEmpty()) {
+                String originalName = dto.getFile().getOriginalFilename();
+                String extension = "";
+
+                if(originalName != null && originalName.contains(".")) {
+                    extension = originalName.substring(originalName.lastIndexOf("."));
+                }
+
+                String uuid = UUID.randomUUID().toString();
+                String savedFileName = uuid + extension;
+
+                Path savePath = noticeDir.resolve(savedFileName);
+                dto.getFile().transferTo(savePath.toFile());
+
+                dto.setFilename(savedFileName);
+                dto.setFilepath(savePath.toString().replace("\\", "/"));
+            }
+            noticeService.updateNotice(dto);
+            return ResponseJsonUtils.mapResponse("success", "공지사항 수정 완료", null);
+        } catch(Exception e) {
+            return ResponseJsonUtils.mapResponse("fail", "수정 실패: " + e.getMessage(), null);
         }
     }
 }
