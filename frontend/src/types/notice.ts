@@ -46,3 +46,10 @@ export interface ApiWrapper<T> {
     message: string;
     data: T;
 }
+
+export interface CommentSaveDTO {
+    idx: number;
+    user_idx: number;
+    re_writer: string;
+    re_content: string;
+}

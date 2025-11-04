@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as FiIcons from "react-icons/fi";
 import type { IconType } from "react-icons";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { NoticeDetail } from "../types/notice";
+import { CommentSaveDTO, NoticeDetail } from "../types/notice";
 import { noticeApi } from "../api/noticeApi";
 import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
@@ -27,6 +27,7 @@ const NoticeDetailPage = () => {
     const [notice, setNotice] = useState<NoticeDetail | null>(null);
     const [prevNext, setPrevNext] = useState<PrevNextResponse | null>(null);
     const hasFetched = useRef(false);
+    const [re_content, setReContent] = useState("");
     useEffect(() => {
         if (!idx || hasFetched.current) return;
         if (idx) {
@@ -82,6 +83,32 @@ const NoticeDetailPage = () => {
             return;
         }
         navigate(`/noticeupdate/${notice.idx}`, { state: { notice }});
+    }
+
+    const handleCommentSubmit = () => {
+        if (!re_content.trim()) {
+            alert("댓글 내용을 입력해 주세요");
+            return;
+        }
+
+        const data: CommentSaveDTO = {
+            idx: idx,
+            user_idx: user?.user_idx ?? 0,
+            re_writer: user?.nickname ?? "",
+            re_content: re_content,
+        };
+
+        noticeApi.insertComment(data)
+            .then((res) => {
+                if(res.data.status === "success") {
+                    alert(res.data.message);
+                    setReContent("");
+                } else {
+                    alert(res.data.message);
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
     }
 
     return (
@@ -200,9 +227,9 @@ const NoticeDetailPage = () => {
                     <div className="relative border rounded-lg p-4 mt-2 flex flex-col gap-2 items-stretch">
                         <div className="relative flex-1">
                             <textarea
-                                id="comment"
+                                id="re_content"
                                 className="w-full h-28 border border-gray-300 rounded-lg px-3 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                
+                                onChange={(e) => setReContent(e.target.value)}
                             />
                             <label
                                 htmlFor="comment"
@@ -211,7 +238,10 @@ const NoticeDetailPage = () => {
                                 댓글내용을 입력해주세요
                             </label>
                         </div>
-                        <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all duration-200">
+                        <button 
+                            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all duration-200"
+                            onClick={handleCommentSubmit}
+                        >
                             등록
                         </button>
                     </div>

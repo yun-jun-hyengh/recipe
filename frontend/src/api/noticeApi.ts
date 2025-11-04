@@ -3,6 +3,7 @@ import axiosInstance from "../service/axiosInstance";
 import { NoticeRequest } from "../types/notice";
 import { NoticeDetail } from "../types/notice";
 import { NoticeListResponse } from "../types/notice";
+import { CommentSaveDTO } from "../types/notice";
 export const noticeApi = {
     // noticewrite: (formData: FormData) => axiosInstance.post("/api/notice/noticewrite", formData, {
     //     headers: { "Content-Type": "multipart/form-data" }, 
@@ -49,5 +50,11 @@ export const noticeApi = {
                 "Content-Type": "multipart/form-data"
             }
         })
+    },
+
+    insertComment: (data: CommentSaveDTO) => {
+        return axiosInstance.post(`/api/notice/replyjoin`, data, {
+            headers: { "Content-Type": "application/json" },
+        });
     }
 };
