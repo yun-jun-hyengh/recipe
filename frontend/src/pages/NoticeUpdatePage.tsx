@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { noticeApi } from "../api/noticeApi";
 
 const NoticeUpdatePage = () => {
     const navigate = useNavigate();
@@ -10,6 +11,8 @@ const NoticeUpdatePage = () => {
     const [content, setContent] = useState("");
     const [writer, setWriter] = useState("");
     const [filename, setFileName] = useState("");
+    const [filepath, setFilePath] = useState("");
+    const [previewOpen, setPreviewOpen] = useState(false);
 
     useEffect(() => {
         if(notice) {
@@ -17,6 +20,7 @@ const NoticeUpdatePage = () => {
             setContent(notice.content);
             setWriter(notice.writer);
             setFileName(notice.filename);
+            setFilePath(notice.filepath);
         }
     }, [notice]);
     
@@ -76,9 +80,68 @@ const NoticeUpdatePage = () => {
                     <div className="grid grid-cols-1 gap-4 py-2 md:grid-cols-4">
                         <label className="pt-2 font-semibold text-gray-700 md:col-span-1">첨부파일</label>
                         <div className="flex flex-col items-start gap-2 md:col-span-3 sm:flex-row sm:items-center">
+                            <input 
+                                type="file" 
+                                id="attach-file" 
+                                className="hidden"
+                                onChange={(e) => {
+                                    if(e.target.files && e.target.files[0]) {
+                                        setFileName(e.target.files[0].name);
+                                        setFilePath(URL.createObjectURL(e.target.files[0]));
+                                    }
+                                }} 
+                            />
+                            <div className="flex gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => document.getElementById('attach-file')?.click()}
+                                    className="px-4 py-2 text-sm text-gray-800 bg-gray-200 rounded-md hover:bg-gray-300"
+                                >
+                                    파일 선택
+                                </button>
+                            </div>
+                            {filename && (
+                                <p className="mt-2 text-xs text-gray-500 sm:mt-0">
+                                    <span 
+                                        className="ml-2 text-sm text-gray-600"
+                                        onClick={() => setPreviewOpen(true)}
+                                    >
+                                        {filename}
+                                    </span>
+                                </p>
+                            )}
                             
                         </div>
+
+                        {previewOpen && (
+                            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                                <div className="relative bg-white p-4 rounded-lg shadow-lg max-w-xl">
+                                    <button
+                                        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                                        onClick={() => setPreviewOpen(false)}
+                                    >
+                                        ✕
+                                    </button>
+                                    <img
+                                        src={noticeApi.getNoticeImage(`${filepath}`)}
+                                        className="max-h-[70vh] rounded-lg"
+                                    />
+                                </div>
+                            </div>
+                        )}
                     </div>
+                </div>
+
+                <div className="flex justify-center gap-4 mt-8">
+                    <button className="py-2 font-bold text-white transition duration-300 ease-in-out bg-black rounded-md shadow-md px-14 hover:bg-gray-800">
+                        수정
+                    </button>
+                    <button 
+                        onClick={() => navigate(-1)}
+                        className="py-2 font-bold text-gray-800 transition duration-300 ease-in-out bg-gray-200 rounded-md shadow-md px-14 hover:bg-gray-300"
+                    >
+                        취소
+                    </button>
                 </div>
             </div>
         </div>
