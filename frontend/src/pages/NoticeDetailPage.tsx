@@ -197,13 +197,21 @@ const NoticeDetailPage = () => {
                     </div>
                     <p className="text-center text-gray-500 py-10">등록된 댓글이 없습니다.</p>
 
-                    <div className="border rounded-lg p-4 mt-2 flex flex-col sm:flex-row gap-2">
-                        <input
-                            type="text"
-                            placeholder="댓글내용을 입력해주세요"
-                            className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
-                        <button className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+                    <div className="relative border rounded-lg p-4 mt-2 flex flex-col gap-2 items-stretch">
+                        <div className="relative flex-1">
+                            <textarea
+                                id="comment"
+                                className="w-full h-28 border border-gray-300 rounded-lg px-3 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                
+                            />
+                            <label
+                                htmlFor="comment"
+                                className="absolute inset-0 flex items-center justify-center text-gray-400 pointer-events-none"
+                            >
+                                댓글내용을 입력해주세요
+                            </label>
+                        </div>
+                        <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all duration-200">
                             등록
                         </button>
                     </div>
