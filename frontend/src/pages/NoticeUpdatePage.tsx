@@ -123,7 +123,10 @@ const NoticeUpdatePage = () => {
                                         ✕
                                     </button>
                                     <img
-                                        src={noticeApi.getNoticeImage(`${filepath}`)}
+                                        src={
+                                            filepath.startsWith("blob:") ? filepath : 
+                                            noticeApi.getNoticeImage(`${filepath}`)
+                                        }
                                         className="max-h-[70vh] rounded-lg"
                                     />
                                 </div>
