@@ -19,7 +19,7 @@ public class NoticeReply {
     @Id
     @Column(name = "re_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long re_dix;
+    private Long re_idx;
 
     @Column(name = "idx")
     private Long idx;

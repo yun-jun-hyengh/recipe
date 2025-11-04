@@ -13,10 +13,12 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import babmukja.system.recipe.dto.NoticeReplyRegisterDTO;
 import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeSearchDTO;
 import babmukja.system.recipe.dto.NoticeUpdateDTO;
 import babmukja.system.recipe.entity.Notice;
+import babmukja.system.recipe.entity.NoticeReply;
 import babmukja.system.recipe.entity.QNotice;
 
 @Repository
@@ -162,5 +164,11 @@ public class NoticeRepository {
         result.put("updateRows", updateRows);
         result.put("idx", dto.getIdx());
         return result;
+    }
+
+    public Long insertReply(NoticeReplyRegisterDTO dto) {
+        NoticeReply comment = new NoticeReply();
+        comment.setIdx(dto.getIdx());
+        return 0L;
     }
 }
