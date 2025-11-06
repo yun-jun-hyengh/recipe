@@ -65,14 +65,15 @@ const NoticeDetailPage = () => {
                     console.log(err);
                 })
             loadComments(1);
+            setPage(1);
         }
     }, [idx]);
 
     const loadComments = (newPage: number) => {
-        if (loading || (totalPages && newPage > totalPages)) {
+        if (totalPages && newPage > totalPages) {
             return;
         }
-        setLoading(true);
+        //setLoading(true);
         console.log("idx : ", newPage + "호출됨");
         noticeApi.fetchComments(idx, newPage, size)
             .then((res) => {
@@ -289,9 +290,10 @@ const NoticeDetailPage = () => {
                                 onClick={() => {
                                     loadComments(page + 1)
                                     console.log(page + 1);
+                                    //setPage(page + 1)
                                 }}
                             >
-                                {"댓글 더보기"}
+                                댓글 더보기
                             </button>
                         </div>
                     )}
