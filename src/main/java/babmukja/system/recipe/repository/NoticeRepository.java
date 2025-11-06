@@ -184,8 +184,10 @@ public class NoticeRepository {
     public Map<String, Object> findCommentsByNotice(NoticeReplyPageDTO dto) {
         QNoticeReply noticeReply = QNoticeReply.noticeReply;
 
+        //System.out.println("noticeReply ==== " + noticeReply);
+
         long totalCount = queryFactory
-                            .select(noticeReply.count())
+                            .select(noticeReply.count()).from(noticeReply)
                             .where(noticeReply.idx.eq(dto.getIdx())).fetchOne();
         
         List<Map<String, Object>> comments = queryFactory

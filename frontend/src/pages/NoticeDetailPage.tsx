@@ -72,7 +72,7 @@ const NoticeDetailPage = () => {
             return;
         }
         setLoading(true);
-
+        //console.log("idx : ", idx);
         noticeApi.fetchComments(idx, newPage, size)
             .then((res) => {
                 const data = res.data[0];

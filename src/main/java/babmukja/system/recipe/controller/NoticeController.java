@@ -190,6 +190,9 @@ public class NoticeController {
 
     @GetMapping(NoticeParameterName.NOTICEREPLYLIST)
     public ResponseEntity<?> getComments(@ModelAttribute NoticeReplyPageDTO dto) {
+        // System.out.println(dto.getIdx());
+        // System.out.println(dto.getPage());
+        // System.out.println(dto.getSize());
         try {
             Map<String, Object> result = noticeService.getComments(dto);
             return ResponseEntity.ok(
