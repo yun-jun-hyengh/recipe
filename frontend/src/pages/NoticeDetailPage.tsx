@@ -120,6 +120,12 @@ const NoticeDetailPage = () => {
             return;
         }
 
+        if(!user) {
+            alert("로그인 후 댓글을 작성할 수 있습니다.");
+            navigate("/login");
+            return;
+        }
+
         const data: CommentSaveDTO = {
             idx: idx,
             user_idx: user?.user_idx ?? 0,
