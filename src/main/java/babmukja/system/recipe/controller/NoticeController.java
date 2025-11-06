@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import babmukja.system.recipe.constants.NoticeParameterName;
 import babmukja.system.recipe.dto.NoticeIdxDTO;
+import babmukja.system.recipe.dto.NoticeReplyPageDTO;
 import babmukja.system.recipe.dto.NoticeReplyRegisterDTO;
 import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeSearchDTO;
@@ -186,4 +187,29 @@ public class NoticeController {
             );
         }
     }
+
+    @GetMapping(NoticeParameterName.NOTICEREPLYLIST)
+    public ResponseEntity<?> getComments(@ModelAttribute NoticeReplyPageDTO dto) {
+        try {
+            Map<String, Object> result = noticeService.getComments(dto);
+            return ResponseEntity.ok(
+                ResponseJsonUtils.listMapResponse(
+                    "success", 
+                    "댓글 목록", 
+                    result.get("comments"), 
+                    (long) result.get("totalElements"), 
+                    (int) result.get("currentPage"),
+                    (int) result.get("totalPages"))
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok(
+                ResponseJsonUtils.listMapResponse(
+                    "fail", 
+                    "댓글 조회 실패", 
+                    null, 0L, 0, 0)
+            );
+        }
+    }
+
 }

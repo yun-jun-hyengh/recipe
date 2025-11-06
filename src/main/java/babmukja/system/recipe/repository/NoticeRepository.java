@@ -3,6 +3,7 @@ package babmukja.system.recipe.repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 
@@ -13,6 +14,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import babmukja.system.recipe.dto.NoticeReplyPageDTO;
 import babmukja.system.recipe.dto.NoticeReplyRegisterDTO;
 import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeSearchDTO;
@@ -20,6 +22,7 @@ import babmukja.system.recipe.dto.NoticeUpdateDTO;
 import babmukja.system.recipe.entity.Notice;
 import babmukja.system.recipe.entity.NoticeReply;
 import babmukja.system.recipe.entity.QNotice;
+import babmukja.system.recipe.entity.QNoticeReply;
 import babmukja.system.recipe.utils.DateUtils;
 
 @Repository
@@ -176,5 +179,41 @@ public class NoticeRepository {
         comment.setRe_content(dto.getRe_content());
         comment.setRe_regdate(DateUtils.getCurrentDate());
         em.persist(comment);
+    }
+
+    public Map<String, Object> findCommentsByNotice(NoticeReplyPageDTO dto) {
+        QNoticeReply noticeReply = QNoticeReply.noticeReply;
+
+        long totalCount = queryFactory
+                            .select(noticeReply.count())
+                            .where(noticeReply.idx.eq(dto.getIdx())).fetchOne();
+        
+        List<Map<String, Object>> comments = queryFactory
+            .select(noticeReply.idx, noticeReply.re_idx, noticeReply.user_idx,
+            noticeReply.re_writer, noticeReply.re_content, noticeReply.re_regdate)
+            .from(noticeReply).where(noticeReply.idx.eq(dto.getIdx()))
+            .orderBy(noticeReply.re_idx.desc())
+            .offset((dto.getPage() - 1L) * dto.getSize())
+            .limit(dto.getSize()).fetch()
+            .stream()
+            .map(tuple -> {
+                Map<String, Object> map = new HashMap<>();
+                map.put("idx", tuple.get(noticeReply.idx));
+                map.put("re_idx", tuple.get(noticeReply.re_idx));
+                map.put("user_idx", tuple.get(noticeReply.user_idx));
+                map.put("re_writer", tuple.get(noticeReply.re_writer));
+                map.put("re_content", tuple.get(noticeReply.re_content));
+                map.put("re_regdate", tuple.get(noticeReply.re_regdate));
+                return map;
+            }).collect(Collectors.toList());
+        
+        int totalPages = (int) Math.ceil((double) totalCount / dto.getSize());
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("comments", comments);
+        result.put("totalElements", totalCount);
+        result.put("currentPage", dto.getPage());
+        result.put("totalPages", totalPages);
+        return result;
     }
 }
