@@ -76,6 +76,7 @@ const NoticeDetailPage = () => {
         noticeApi.fetchComments(idx, newPage, size)
             .then((res) => {
                 const data = res.data[0];
+                console.log(data);
                 if (data.status === "success") {
                     setComments((prev) => [...prev, ...data.data]);
                     setTotalPages(data.totalPages);
