@@ -34,6 +34,7 @@ const NoticeDetailPage = () => {
     const [page, setPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
+    const [totalElements, setTotalElements] = useState("");
     const size = 5;
     useEffect(() => {
         if (!idx || hasFetched.current) return;
@@ -72,15 +73,16 @@ const NoticeDetailPage = () => {
             return;
         }
         setLoading(true);
-        //console.log("idx : ", idx);
+        console.log("idx : ", newPage + "호출됨");
         noticeApi.fetchComments(idx, newPage, size)
             .then((res) => {
                 const data = res.data[0];
-                console.log(data);
+                console.log("data : ", data);
                 if (data.status === "success") {
                     setComments((prev) => [...prev, ...data.data]);
                     setTotalPages(data.totalPages);
                     setPage(newPage);
+                    setTotalElements(data.totalElements);
                 }
             })
             .catch((err) => {
@@ -138,6 +140,7 @@ const NoticeDetailPage = () => {
                 if(res.data.status === "success") {
                     alert(res.data.message);
                     setReContent("");
+                    loadComments(1);
                 } else {
                     alert(res.data.message);
                 }
@@ -255,7 +258,7 @@ const NoticeDetailPage = () => {
 
                 <div className="mt-10">
                     <div className="flex items-center border-b pb-2 mb-4">
-                        <h3 className="font-bold text-lg text-gray-800">댓글 <span className="text-blue-600">{comments.length}</span></h3>
+                        <h3 className="font-bold text-lg text-gray-800">댓글 <span className="text-blue-600">{totalElements}</span></h3>
                     </div>
                     {comments.length === 0 ? (
                         <p className="text-center text-gray-500 py-10">등록된 댓글이 없습니다.</p>
@@ -283,13 +286,12 @@ const NoticeDetailPage = () => {
                     {page < totalPages && (
                         <div className="flex justify-center mt-6">
                             <button
-                                onClick={() => loadComments(page + 1)}
-                                disabled={loading}
-                                className={`px-5 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition ${
-                                    loading ? "opacity-50 cursor-not-allowed" : ""
-                                }`}
+                                onClick={() => {
+                                    loadComments(page + 1)
+                                    console.log(page + 1);
+                                }}
                             >
-                                {loading ? "불러오는 중....." : "댓글 더보기"}
+                                {"댓글 더보기"}
                             </button>
                         </div>
                     )}
@@ -300,6 +302,7 @@ const NoticeDetailPage = () => {
                                 id="re_content"
                                 className="w-full h-28 border border-gray-300 rounded-lg px-3 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 onChange={(e) => setReContent(e.target.value)}
+                                value={re_content}
                             />
                             <label
                                 htmlFor="comment"
