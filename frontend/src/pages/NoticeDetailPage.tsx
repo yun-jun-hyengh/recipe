@@ -7,6 +7,7 @@ import { noticeApi } from "../api/noticeApi";
 import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
 import { PrevNextResponse, ApiWrapper } from "../types/notice";
+import { CommentList } from "../types/notice";
 
 const NoticeDetailPage = () => {
     // const location = useLocation();
@@ -28,6 +29,12 @@ const NoticeDetailPage = () => {
     const [prevNext, setPrevNext] = useState<PrevNextResponse | null>(null);
     const hasFetched = useRef(false);
     const [re_content, setReContent] = useState("");
+
+    const [comments, setComments] = useState<CommentList[]>([]);
+    const [page, setPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>(1);
+    const [loading, setLoading] = useState<boolean>(false);
+    const size = 5;
     useEffect(() => {
         if (!idx || hasFetched.current) return;
         if (idx) {
@@ -56,8 +63,29 @@ const NoticeDetailPage = () => {
                 }).catch((err) => {
                     console.log(err);
                 })
+            loadComments(1);
         }
     }, [idx]);
+
+    const loadComments = (newPage: number) => {
+        if (loading || (totalPages && newPage > totalPages)) {
+            return;
+        }
+        setLoading(true);
+
+        noticeApi.fetchComments(idx, newPage, size)
+            .then((res) => {
+                const data = res.data[0];
+                if (data.status === "success") {
+                    setComments((prev) => [...prev, ...data.data]);
+                    setTotalPages(data.totalPages);
+                    setPage(newPage);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
 
     const handleDelete = () => {
         const ok = window.confirm("정말 삭제하시겠습니까?");
@@ -220,10 +248,45 @@ const NoticeDetailPage = () => {
 
                 <div className="mt-10">
                     <div className="flex items-center border-b pb-2 mb-4">
-                        <h3 className="font-bold text-lg text-gray-800">댓글 <span className="text-blue-600">0</span></h3>
+                        <h3 className="font-bold text-lg text-gray-800">댓글 <span className="text-blue-600">{comments.length}</span></h3>
                     </div>
-                    <p className="text-center text-gray-500 py-10">등록된 댓글이 없습니다.</p>
+                    {comments.length === 0 ? (
+                        <p className="text-center text-gray-500 py-10">등록된 댓글이 없습니다.</p>
+                    ) : (
+                        <div className="space-y-4">
+                            {comments.map((comment) => (
+                                <div
+                                    key={comment.re_idx}
+                                    className="border-b pb-3 text-gray-700"
+                                >
+                                    <div className="font-semibold text-gray-800">
+                                        {comment.re_writer}
+                                    </div>
+                                    <div className="mt-1 whitespace-pre-line">
+                                        {comment.re_content}
+                                    </div>
+                                    <div className="text-sm text-gray-400 mt-1">
+                                        {comment.re_regdate}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
 
+                    {page < totalPages && (
+                        <div className="flex justify-center mt-6">
+                            <button
+                                onClick={() => loadComments(page + 1)}
+                                disabled={loading}
+                                className={`px-5 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition ${
+                                    loading ? "opacity-50 cursor-not-allowed" : ""
+                                }`}
+                            >
+                                {loading ? "불러오는 중....." : "댓글 더보기"}
+                            </button>
+                        </div>
+                    )}
+                    
                     <div className="relative border rounded-lg p-4 mt-2 flex flex-col gap-2 items-stretch">
                         <div className="relative flex-1">
                             <textarea

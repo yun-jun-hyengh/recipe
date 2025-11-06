@@ -56,5 +56,11 @@ export const noticeApi = {
         return axiosInstance.post(`/api/notice/replyjoin`, data, {
             headers: { "Content-Type": "application/json" },
         });
+    },
+
+    fetchComments: (idx: number, page: number, size: number) => {
+        return axiosInstance.get(`/api/notice/replylist`, {
+            params: { idx, page, size },
+        });
     }
 };

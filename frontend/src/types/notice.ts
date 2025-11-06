@@ -53,3 +53,12 @@ export interface CommentSaveDTO {
     re_writer: string;
     re_content: string;
 }
+
+export interface CommentList {
+    re_idx: number;
+    idx: number;
+    user_idx: number;
+    re_writer: string;
+    re_content: string;
+    re_regdate: string;
+}
