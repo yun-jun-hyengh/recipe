@@ -65,7 +65,7 @@ const NoticeDetailPage = () => {
                     console.log(err);
                 })
             loadComments(1);
-            setPage(1);
+            // setPage(1);
         }
     }, [idx]);
 
@@ -270,9 +270,24 @@ const NoticeDetailPage = () => {
                                     key={comment.re_idx}
                                     className="border-b pb-3 text-gray-700"
                                 >
-                                    <div className="font-semibold text-gray-800">
-                                        {comment.re_writer}
+                                    <div className="flex justify-between items-center">
+                                        <div className="font-semibold text-gray-800">
+                                            {comment.re_writer}
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <button
+                                                className="text-sm text-blue-600 border border-blue-600 px-2 py-1 rounded-md hover:bg-blue-600 hover:text-white transition"
+                                            >
+                                                수정
+                                            </button>
+                                            <button
+                                                className="text-sm text-red-600 border border-red-600 px-2 py-1 rounded-md hover:bg-red-600 hover:text-white transition"
+                                            >
+                                                삭제
+                                            </button>
+                                        </div>
                                     </div>
+                                    
                                     <div className="mt-1 whitespace-pre-line">
                                         {comment.re_content}
                                     </div>
@@ -287,6 +302,7 @@ const NoticeDetailPage = () => {
                     {page < totalPages && (
                         <div className="flex justify-center mt-6">
                             <button
+                                className="w-full py-2 mt-3 bg-white border border-gray-300 rounded-xl shadow-sm text-gray-700 font-medium hover:shadow-md hover:border-gray-400 transition duration-200"
                                 onClick={() => {
                                     loadComments(page + 1)
                                     console.log(page + 1);
@@ -297,7 +313,7 @@ const NoticeDetailPage = () => {
                             </button>
                         </div>
                     )}
-                    
+                    <br></br>
                     <div className="relative border rounded-lg p-4 mt-2 flex flex-col gap-2 items-stretch">
                         <div className="relative flex-1">
                             <textarea
