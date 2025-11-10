@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import babmukja.system.recipe.dto.NoticeReplyIdxDTO;
 import babmukja.system.recipe.dto.NoticeReplyPageDTO;
 import babmukja.system.recipe.dto.NoticeReplyRegisterDTO;
+import babmukja.system.recipe.dto.NoticeReplyUpdateDTO;
 import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeSearchDTO;
 import babmukja.system.recipe.dto.NoticeUpdateDTO;
@@ -83,6 +84,11 @@ public class NoticeService {
 
     public boolean deleteComment(NoticeReplyIdxDTO dto) {
         long result = noticeRepository.deleteCommentByIdx(dto.getRe_idx(), dto.getUser_idx());
+        return result > 0;
+    }
+
+    public boolean updateComment(NoticeReplyUpdateDTO dto) {
+        long result = noticeRepository.updateCommnet(dto.getRe_idx(), dto.getUser_idx(), dto.getRe_content());
         return result > 0;
     }
 }

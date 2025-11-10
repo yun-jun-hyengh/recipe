@@ -28,6 +28,7 @@ import babmukja.system.recipe.dto.NoticeIdxDTO;
 import babmukja.system.recipe.dto.NoticeReplyIdxDTO;
 import babmukja.system.recipe.dto.NoticeReplyPageDTO;
 import babmukja.system.recipe.dto.NoticeReplyRegisterDTO;
+import babmukja.system.recipe.dto.NoticeReplyUpdateDTO;
 import babmukja.system.recipe.dto.NoticeResponseDTO;
 import babmukja.system.recipe.dto.NoticeSearchDTO;
 import babmukja.system.recipe.dto.NoticeUpdateDTO;
@@ -223,6 +224,21 @@ public class NoticeController {
             return ResponseJsonUtils.mapResponse("success", "댓글이 삭제되었습니다.", null);
         } else {
             return ResponseJsonUtils.mapResponse("fail", "댓글 삭제 실패하였습니다.", null);
+        }
+    }
+
+    @PostMapping(NoticeParameterName.NOTICEREPLYUPDATE)
+    public Map<String, Object> updateComment(@RequestBody NoticeReplyUpdateDTO dto) {
+        try {
+            boolean success = noticeService.updateComment(dto);
+            if(success) {
+                return ResponseJsonUtils.mapResponse("success", "댓글 수정 완료", null);
+            } else {
+                return ResponseJsonUtils.mapResponse("fail", "댓글 수정 실패", null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseJsonUtils.mapResponse("error", "서버 오류가 발생하였습니다.", null);
         }
     }
 

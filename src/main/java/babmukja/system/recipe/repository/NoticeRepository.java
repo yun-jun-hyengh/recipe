@@ -227,4 +227,14 @@ public class NoticeRepository {
                 .where(noticeReply.re_idx.eq(re_idx).and(noticeReply.user_idx.eq(user_idx)))
                 .execute();
     }
+
+    @Transactional
+    public long updateCommnet(Long re_idx, Long user_idx, String re_content) {
+        QNoticeReply noticeReply = QNoticeReply.noticeReply;
+        return queryFactory
+                .update(noticeReply)
+                .set(noticeReply.re_content, re_content)
+                .where(noticeReply.re_idx.eq(re_idx).and(noticeReply.user_idx.eq(user_idx)))
+                .execute();
+    }
 }
