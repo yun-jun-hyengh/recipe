@@ -62,3 +62,9 @@ export interface CommentList {
     re_content: string;
     re_regdate: string;
 }
+
+export interface CommentUpdateDTO {
+    re_idx: number;
+    user_idx: number;
+    re_content: string;
+}

@@ -4,6 +4,7 @@ import { NoticeRequest } from "../types/notice";
 import { NoticeDetail } from "../types/notice";
 import { NoticeListResponse } from "../types/notice";
 import { CommentSaveDTO } from "../types/notice";
+import { CommentUpdateDTO } from "../types/notice";
 export const noticeApi = {
     // noticewrite: (formData: FormData) => axiosInstance.post("/api/notice/noticewrite", formData, {
     //     headers: { "Content-Type": "multipart/form-data" }, 
@@ -70,4 +71,8 @@ export const noticeApi = {
             user_idx
         });
     },
+
+    updateComment: (data: CommentUpdateDTO) => {
+        return axiosInstance.post(`/api/notice/replyupdate`, data);
+    }
 };

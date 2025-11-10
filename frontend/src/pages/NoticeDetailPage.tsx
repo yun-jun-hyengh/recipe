@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as FiIcons from "react-icons/fi";
 import type { IconType } from "react-icons";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { CommentSaveDTO, NoticeDetail } from "../types/notice";
+import { CommentSaveDTO, CommentUpdateDTO, NoticeDetail } from "../types/notice";
 import { noticeApi } from "../api/noticeApi";
 import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
@@ -29,6 +29,7 @@ const NoticeDetailPage = () => {
     const [prevNext, setPrevNext] = useState<PrevNextResponse | null>(null);
     const hasFetched = useRef(false);
     const [re_content, setReContent] = useState("");
+    const [editingReIdx, setEditingReIdx] = useState<number | null>(null); // 수정 댓글 re_idx
 
     const [comments, setComments] = useState<CommentList[]>([]);
     const [page, setPage] = useState<number>(1);
@@ -129,6 +130,29 @@ const NoticeDetailPage = () => {
             return;
         }
 
+        if (editingReIdx !== null) {
+            const updatedata: CommentUpdateDTO = {
+                re_idx: editingReIdx,
+                user_idx: user.user_idx,
+                re_content: re_content
+            };
+            noticeApi.updateComment(updatedata)
+                .then((res) => {
+                    if(res.data.status === "success") {
+                        alert(res.data.message);
+                        setEditingReIdx(null);
+                        setReContent("");
+                        setComments([]);
+                        loadComments(1);
+                    } else {
+                        alert(res.data.message);
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                })
+            return;
+        }
+
         const data: CommentSaveDTO = {
             idx: idx,
             user_idx: user?.user_idx ?? 0,
@@ -141,7 +165,8 @@ const NoticeDetailPage = () => {
                 if(res.data.status === "success") {
                     alert(res.data.message);
                     setReContent("");
-                    loadComments(1);
+                    //loadComments(1);
+                    window.location.reload();
                 } else {
                     alert(res.data.message);
                 }
@@ -150,8 +175,14 @@ const NoticeDetailPage = () => {
             })
     }
 
-    const handleUpdateComment = (re_idx: number) => {
-        console.log('클릭됨 수정');
+    const handleUpdateComment = (re_idx: number, content: string) => {
+        //console.log('클릭됨 수정');
+        // if(!user) {
+        //     alert("로그인이 필요합니다.");
+        //     return;
+        // }
+        setEditingReIdx(re_idx);
+        setReContent(content);
     }
 
     const handleDeleteComment = (re_idx: number) => {
@@ -315,7 +346,7 @@ const NoticeDetailPage = () => {
                                                    }`}
                                                 onClick={() => {
                                                     if (!user || user.user_idx !== comment.user_idx) return;
-                                                    handleUpdateComment(comment.re_idx);
+                                                    handleUpdateComment(comment.re_idx, comment.re_content);
                                                 }}
                                             >
                                                 수정
@@ -383,8 +414,8 @@ const NoticeDetailPage = () => {
                             className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all duration-200"
                             onClick={handleCommentSubmit}
                         >
-                            등록
-                        </button>
+                            {editingReIdx ? "수정 완료" : "등록"}
+                        </button> 
                     </div>
                 </div>
             </div>
