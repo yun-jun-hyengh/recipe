@@ -218,4 +218,13 @@ public class NoticeRepository {
         result.put("totalPages", totalPages);
         return result;
     }
+
+    @Transactional
+    public long deleteCommentByIdx(Long re_idx, Long user_idx) {
+        QNoticeReply noticeReply = QNoticeReply.noticeReply;
+        return queryFactory
+                .delete(noticeReply)
+                .where(noticeReply.re_idx.eq(re_idx).and(noticeReply.user_idx.eq(user_idx)))
+                .execute();
+    }
 }

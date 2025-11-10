@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class NoticeReplyIdxDTO {
     private Long re_idx;
+    private Long user_idx;
 }

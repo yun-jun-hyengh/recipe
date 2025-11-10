@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import babmukja.system.recipe.constants.NoticeParameterName;
 import babmukja.system.recipe.dto.NoticeIdxDTO;
+import babmukja.system.recipe.dto.NoticeReplyIdxDTO;
 import babmukja.system.recipe.dto.NoticeReplyPageDTO;
 import babmukja.system.recipe.dto.NoticeReplyRegisterDTO;
 import babmukja.system.recipe.dto.NoticeResponseDTO;
@@ -212,6 +213,16 @@ public class NoticeController {
                     "댓글 조회 실패", 
                     null, 0L, 0, 0)
             );
+        }
+    }
+
+    @PostMapping(NoticeParameterName.NOTICEREPLYDELETE)
+    public Map<String, Object> deleteComment(@RequestBody NoticeReplyIdxDTO dto) {
+        boolean isDel = noticeService.deleteComment(dto);
+        if(isDel) {
+            return ResponseJsonUtils.mapResponse("success", "댓글이 삭제되었습니다.", null);
+        } else {
+            return ResponseJsonUtils.mapResponse("fail", "댓글 삭제 실패하였습니다.", null);
         }
     }
 

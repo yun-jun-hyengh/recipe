@@ -10,4 +10,5 @@ public class NoticeParameterName {
     public static final String NOTICEPREVNEXT = "/api/notice/prevnext";
     public static final String NOTICEREPLYJOIN = "/api/notice/replyjoin";
     public static final String NOTICEREPLYLIST = "/api/notice/replylist";
+    public static final String NOTICEREPLYDELETE = "/api/notice/replydelete";
 }

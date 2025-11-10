@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import babmukja.system.recipe.dto.NoticeReplyIdxDTO;
 import babmukja.system.recipe.dto.NoticeReplyPageDTO;
 import babmukja.system.recipe.dto.NoticeReplyRegisterDTO;
 import babmukja.system.recipe.dto.NoticeResponseDTO;
@@ -78,5 +79,10 @@ public class NoticeService {
 
     public Map<String, Object> getComments(NoticeReplyPageDTO dto) {
         return noticeRepository.findCommentsByNotice(dto);
+    }
+
+    public boolean deleteComment(NoticeReplyIdxDTO dto) {
+        long result = noticeRepository.deleteCommentByIdx(dto.getRe_idx(), dto.getUser_idx());
+        return result > 0;
     }
 }

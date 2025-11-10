@@ -62,6 +62,7 @@ public class SecurityConfig {
                 .antMatchers("/api/notice/noticeupdate").hasRole("ADMIN")
                 .antMatchers("/api/notice/replyjoin").permitAll()
                 .antMatchers("/api/notice/replylist").permitAll()
+                .antMatchers("/api/notice/replydelete").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             .and()
