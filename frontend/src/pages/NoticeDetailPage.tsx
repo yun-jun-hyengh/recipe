@@ -155,7 +155,29 @@ const NoticeDetailPage = () => {
     }
 
     const handleDeleteComment = (re_idx: number) => {
-        console.log('클릭됨 삭제');
+        //console.log('클릭됨 삭제');
+        if(!user) {
+            alert('로그인이 필요합니다.');
+            return;
+        }
+
+        const confirmDelete = window.confirm("정말 이 댓글을 삭제하시겠습니까?");
+        if(!confirmDelete) {
+            return;
+        }
+
+        noticeApi.deleteComments(re_idx, user.user_idx)
+            .then((res) => {
+                if(res.data.status === "success") {
+                    alert(res.data.message);
+                    setComments([]);
+                    loadComments(1);
+                } else {
+                    alert(res.data.message);
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
     }
 
     return (

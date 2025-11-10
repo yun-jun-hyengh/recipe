@@ -62,5 +62,12 @@ export const noticeApi = {
         return axiosInstance.get(`/api/notice/replylist`, {
             params: { idx, page, size },
         });
-    }
+    },
+
+    deleteComments: (re_idx: number, user_idx: number) => {
+        return axiosInstance.post(`/api/notice/replydelete`, {
+            re_idx,
+            user_idx
+        });
+    },
 };
