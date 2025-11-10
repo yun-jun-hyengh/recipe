@@ -150,6 +150,14 @@ const NoticeDetailPage = () => {
             })
     }
 
+    const handleUpdateComment = (re_idx: number) => {
+        console.log('클릭됨 수정');
+    }
+
+    const handleDeleteComment = (re_idx: number) => {
+        console.log('클릭됨 삭제');
+    }
+
     return (
         <div className="min-h-screen px-4 py-10">
             <div className="p-6 mx-auto max-w-screen-2xl">
@@ -276,12 +284,32 @@ const NoticeDetailPage = () => {
                                         </div>
                                         <div className="flex gap-2">
                                             <button
-                                                className="text-sm text-blue-600 border border-blue-600 px-2 py-1 rounded-md hover:bg-blue-600 hover:text-white transition"
+                                                disabled={!user || user.user_idx !== comment.user_idx}
+                                                className={`text-sm px-2 py-1 rounded-md border transition
+                                                   ${
+                                                    user && user.user_idx === comment.user_idx
+                                                    ? "text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white"
+                                                    : "text-gray-400 border-gray-300 cursor-not-allowed bg-gray-100"
+                                                   }`}
+                                                onClick={() => {
+                                                    if (!user || user.user_idx !== comment.user_idx) return;
+                                                    handleUpdateComment(comment.re_idx);
+                                                }}
                                             >
                                                 수정
                                             </button>
                                             <button
-                                                className="text-sm text-red-600 border border-red-600 px-2 py-1 rounded-md hover:bg-red-600 hover:text-white transition"
+                                                disabled={!user || user.user_idx !== comment.user_idx}
+                                                className={`text-sm px-2 py-1 rounded-md border transition
+                                                 ${
+                                                    user && user.user_idx === comment.user_idx
+                                                    ? "text-red-600 border-red-600 hover:bg-red-600 hover:text-white"
+                                                    : "text-gray-400 border-gray-300 cursor-not-allowed bg-gray-100"
+                                                 }`}
+                                                onClick={() => {
+                                                    if (!user || user.user_idx !== comment.user_idx) return;
+                                                    handleDeleteComment(comment.re_idx)
+                                                }}
                                             >
                                                 삭제
                                             </button>
