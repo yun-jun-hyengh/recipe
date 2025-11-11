@@ -1,6 +1,8 @@
 package babmukja.system.recipe.service;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,5 +74,23 @@ public class AdminService {
     @Transactional
     public long updateBanner(Long ba_idx, String ba_descript, Long ba_use) {
         return adminRepository.updateBanner(ba_idx, ba_descript, ba_use);
+    }
+
+    public List<Map<String, Object>> getTop3NoticesWithCommentCount() {
+        List<Tuple> results = adminRepository.findTop3NoticesWithCommentCount();
+        List<Map<String, Object>> list = new ArrayList<>();
+        for(Tuple tuple : results) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("idx", tuple.get(0, Long.class));
+            map.put("writer", tuple.get(1, String.class));
+            map.put("title", tuple.get(2, String.class));
+            map.put("content", tuple.get(3, String.class));
+            map.put("viewcount", tuple.get(4, Long.class));
+            map.put("regdate", tuple.get(5, String.class));
+            map.put("cnt", tuple.get(6, Long.class));
+
+            list.add(map);
+        }
+        return list;
     }
 }

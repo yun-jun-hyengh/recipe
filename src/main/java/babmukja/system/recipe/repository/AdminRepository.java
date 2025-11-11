@@ -27,6 +27,8 @@ import babmukja.system.recipe.entity.Banner;
 import babmukja.system.recipe.entity.Customer;
 import babmukja.system.recipe.entity.QBanner;
 import babmukja.system.recipe.entity.QCustomer;
+import babmukja.system.recipe.entity.QNotice;
+import babmukja.system.recipe.entity.QNoticeReply;
 import babmukja.system.recipe.entity.QRecipe;
 
 @Repository
@@ -206,5 +208,27 @@ public class AdminRepository {
                 .set(banner.ba_descript, ba_descript)
                 .set(banner.ba_use, ba_use)
                 .where(banner.ba_idx.eq(ba_idx)).execute();
+    }
+
+    public List<Tuple> findTop3NoticesWithCommentCount() {
+        QNotice notice = QNotice.notice;
+        QNoticeReply noticeReply = QNoticeReply.noticeReply;
+        return queryFactory
+                .select(
+                    notice.idx,
+                    notice.writer,
+                    notice.title,
+                    notice.content,
+                    notice.viewcount,
+                    notice.regdate,
+                    noticeReply.re_idx.count().as("cnt")
+                ).from(notice)
+                .leftJoin(noticeReply).on(notice.idx.eq(noticeReply.idx))
+                .groupBy(notice.idx,
+                    notice.writer,
+                    notice.title,
+                    notice.content,
+                    notice.viewcount,
+                    notice.regdate).orderBy(notice.idx.desc()).limit(3).fetch();
     }
 }

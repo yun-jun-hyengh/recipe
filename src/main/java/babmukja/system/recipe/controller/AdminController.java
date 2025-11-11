@@ -198,4 +198,15 @@ public class AdminController {
             return ResponseJsonUtils.mapResponse("fail", "배너 수정 실패", null);
         }
     }
+
+    @GetMapping(AdminPageParameterName.NOTICETOP3)
+    @ResponseBody
+    public List<Map<String, Object>> getTop3Notices() {
+        try {
+            List<Map<String, Object>> data = adminService.getTop3NoticesWithCommentCount();
+            return ResponseJsonUtils.listMapResponse("success", "top3 게시글 조회 성공", data);
+        } catch (Exception e) {
+            return ResponseJsonUtils.listMapResponse("fail", "top3 게시글 조회 실패", null);
+        }
+    }
 }
