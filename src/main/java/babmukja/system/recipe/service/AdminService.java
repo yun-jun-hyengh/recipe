@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,12 @@ import babmukja.system.recipe.repository.AdminRepository;
 @Service
 public class AdminService {
     private final AdminRepository adminRepository;
+
+    @Value("${external.api.key}")
+    private String apiKey;
+
+    @Value("${external.api.url}")
+    private String apiUrl;
 
     public AdminService(AdminRepository adminRepository) {
         this.adminRepository = adminRepository;
