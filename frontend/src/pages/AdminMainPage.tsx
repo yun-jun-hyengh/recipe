@@ -7,12 +7,13 @@ import AdminHeader from '../components/AdminHeader';
 // const FiBell = FiIcons.FiBell as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
 // const FiUser = FiIcons.FiUser as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
 import { adminApi } from '../api/adminApi';
-import { CustomerRecentList } from '../types/admin';
+import { CustomerRecentList, NoticeTop3Data } from '../types/admin';
 import { RootState } from '../store/store';
 import { useSelector } from 'react-redux';
 
 const AdminMainPage = () => {
   const [users, setUsers] = useState<CustomerRecentList[]>([]);
+  const [notices, setNotices] = useState<NoticeTop3Data[]>([]);
   const token = useSelector((state: RootState) => state.auth.accessToken);
   useEffect(() => {
     adminApi.getRecentCustomer(token || undefined)
@@ -23,6 +24,16 @@ const AdminMainPage = () => {
         }
       })
       .catch((err) => console.error("서버에러", err));
+    
+    adminApi.getNoticeTop3(token)
+      .then((res) => {
+        const response = res.data[0];
+        if (response.status === "success") {
+          setNotices(response.data);
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
     }, []);
 
   return (
@@ -97,36 +108,34 @@ const AdminMainPage = () => {
           <div className="bg-white shadow-md rounded-lg p-4 flex flex-col min-h-60">
             <h3 className="font-bold mb-2">최근공지사항</h3>
             <div className="flex-1 rounded-lg flex items-center justify-center">
-              <table className="table-auto border-collapse border border-gray-300 w-full text-center">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="border border-gray-300 p-2">번호</th>
-                    <th className="border border-gray-300 p-2">제목</th>
-                    <th className="border border-gray-300 p-2">작성자</th>
-                    <th className="border border-gray-300 p-2">등록일</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="border border-gray-300 p-2">1</td>
-                    <td className="border border-gray-300 p-2">공지1</td>
-                    <td className="border border-gray-300 p-2">김철수</td>
-                    <td className="border border-gray-300 p-2">2025-09-18</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">2</td>
-                    <td className="border border-gray-300 p-2">공지2</td>
-                    <td className="border border-gray-300 p-2">이영희</td>
-                    <td className="border border-gray-300 p-2">2025-09-17</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-gray-300 p-2">3</td>
-                    <td className="border border-gray-300 p-2">공지3</td>
-                    <td className="border border-gray-300 p-2">박민수</td>
-                    <td className="border border-gray-300 p-2">2025-09-16</td>
-                  </tr>
-                </tbody>
-              </table>
+              {notices.length === 0 ? (
+                <p>최근 공지사항 게시글이 없습니다.</p>
+              ) : (
+                <table className="table-auto border-collapse border border-gray-300 w-full text-center">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="border border-gray-300 p-2">번호</th>
+                      <th className="border border-gray-300 p-2">제목</th>
+                      <th className="border border-gray-300 p-2">작성자</th>
+                      <th className="border border-gray-300 p-2">조회수</th>
+                      <th className="border border-gray-300 p-2">등록일</th>
+                      <th className="border border-gray-300 p-2">댓글수</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {notices.map((notice, index) => (
+                      <tr key={notice.idx}>
+                        <td className="border border-gray-300 p-2">{index + 1}</td>
+                        <td className="border border-gray-300 p-2">{notice.title}</td>
+                        <td className="border border-gray-300 p-2">{notice.writer}</td>
+                        <td className="border border-gray-300 p-2">{notice.viewcount}</td>
+                        <td className="border border-gray-300 p-2">{notice.regdate}</td>
+                        <td className="border border-gray-300 p-2">{notice.cnt}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           </div>
           <div className="bg-white shadow-md rounded-lg p-4 flex flex-col min-h-60">

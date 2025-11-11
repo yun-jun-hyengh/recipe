@@ -44,3 +44,13 @@ export interface BannerList {
     ba_descript: string;
     ba_use: number;
 }
+
+export interface NoticeTop3Data {
+    idx: number;
+    writer: string;
+    title: string;
+    content: string;
+    viewcount: number;
+    regdate: string;
+    cnt: number;
+}

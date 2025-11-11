@@ -12,8 +12,9 @@ const AdminSideBar = () => {
         { name: "주문관리", path: "/admin/orderList" },
         { name: "배송관리", path: "/admin/deliveryList" },
         { name: "결제내역", path: "/admin/paymentList" },
+        { name: "요리초보가이드", path: "/admin/noviceRegister" },
+        { name: "관리자 레시피 관리", path: "/admin/recipe"},
         { name: "상품 카테고리 관리", path: "/admin/cateList" },
-        { name: "초보가이드등록", path: "/admin/noviceRegister" },
     ];
 
     return (

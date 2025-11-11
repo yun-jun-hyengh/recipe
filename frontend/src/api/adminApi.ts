@@ -87,5 +87,11 @@ export const adminApi = {
         return axiosInstance.post("/api/admin/bannerUpdate", data, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
         })
+    },
+
+    getNoticeTop3: (token: string | null) => {
+        return axiosInstance.get("/api/admin/noticeRecent", {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        })
     }
 }
