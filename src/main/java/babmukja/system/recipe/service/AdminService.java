@@ -5,17 +5,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.querydsl.core.Tuple;
 
 import babmukja.system.recipe.dto.BannerDeleteDTO;
 import babmukja.system.recipe.dto.CustomerSearchDTO;
 import babmukja.system.recipe.dto.CustomerUpdateDTO;
+import babmukja.system.recipe.dto.OpenApiDataDTO;
 import babmukja.system.recipe.dto.OpenApiDataResponseDTO;
 import babmukja.system.recipe.entity.Banner;
 import babmukja.system.recipe.repository.AdminRepository;
@@ -109,6 +112,33 @@ public class AdminService {
     }
 
     public OpenApiDataResponseDTO fetchOpenData(int startIdx, int endIdx, String rcp_nm) {
-        return null;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(apiUrl)
+            .queryParam("keyId", apiKey)
+            .queryParam("serviceId", serviceId)
+            .queryParam("dataType", "json")
+            .queryParam("startIdx", startIdx)
+            .queryParam("endIdx", endIdx);
+        
+        if(rcp_nm != null && !rcp_nm.isEmpty()) {
+            uriBuilder.queryParam("RCP_NM", rcp_nm);
+        }
+        String uri = uriBuilder.toUriString();
+        Map<String, Object> responseMap = restTemplate.getForObject(uri, Map.class);
+
+        Map<String, Object> cookRcp01 = (Map<String, Object>) responseMap.get("COOKRCP01");
+        List<Map<String, Object>> rows = (List<Map<String, Object>>) cookRcp01.get("row");
+        int totalCount = Integer.parseInt((String) cookRcp01.get("total_count"));
+
+        List<OpenApiDataDTO> dtoList = rows.stream()
+            .map(map -> {
+                OpenApiDataDTO dto = new OpenApiDataDTO();
+                dto.setRcp_seq((String) map.get("RCP_SEQ"));
+                dto.setRcp_nm((String) map.get("RCP_NM"));
+                return dto;
+            }).collect(Collectors.toList());
+        OpenApiDataResponseDTO result = new OpenApiDataResponseDTO();
+        result.setTotalCount(totalCount);
+        result.setRows(dtoList);
+        return result;
     }
 }
