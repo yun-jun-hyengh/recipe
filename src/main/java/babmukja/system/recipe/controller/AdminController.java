@@ -31,6 +31,7 @@ import babmukja.system.recipe.dto.BannerUpdateDTO;
 import babmukja.system.recipe.dto.CustomerDeleteDTO;
 import babmukja.system.recipe.dto.CustomerSearchDTO;
 import babmukja.system.recipe.dto.CustomerUpdateDTO;
+import babmukja.system.recipe.dto.OpenApiDataResponseDTO;
 import babmukja.system.recipe.entity.Banner;
 import babmukja.system.recipe.service.AdminService;
 import babmukja.system.recipe.utils.FileUtil;
@@ -208,5 +209,15 @@ public class AdminController {
         } catch (Exception e) {
             return ResponseJsonUtils.listMapResponse("fail", "top3 게시글 조회 실패", null);
         }
+    }
+
+    @GetMapping(AdminPageParameterName.RECIPEADMINPAGELIST)
+    public List<Map<String, Object>> getOpenApiData(@RequestParam int page,
+                                                    @RequestParam int size,
+                                                    @RequestParam(required = false) String rcp_nm) {
+        int startIdx = (page - 1) * size + 1;
+        int endIdx = page * size;
+        OpenApiDataResponseDTO data = adminService.fetchOpenData(startIdx, endIdx, rcp_nm);
+        return null;
     }
 }

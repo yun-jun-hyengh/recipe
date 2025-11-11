@@ -16,6 +16,7 @@ import com.querydsl.core.Tuple;
 import babmukja.system.recipe.dto.BannerDeleteDTO;
 import babmukja.system.recipe.dto.CustomerSearchDTO;
 import babmukja.system.recipe.dto.CustomerUpdateDTO;
+import babmukja.system.recipe.dto.OpenApiDataResponseDTO;
 import babmukja.system.recipe.entity.Banner;
 import babmukja.system.recipe.repository.AdminRepository;
 
@@ -105,5 +106,9 @@ public class AdminService {
             list.add(map);
         }
         return list;
+    }
+
+    public OpenApiDataResponseDTO fetchOpenData(int startIdx, int endIdx, String rcp_nm) {
+        return null;
     }
 }

@@ -11,4 +11,5 @@ public class AdminPageParameterName {
     public static final String BANNERDELETE = "/api/admin/bannerDelete";
     public static final String BANNERUPDATE = "/api/admin/bannerUpdate";
     public static final String NOTICETOP3 = "/api/admin/noticeRecent";
+    public static final String RECIPEADMINPAGELIST = "/api/admin/recipeAdminPageList";
 }
