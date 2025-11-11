@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import com.querydsl.core.Tuple;
 
@@ -27,6 +28,11 @@ public class AdminService {
 
     @Value("${external.api.url}")
     private String apiUrl;
+
+    @Value("${public.api.service-id}")
+    private String serviceId;
+
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public AdminService(AdminRepository adminRepository) {
         this.adminRepository = adminRepository;
